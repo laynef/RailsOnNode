@@ -1,0 +1,18 @@
+<!DOCTYPE html5>
+html(lang="en")
+    head
+        include ./utils/meta.pug
+        title NeutronJS
+        if process.env.NODE_ENV === 'production'
+            link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/CLIPAGE.css?id=${hashId}`)
+        else 
+            each file in cssFiles
+                link(src=`/assets/dist/pages${file}?id=${hashId}`, async)
+    body
+        h1(style='text-align: center;') CLITITLE
+        if process.env.NODE_ENV === 'production'
+            script(src=`/assets/dist/pages/CLIPAGE.js?id=${hashId}`, async)
+        else
+            each file in jsFiles
+                script(src=`/assets/dist/pages${file}?id=${hashId}`, async)
+        script(src=`/assets/dist/docs.js?id=${hashId}`, async)

@@ -1,0 +1,6 @@
+node_modules
+*.rdb
+assets/dist
+CONTRIBUTORS.md 
+*.pem
+package-lock.json

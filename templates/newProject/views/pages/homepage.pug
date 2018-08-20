@@ -1,0 +1,17 @@
+<!DOCTYPE html5>
+html(lang="en")
+    head
+        include ../utils/meta.pug
+        title NeutronJS
+        if process.env.NODE_ENV === 'production'
+            link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/homepage.css?id=${hashId}`)
+        else 
+            each file in cssFiles
+                link(src=`/assets/dist/pages${file}?id=${hashId}`, async)
+    body
+        h1(style='text-align: center;') Welcome to Neutron JS
+        if process.env.NODE_ENV === 'production'
+            script(src=`/assets/dist/pages/homepage.js?id=${hashId}`, async)
+        else
+            each file in jsFiles
+                script(src=`/assets/dist/pages${file}?id=${hashId}`, async)
