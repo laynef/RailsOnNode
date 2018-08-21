@@ -1,11 +1,11 @@
-# Neutron Go: Opinionated Node.js Framework
+# Neutron Go: Opinionated C++ Framework
 
 ## Requirements
-- Node.js >= 8
+- C++ >= 8
 - Redis >= 4
 
 ## Features
-- Create a new multithread Node.js server with Pug templating with 8 threads (Ruby on Rails has 5 for their server's scalibity)
+- Create a new multithread C++ server with Pug templating with 8 threads (Ruby on Rails has 5 for their server's scalibity)
 - Setup your own database (any SQL database or MongoDB)
 - Generate new api controllers
 - Generate new api versions
