@@ -21,15 +21,9 @@ class Redux {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [
-    Redux
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule],
+  providers: [Redux],
   bootstrap: [AppComponent]
 })
 

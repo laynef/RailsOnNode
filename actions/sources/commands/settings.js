@@ -10,11 +10,18 @@ const command = (type, options) => {
         return;
     }
 
-    const jsTypes = {
-        'react': 'jsx',
-        'angular': 'ts',
-        'vue': 'vue',
-        'js': 'js',
+    const TYPING = {
+        'javascripts': {
+            'react': 'jsx',
+            'angular': 'ts',
+            'vue': 'vue',
+            'js': 'js',
+        },
+        'stylesheets': {
+            'less': 'less',
+            'sass': 'scss',
+            'css': 'css',
+        },
     };
 
     const jsStrings = {
@@ -99,29 +106,12 @@ const command = (type, options) => {
         },
     };
 
-    const styleTypes = {
-        'sass': 'scss',
-        'less': 'less',
-        'css': 'css',
-    };
-
-    const stylesheets = Object.values(styleTypes).reduce((acc, item) => {
-        acc[item] = item;
-        return acc;
-    }, {});
-
-    const javascripts = Object.values(jsTypes).reduce((acc, item) => {
-        acc[item] = item;
-        return acc;
-    }, {});
-
     const trail = fs.readdirSync(path.join(__dirname, 'assets')).reduce((acc, item) => {
-        if (item === type && stylesheets[type]) {
-            acc[type] = stylesheets[type];
+        if (item === type && TYPING.stylesheets[type]) {
+            acc[item] = TYPING.stylesheets[type];
         }
-        if (item === type && javascripts[type]) {
-            const str = javascripts[type];
-            acc[type] = str;
+        if (item === type && TYPING.javascripts[type]) {
+            acc[item] = TYPING.javascripts[type];
         }
         return acc;
     }, {});
@@ -146,29 +136,23 @@ const command = (type, options) => {
     };
 
     const beforeTypes = arrayOfPaths([], path.join(__dirname, 'assets', before, 'pages')).map(e => {
-        const jsTypes = {
-            'react': 'jsx',
-            'angular': 'ts',
-            'vue': 'vue',
-            'js': 'js',
-        };
-        if (jsTypes[before]) {
-            const func = jsStrings[before];
-            func(e);
+        if (TYPING.javascripts[before]) {
+            jsStrings[before](e);
         }
         return e;
     });
+
     shell.mv(path.join(__dirname, 'assets', before), path.join(__dirname, 'assets', after));
-    beforeTypes.forEach(e => {
-        const fileArray = e.split('/');
+    beforeTypes.forEach(dir => {
+        const fileArray = dir.split('/');
         const filename = fileArray[fileArray.length - 1].split('.')[0] + '.' + after;
         const newFile = fileArray.slice(0, fileArray.length - 2).join('/') + filename;
 
-        if (jsTypes[before]) {
-            shell.mv(e);
+        if (TYPING.javascripts[before]) {
+            shell.mv(dir);
             shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
         } else {
-            shell.mv(e, newFile);
+            shell.mv(dir, newFile);
         }
     });
 

@@ -5,7 +5,7 @@ const description = 'Setup text editor configurations';
 const command = (type, options) => {
     const textEditor = {
         'vscode': () => {
-            exec(``);
+            exec(`code --list-extensions | xargs -L 1 echo code --install-extension`);
         },
         'atom': () => {
             exec(``);
