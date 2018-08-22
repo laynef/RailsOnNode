@@ -254,7 +254,7 @@ const command = (type, options) => {
         if (TYPING.javascripts[type] === after) {
             shell.mv(dir, newFile);
             shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
-            if (type === 'js') jsStrings[type](newFile);
+            if (type !== 'js') jsStrings[type](newFile);
         } else if (TYPING.stylesheets[type] === after) {
             shell.mv(dir, newFile);
         }
