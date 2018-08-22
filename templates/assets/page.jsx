@@ -13,7 +13,7 @@ function createStore(data) {
 class Application extends Component {
     render() {
         return (
-            <div>Hello World</div>
+            <div style={{ textAlign: 'center' }}>Hello World</div>
         );
     };
 }
