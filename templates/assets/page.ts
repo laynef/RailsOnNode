@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 
 @Component({
   template: `
-  
+    <div>Hello World</div>
   `,
   selector: 'app',
   styleUrl: [
@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
 })
 
 class AppComponent {
-  title = 'angular';
+
 }
 
 class Redux {
