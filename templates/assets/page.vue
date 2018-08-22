@@ -9,6 +9,7 @@ export default class Application {
     state: redux,
     // needs hot reloading
     template: `
+<div>Hello World</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js" async><script>
     `,
 }

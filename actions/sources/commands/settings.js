@@ -47,7 +47,6 @@ const command = (type, options) => {
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
-            const regexJs = new RegExp('/* CLI: Route Path */'); // for javascripts
 
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
@@ -84,7 +83,7 @@ const command = (type, options) => {
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideRendering');
 
-            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexJs, regexJsString).replace(regexStyles, regexStylesString));
+            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
         },
         'angular': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
@@ -97,7 +96,6 @@ const command = (type, options) => {
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
-            const regexJs = new RegExp('/* CLI: Route Path */'); // for javascripts
 
             const regexStylesString = paths.reduce((acc, item) => {
                 let bool = false;
@@ -132,10 +130,9 @@ const command = (type, options) => {
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideRendering');
 
-            const regexJsString = pathNames;
             const regexReduxString = `{}`;
 
-            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexJs, regexJsString).replace(regexStyles, regexStylesString));
+            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
         },
         'vue': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
@@ -172,7 +169,6 @@ const command = (type, options) => {
                 }
             })).join('/');
 
-            const regexJsString = pathNames;
             const regexReduxString = `{}`;
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
@@ -181,9 +177,8 @@ const command = (type, options) => {
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
-            const regexJs = new RegExp('/* CLI: Route Path */'); // for javascripts
 
-            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexJs, regexJsString).replace(regexStyles, regexStylesString));
+            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
         },
     };
 

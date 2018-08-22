@@ -2,14 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Component } from '@angular/core';
 
-const route = /* CLI: Route Path */;
-
 @Component({
   template: `
   
   `,
   selector: 'app',
-  styleUrl: [`./${route}`]
+  styleUrl: ['/route-path']
 })
 
 class AppComponent {
