@@ -127,7 +127,7 @@ const command = (type, options) => {
 
             const regexReduxString = `{}`;
 
-            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}";`));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}",`));
         },
         'vue': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
@@ -254,7 +254,7 @@ const command = (type, options) => {
         if (TYPING.javascripts[type] === after) {
             shell.mv(dir, newFile);
             shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
-            jsStrings[type](newFile);
+            if (type === 'js') jsStrings[type](newFile);
         } else if (TYPING.stylesheets[type] === after) {
             shell.mv(dir, newFile);
         }
