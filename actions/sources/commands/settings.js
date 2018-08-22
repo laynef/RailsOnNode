@@ -74,7 +74,7 @@ const command = (type, options) => {
                 } else {
                     return e;
                 }
-            }).slice(1);
+            });
             const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
@@ -119,7 +119,7 @@ const command = (type, options) => {
                 } else {
                     return e;
                 }
-            }).slice(1);
+            });
             const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
