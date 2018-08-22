@@ -10,6 +10,7 @@ html(lang="en")
                 link(src=`/assets/dist/pages${file}?id=${hashId}`, async)
     body
         include ./utils/new-page.pug
+        include ./utils/scripts.pug
         if process.env.NODE_ENV === 'production'
             script(src=`/assets/dist/pages/CLIPAGE.js?id=${hashId}`, async)
         else

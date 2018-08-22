@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
-const { startCase } = require('lodash');
 
 const description = 'Generate a new page with it\'s assets';
 
@@ -17,10 +16,10 @@ const command = (pageName, routePath, options) => {
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
     const templates = fs.readFileSync(path.join(templatePath, 'assets', 'page.pug'), { encoding: 'utf8' });
     const newTemplateAssets = templates.replace(/\/CLIPAGE/g, `${routePath}/${pageName}`);
-    const newTemplateTitle = newTemplateAssets.replace(/CLITITLE/g, startCase(pageName));
     const routePathDepth = routePath.split('/').map(e => '../').join('');
-    const pugTitle = newTemplateTitle.replace(/include \.\/utils\/new-page\.pug/g, `include ${routePathDepth}utils/new-page.pug`);
-    const newTemplate = pugTitle.replace(/include \.\/utils\/meta\.pug/g, `include ${routePathDepth}utils/meta.pug`);
+    const pugTitle = newTemplateAssets.replace(/include \.\/utils\/new-page\.pug/g, `include ${routePathDepth}utils/new-page.pug`);
+    const scriptsPage = pugTitle.replace(/include \.\/utils\/scripts\.pug/g, `include ${routePathDepth}utils/scripts.pug`);
+    const newTemplate = scriptsPage.replace(/include \.\/utils\/meta\.pug/g, `include ${routePathDepth}utils/meta.pug`);
 
     const application = fs.readFileSync(path.join(root, 'app.js'), { encoding: 'utf8' });
     shell.exec(`mkdir -p ${path.join(root, 'views', 'pages', routePath)} ${path.join(root, 'assets', settings.styleType, 'pages', routePath)} ${path.join(root, 'assets', settings.jsType, 'pages', routePath)}`);
