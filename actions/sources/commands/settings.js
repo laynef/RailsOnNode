@@ -170,12 +170,13 @@ const command = (type, options) => {
     const pathn = path.join(root, 'webpack', 'settings.js');
     const javascriptSettings = require(pathn);
 
-    if (TYPING.javascripts[after]) {
+    if (TYPING.javascripts[before]) {
         javascriptSettings.jsType = after;
-        javascriptSettings.javascriptSettings = jsWebpack[after];
-    } else if (TYPING.stylesheets[after]) {
-        javascriptSettings.tyleType = after;
+        javascriptSettings.javascriptSettings = jsWebpack[before];
+    } else if (TYPING.stylesheets[before]) {
+        javascriptSettings.styleType = after;
     }
+    
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(javascriptSettings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
