@@ -1,5 +1,5 @@
 <script>
-
+/* Route Path */
 const redux = /* CLI: Redux */;
 window.STORE = redux;
 

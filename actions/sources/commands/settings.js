@@ -42,17 +42,17 @@ const command = (type, options) => {
         'react': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.jsx');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
-            const pathnm = pathNames.split('/');
+
+            const root = process.cwd();
+            const settings = require(path.join(root, 'webpack', 'settings.js'));
 
             // replacements
-            const regexStyles = new RegExp('// route-path'); // for styles
+            const regexStyles = new RegExp('/* Route Path */'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
 
-            const regexReduxString = `{}`;
-
+            const pathnm = pathNames.split('/');
             let boolOne = false;
-            let boolTwo = false;
-            const regexStylesString = pathnm.reduce((acc, item) => {
+            const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
                     boolOne = true;
                 }
@@ -60,16 +60,11 @@ const command = (type, options) => {
                     acc.push(item);
                 }
                 return acc;
-            }, []).map(() => {
+            }, []);
+            const recursiveStrings = rescurveStr.map(() => {
                 return '..';
-            }).concat(pathnm.reduce((acc, item) => {
-                if (item === 'assets') {
-                    boolTwo = true;
-                } else if (boolTwo) {
-                    acc.push(item);
-                }
-                return acc;
-            }, []).map((e, i, a) => {
+            });
+            const rescurveNames = rescurveStr.map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
                     const filename = filen[0];
@@ -79,10 +74,13 @@ const command = (type, options) => {
                 } else {
                     return e;
                 }
-            })).join('/');
+            });
+            const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideRendering');
+
+            const regexReduxString = `{}`;
 
             fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
         },
@@ -94,7 +92,7 @@ const command = (type, options) => {
             const settings = require(path.join(root, 'webpack', 'settings.js'));
 
             // replacements
-            const regexStyles = new RegExp('// route-path'); // for styles
+            const regexStyles = new RegExp('/* Route Path */'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
 
             const pathnm = pathNames.split('/');
@@ -132,8 +130,15 @@ const command = (type, options) => {
             fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
         },
         'vue': (pathNames) => {
-            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
+            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
+
+            const root = process.cwd();
+            const settings = require(path.join(root, 'webpack', 'settings.js'));
+
+            // replacements
+            const regexStyles = new RegExp('/* Route Path */'); // for styles
+            const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
 
             const pathnm = pathNames.split('/');
             let boolOne = false;
@@ -160,16 +165,12 @@ const command = (type, options) => {
                     return e;
                 }
             });
-            const regexStylesString = `import '${recursiveStrings.concat(rescurveNames).join('/')}';`;
-
-            const regexReduxString = `{}`;
+            const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideRendering');
 
-            // replacements
-            const regexStyles = new RegExp('// route-path'); // for styles
-            const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
+            const regexReduxString = `{}`;
 
             fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
         },

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-// route-path'
+/* Route Path */
 
 function createStore(data) {
 
