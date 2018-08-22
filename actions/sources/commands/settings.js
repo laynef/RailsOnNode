@@ -47,8 +47,8 @@ const command = (type, options) => {
             const settings = require(path.join(root, 'webpack', 'settings.js'));
 
             // replacements
-            const regexStyles = new RegExp('/* Route Path */'); // for styles
-            const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
+            const regexStyles = new RegExp('/* Route Path */', 'g'); // for styles
+            const regexRedux = new RegExp('/* CLI: Redux */', 'g'); // for redux
 
             const pathnm = pathNames.split('/');
             let boolOne = false;
@@ -92,8 +92,8 @@ const command = (type, options) => {
             const settings = require(path.join(root, 'webpack', 'settings.js'));
 
             // replacements
-            const regexStyles = new RegExp('/* Route Path */'); // for styles
-            const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
+            const regexStyles = new RegExp('/* Route Path */', 'g'); // for styles
+            const regexRedux = new RegExp('/* CLI: Redux */', 'g'); // for redux
 
             const pathnm = pathNames.split('/');
             let boolOne = false;
@@ -137,8 +137,8 @@ const command = (type, options) => {
             const settings = require(path.join(root, 'webpack', 'settings.js'));
 
             // replacements
-            const regexStyles = new RegExp('/* Route Path */'); // for styles
-            const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
+            const regexStyles = new RegExp('/* Route Path */', 'g'); // for styles
+            const regexRedux = new RegExp('/* CLI: Redux */', 'g'); // for redux
 
             const pathnm = pathNames.split('/');
             let boolOne = false;
