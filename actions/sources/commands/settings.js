@@ -10,8 +10,18 @@ const command = (type, options) => {
         return;
     }
 
+    const root = process.cwd();
+    const pathn = path.join(root, 'webpack', 'settings.js');
+    const javascriptSettings = require(pathn);
+
     if (type === 'bootstrap') {
-        options.swtich = 
+        if (options.switch == 'true') {
+            javascriptSettings.bootstrap = true;
+        } else {
+            javascriptSettings.bootstrap = false;
+        }
+        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify()};`)
+        return;
     }
 
     const TYPING = {
@@ -27,8 +37,6 @@ const command = (type, options) => {
             'css': 'css',
         },
     };
-
-    const root = process.cwd();
 
     const jsStrings = {
         'react': (pathNames) => {
@@ -261,9 +269,6 @@ const command = (type, options) => {
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
     // Handle webpack here
-    const pathn = path.join(root, 'webpack', 'settings.js');
-    const javascriptSettings = require(pathn);
-
     if (TYPING.javascripts[before]) {
         javascriptSettings.jsType = after;
         javascriptSettings.javascriptSettings = jsWebpack[type];
