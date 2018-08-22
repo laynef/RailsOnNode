@@ -85,7 +85,7 @@ const command = (type, options) => {
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
         'angular': (pathNames) => {
-            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
+            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.jsx');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const root = process.cwd();
@@ -93,7 +93,7 @@ const command = (type, options) => {
 
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
-            const regexRedux = new RegExp('/* CLI: Redux */', 'g'); // for redux
+            const regexRedux = new RegExp('/* CLI: Redux */', 'ig'); // for redux
 
             const pathnm = pathNames.split('/');
             let boolOne = false;
@@ -127,7 +127,7 @@ const command = (type, options) => {
 
             const regexReduxString = `{}`;
 
-            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}";`));
         },
         'vue': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');

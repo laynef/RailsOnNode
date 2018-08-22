@@ -7,7 +7,9 @@ import { Component } from '@angular/core';
   
   `,
   selector: 'app',
-  styleUrl: [/* Route Path */]
+  styleUrl: [
+    // Route Path
+  ]
 })
 
 class AppComponent {
