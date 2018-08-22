@@ -42,16 +42,16 @@ const command = (type, options) => {
         'react': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.jsx');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
+            const pathnm = pathNames.split('/');
 
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
             const regexJs = new RegExp('/* CLI: Route Path */'); // for javascripts
-            const regexJsPathnames = new RegExp('/js/', 'ig'); // for javascript regex
 
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
-            const routeCss = pathNames.split('/').reduce((acc, item) => {
+            const regexStylesString = pathnm.reduce((acc, item) => {
                 let bool = false;
                 if (item === 'assets') {
                     bool = true;
@@ -59,9 +59,9 @@ const command = (type, options) => {
                     acc.push(item);
                 }
                 return acc;
-            }, []).slice(4).map(e => {
+            }, []).map(e => {
                 return '..';
-            }).concat(pathNames.split('/')).reduce((acc, item) => {
+            }).concat(pathnm.reduce((acc, item) => {
                 let bool = false;
                 if (item === 'assets') {
                     bool = true;
@@ -69,7 +69,7 @@ const command = (type, options) => {
                     acc.push(item);
                 }
                 return acc;
-            }, []).slice(4).map((e, i, a) => {
+            }, []).map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
                     const filename = filen[0] + `.${settings.styleType}`;
@@ -79,12 +79,10 @@ const command = (type, options) => {
                 } else {
                     return e;
                 }
-            }).join('/');
+            })).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideRendering');
-
-            const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
 
             fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexJs, regexJsString).replace(regexStyles, regexStylesString));
         },
@@ -94,14 +92,14 @@ const command = (type, options) => {
 
             const root = process.cwd();
             const settings = require(path.join(root, 'webpack', 'settings.js'));
+            const paths = pathNames.split('/');
 
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
             const regexJs = new RegExp('/* CLI: Route Path */'); // for javascripts
-            const regexJsPathnames = new RegExp(`/${settings.jsType}/`, 'ig'); // for javascript regex
 
-            const routeCss = pathNames.split('/').reduce((acc, item) => {
+            const regexStylesString = paths.reduce((acc, item) => {
                 let bool = false;
                 if (item === 'assets') {
                     bool = true;
@@ -109,9 +107,9 @@ const command = (type, options) => {
                     acc.push(item);
                 }
                 return acc;
-            }, []).slice(4).map(e => {
+            }, []).map(e => {
                 return '..';
-            }).concat(pathNames.split('/')).reduce((acc, item) => {
+            }).concat(paths.reduce((acc, item) => {
                 let bool = false;
                 if (item === 'assets') {
                     bool = true;
@@ -119,7 +117,7 @@ const command = (type, options) => {
                     acc.push(item);
                 }
                 return acc;
-            }, []).slice(4).map((e, i, a) => {
+            }, []).map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
                     const filename = filen[0] + `.${settings.styleType}`;
@@ -129,22 +127,22 @@ const command = (type, options) => {
                 } else {
                     return e;
                 }
-            }).join('/');
+            })).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideRendering');
 
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
-            const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
 
             fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexJs, regexJsString).replace(regexStyles, regexStylesString));
         },
         'vue': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
+            const paths = pathNames.split('/');
 
-            const routeCss = pathNames.split('/').reduce((acc, item) => {
+            const regexStylesString = paths.reduce((acc, item) => {
                 let bool = false;
                 if (item === 'assets') {
                     bool = true;
@@ -152,9 +150,9 @@ const command = (type, options) => {
                     acc.push(item);
                 }
                 return acc;
-            }, []).slice(4).map(e => {
+            }, []).map(e => {
                 return '..';
-            }).concat(pathNames.split('/')).reduce((acc, item) => {
+            }).concat(paths.reduce((acc, item) => {
                 let bool = false;
                 if (item === 'assets') {
                     bool = true;
@@ -162,7 +160,7 @@ const command = (type, options) => {
                     acc.push(item);
                 }
                 return acc;
-            }, []).slice(4).map((e, i, a) => {
+            }, []).map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
                     const filename = filen[0] + `.${settings.styleType}`;
@@ -172,12 +170,10 @@ const command = (type, options) => {
                 } else {
                     return e;
                 }
-            }).join('/');
+            })).join('/');
 
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
-            const regexJsPathnames = new RegExp('/js/', 'ig'); // for javascript regex
-            const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideRendering');
@@ -280,7 +276,7 @@ const command = (type, options) => {
     // Handle webpack here
     if (TYPING.javascripts[before]) {
         settings.jsType = after;
-        settings.settings = jsWebpack[type];
+        settings.javascriptSettings = jsWebpack[type];
     } else if (TYPING.stylesheets[before]) {
         settings.styleType = after;
     }
