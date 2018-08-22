@@ -12,15 +12,15 @@ const command = (type, options) => {
 
     const root = process.cwd();
     const pathn = path.join(root, 'webpack', 'settings.js');
-    const javascriptSettings = require(pathn);
+    const settings = require(pathn);
 
     if (type === 'bootstrap') {
         if (options.switch == true) {
-            javascriptSettings.useBootstrapToggle = true;
+            settings.useBootstrapToggle = true;
         } else {
-            javascriptSettings.useBootstrapToggle = false;
+            settings.useBootstrapToggle = false;
         }
-        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(javascriptSettings, null, 4)};`);
+        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
         return;
     }
 
@@ -60,9 +60,9 @@ const command = (type, options) => {
                 }
                 return acc;
             }, []).slice(4).map(e => {
-                return '..'
+                return '..';
             }).concat(pathNames.split('/')).reduce((acc, item) => {
-                let bool = false
+                let bool = false;
                 if (item === 'assets') {
                     bool = true;
                 } else if (bool) {
@@ -81,7 +81,8 @@ const command = (type, options) => {
                 }
             }).join('/');
 
-            console.log(routeCss)
+            const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
+            fs.writeFileSync(pugFile, '#app!=serverSideRendering');
 
             const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
 
@@ -101,7 +102,7 @@ const command = (type, options) => {
             const regexJsPathnames = new RegExp(`/${settings.jsType}/`, 'ig'); // for javascript regex
 
             const routeCss = pathNames.split('/').reduce((acc, item) => {
-                let bool = false
+                let bool = false;
                 if (item === 'assets') {
                     bool = true;
                 } else if (bool) {
@@ -109,9 +110,9 @@ const command = (type, options) => {
                 }
                 return acc;
             }, []).slice(4).map(e => {
-                return '..'
+                return '..';
             }).concat(pathNames.split('/')).reduce((acc, item) => {
-                let bool = false
+                let bool = false;
                 if (item === 'assets') {
                     bool = true;
                 } else if (bool) {
@@ -130,6 +131,9 @@ const command = (type, options) => {
                 }
             }).join('/');
 
+            const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
+            fs.writeFileSync(pugFile, '#app!=serverSideRendering');
+
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
             const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
@@ -141,7 +145,7 @@ const command = (type, options) => {
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const routeCss = pathNames.split('/').reduce((acc, item) => {
-                let bool = false
+                let bool = false;
                 if (item === 'assets') {
                     bool = true;
                 } else if (bool) {
@@ -149,9 +153,9 @@ const command = (type, options) => {
                 }
                 return acc;
             }, []).slice(4).map(e => {
-                return '..'
+                return '..';
             }).concat(pathNames.split('/')).reduce((acc, item) => {
-                let bool = false
+                let bool = false;
                 if (item === 'assets') {
                     bool = true;
                 } else if (bool) {
@@ -174,6 +178,9 @@ const command = (type, options) => {
             const regexReduxString = `{}`;
             const regexJsPathnames = new RegExp('/js/', 'ig'); // for javascript regex
             const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
+
+            const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
+            fs.writeFileSync(pugFile, '#app!=serverSideRendering');
 
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
@@ -272,13 +279,13 @@ const command = (type, options) => {
 
     // Handle webpack here
     if (TYPING.javascripts[before]) {
-        javascriptSettings.jsType = after;
-        javascriptSettings.javascriptSettings = jsWebpack[type];
+        settings.jsType = after;
+        settings.settings = jsWebpack[type];
     } else if (TYPING.stylesheets[before]) {
-        javascriptSettings.styleType = after;
+        settings.styleType = after;
     }
 
-    fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(javascriptSettings, null, 4)}`);
+    fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
 };

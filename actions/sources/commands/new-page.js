@@ -19,7 +19,8 @@ const command = (pageName, routePath, options) => {
     const newTemplateAssets = templates.replace(/\/CLIPAGE/g, `${routePath}/${pageName}`);
     const newTemplateTitle = newTemplateAssets.replace(/CLITITLE/g, startCase(pageName));
     const routePathDepth = routePath.split('/').map(e => '../').join('');
-    const newTemplate = newTemplateTitle.replace(/include \.\/utils\/meta\.pug/g, `include ${routePathDepth}utils/meta.pug`);
+    const pugTitle = newTemplateTitle.replace(/include \.\/utils\/new-page\.pug/g, `include ${routePathDepth}utils/new-page.pug`);
+    const newTemplate = pugTitle.replace(/include \.\/utils\/meta\.pug/g, `include ${routePathDepth}utils/meta.pug`);
 
     const application = fs.readFileSync(path.join(root, 'app.js'), { encoding: 'utf8' });
     shell.exec(`mkdir -p ${path.join(root, 'views', 'pages', routePath)} ${path.join(root, 'assets', settings.styleType, 'pages', routePath)} ${path.join(root, 'assets', settings.jsType, 'pages', routePath)}`);
