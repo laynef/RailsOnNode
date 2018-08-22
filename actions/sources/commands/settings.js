@@ -48,30 +48,32 @@ const command = (type, options) => {
             const regexStyles = new RegExp('/route-path'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
 
-            const regexJsString = pathNames;
             const regexReduxString = `{}`;
+
+            let boolOne = false;
+            let boolTwo = false;
             const regexStylesString = pathnm.reduce((acc, item) => {
-                let bool = false;
                 if (item === 'assets') {
-                    bool = true;
-                } else if (bool) {
+                    boolOne = true;
+                }
+                if (boolOne) {
                     acc.push(item);
                 }
                 return acc;
             }, []).map(e => {
                 return '..';
             }).concat(pathnm.reduce((acc, item) => {
-                let bool = false;
                 if (item === 'assets') {
-                    bool = true;
-                } else if (bool) {
+                    boolTwo = true;
+                } else if (boolTwo) {
+                    console.log(item);
                     acc.push(item);
                 }
                 return acc;
             }, []).map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
-                    const filename = filen[0] + `.${settings.styleType}`;
+                    const filename = filen[0];
                     return filename;
                 } else if (i === 0) {
                     return settings.styleType;
@@ -91,34 +93,36 @@ const command = (type, options) => {
 
             const root = process.cwd();
             const settings = require(path.join(root, 'webpack', 'settings.js'));
-            const paths = pathNames.split('/');
+            const pathnm = pathNames.split('/');
 
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
 
-            const regexStylesString = paths.reduce((acc, item) => {
-                let bool = false;
+            let boolOne = false;
+            let boolTwo = false;
+            const regexStylesString = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
-                    bool = true;
-                } else if (bool) {
+                    boolOne = true;
+                }
+                if (boolOne) {
                     acc.push(item);
                 }
                 return acc;
             }, []).map(e => {
                 return '..';
-            }).concat(paths.reduce((acc, item) => {
-                let bool = false;
+            }).concat(pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
-                    bool = true;
-                } else if (bool) {
+                    boolTwo = true;
+                } else if (boolTwo) {
+                    console.log(item);
                     acc.push(item);
                 }
                 return acc;
             }, []).map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
-                    const filename = filen[0] + `.${settings.styleType}`;
+                    const filename = filen[0];
                     return filename;
                 } else if (i === 0) {
                     return settings.styleType;
@@ -137,30 +141,32 @@ const command = (type, options) => {
         'vue': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
-            const paths = pathNames.split('/');
+            const pathnm = pathNames.split('/');
 
-            const regexStylesString = paths.reduce((acc, item) => {
-                let bool = false;
+            let boolOne = false;
+            let boolTwo = false;
+            const regexStylesString = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
-                    bool = true;
-                } else if (bool) {
+                    boolOne = true;
+                }
+                if (boolOne) {
                     acc.push(item);
                 }
                 return acc;
             }, []).map(e => {
                 return '..';
-            }).concat(paths.reduce((acc, item) => {
-                let bool = false;
+            }).concat(pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
-                    bool = true;
-                } else if (bool) {
+                    boolTwo = true;
+                } else if (boolTwo) {
+                    console.log(item);
                     acc.push(item);
                 }
                 return acc;
             }, []).map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
-                    const filename = filen[0] + `.${settings.styleType}`;
+                    const filename = filen[0];
                     return filename;
                 } else if (i === 0) {
                     return settings.styleType;
