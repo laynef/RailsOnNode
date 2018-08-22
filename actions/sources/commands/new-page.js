@@ -12,7 +12,7 @@ const command = (pageName, routePath, options) => {
     }
 
     const root = process.cwd();
-    const settings = require(path.join(root, 'webpack', 'settings.json'));
+    const settings = require(path.join(root, 'webpack', 'settings.js'));
 
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
     const templates = fs.readFileSync(path.join(templatePath, 'assets', 'page.pug'), { encoding: 'utf8' });
