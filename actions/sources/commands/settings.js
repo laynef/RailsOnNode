@@ -10,6 +10,10 @@ const command = (type, options) => {
         return;
     }
 
+    if (type === 'bootstrap') {
+        options.swtich = 
+    }
+
     const TYPING = {
         'javascripts': {
             'react': 'jsx',
@@ -39,8 +43,37 @@ const command = (type, options) => {
 
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
-            const stylesPathName = pathNames.replace(regexJsPathnames, '/css/');
-            const regexStylesString = pathNames.replace(regexJsPathnames, stylesPathName);
+            const routeCss = pathNames.split('/').reduce((acc, item) => {
+                let bool = false
+                if (item === 'assets') {
+                    bool = true;
+                } else if (bool) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []).slice(4).map(e => {
+                return '..'
+            }).concat(pathNames.split('/')).reduce((acc, item) => {
+                let bool = false
+                if (item === 'assets') {
+                    bool = true;
+                } else if (bool) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []).slice(4).map((e, i, a) => {
+                if (i === a.length - 1) {
+                    const filen = e.split('.');
+                    const filename = filen[0] + `.${settings.styleType}`;
+                    return filename;
+                } else if (i === 0) {
+                    return settings.styleType;
+                } else {
+                    return e;
+                }
+            }).join('/');
+
+            const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
 
             fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexJs, regexJsString).replace(regexStyles, regexStylesString));
         },
@@ -48,16 +81,48 @@ const command = (type, options) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
+            const root = process.cwd();
+            const settings = require(path.join(root, 'webpack', 'settings.js'));
+
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
             const regexRedux = new RegExp('/* CLI: Redux */'); // for redux
             const regexJs = new RegExp('/* CLI: Route Path */'); // for javascripts
-            const regexJsPathnames = new RegExp('/js/', 'ig'); // for javascript regex
+            const regexJsPathnames = new RegExp(`/${settings.jsType}/`, 'ig'); // for javascript regex
+
+            const routeCss = pathNames.split('/').reduce((acc, item) => {
+                let bool = false
+                if (item === 'assets') {
+                    bool = true;
+                } else if (bool) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []).slice(4).map(e => {
+                return '..'
+            }).concat(pathNames.split('/')).reduce((acc, item) => {
+                let bool = false
+                if (item === 'assets') {
+                    bool = true;
+                } else if (bool) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []).slice(4).map((e, i, a) => {
+                if (i === a.length - 1) {
+                    const filen = e.split('.');
+                    const filename = filen[0] + `.${settings.styleType}`;
+                    return filename;
+                } else if (i === 0) {
+                    return settings.styleType;
+                } else {
+                    return e;
+                }
+            }).join('/');
 
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
-            const stylesPathName = pathNames.replace(regexJsPathnames, '/css/');
-            const regexStylesString = pathNames.replace(regexJsPathnames, stylesPathName);
+            const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
 
             fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexJs, regexJsString).replace(regexStyles, regexStylesString));
         },
@@ -65,11 +130,40 @@ const command = (type, options) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
+            const routeCss = pathNames.split('/').reduce((acc, item) => {
+                let bool = false
+                if (item === 'assets') {
+                    bool = true;
+                } else if (bool) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []).slice(4).map(e => {
+                return '..'
+            }).concat(pathNames.split('/')).reduce((acc, item) => {
+                let bool = false
+                if (item === 'assets') {
+                    bool = true;
+                } else if (bool) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []).slice(4).map((e, i, a) => {
+                if (i === a.length - 1) {
+                    const filen = e.split('.');
+                    const filename = filen[0] + `.${settings.styleType}`;
+                    return filename;
+                } else if (i === 0) {
+                    return settings.styleType;
+                } else {
+                    return e;
+                }
+            }).join('/');
+
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
             const regexJsPathnames = new RegExp('/js/', 'ig'); // for javascript regex
-            const stylesPathName = pathNames.replace(regexJsPathnames, '/css/');
-            const regexStylesString = pathNames.replace(regexJsPathnames, stylesPathName);
+            const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
 
             // replacements
             const regexStyles = new RegExp('/route-path'); // for styles
