@@ -284,6 +284,8 @@ const command = (type, options) => {
 const documentation = () => {
     console.yellow(`
 Commands:
+    bootstrap [options: --switch=(true || false)]
+
     stylesheets
     -> css
     -> less
