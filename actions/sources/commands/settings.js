@@ -24,6 +24,8 @@ const command = (type, options) => {
         },
     };
 
+    const root = process.cwd();
+
     const jsStrings = {
         'react': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.jsx');
@@ -106,18 +108,30 @@ const command = (type, options) => {
         },
     };
 
-    const trail = fs.readdirSync(path.join(__dirname, 'assets')).reduce((acc, item) => {
-        if (item === type && TYPING.stylesheets[type]) {
-            acc[item] = TYPING.stylesheets[type];
-        }
-        if (item === type && TYPING.javascripts[type]) {
-            acc[item] = TYPING.javascripts[type];
-        }
+    const reverseJs = Object.values(TYPING.javascripts).reduce((acc, item) => {
+        acc[item] = item;
         return acc;
     }, {});
 
-    const before = Object.keys(trail)[0];
-    const after = Object.values(trail)[0];
+    const reverseCss = Object.values(TYPING.stylesheets).reduce((acc, item) => {
+        acc[item] = item;
+        return acc;
+    }, {});
+
+    const trail = fs.readdirSync(path.join(root, 'assets')).reduce((acc, item) => {
+        if (reverseCss[item] && TYPING.stylesheets[type]) {
+            acc.push(item);
+            acc.push(TYPING.stylesheets[type]);
+        }
+        if (reverseJs[item] && TYPING.javascripts[type]) {
+            acc.push(item);
+            acc.push(TYPING.javascripts[type]);
+        }
+        return acc;
+    }, []);
+
+    const before = trail[0];
+    const after = trail[1];
 
     // styles change file path types
     // javascript change full root files
@@ -125,36 +139,35 @@ const command = (type, options) => {
         fs.readdirSync(pathn).forEach(dir => {
             if (fs.lstatSync(path.join(pathn, dir)).isDirectory()) {
                 const temp = data;
-                temp.push(path.join(pathn, dir));
                 arrayOfPaths(temp, path.join(pathn, dir));
             } else {
-                data.push(pathn);
+                data.push(path.join(pathn, dir));
             }
         });
 
         return data;
     };
 
-    const beforeTypes = arrayOfPaths([], path.join(__dirname, 'assets', before, 'pages'));
+    const beforeTypes = arrayOfPaths([], path.join(root, 'assets', before, 'pages'));
 
-    shell.mv(path.join(__dirname, 'assets', before), path.join(__dirname, 'assets', after));
     beforeTypes.forEach(dir => {
         const fileArray = dir.split('/');
         const filename = fileArray[fileArray.length - 1].split('.')[0] + '.' + after;
-        const newFile = fileArray.slice(0, fileArray.length - 2).join('/') + filename;
+        const newFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + filename;
 
-        if (TYPING.javascripts[after]) {
-            shell.mv(dir);
-            shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
-            jsStrings[after](dir);
-        } else if (TYPING.stylesheets[after]) {
+        if (TYPING.javascripts[type] === after) {
+            shell.mv(dir, newFile);
+            shell.mv(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
+            jsStrings[type](newFile);
+        } else if (TYPING.stylesheets[type] === after) {
             shell.mv(dir, newFile);
         }
     });
 
+    shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
+
     // Handle webpack here
-    const root = process.cwd();
-    const pathn = path.join(root, 'webpack', 'settings.json');
+    const pathn = path.join(root, 'webpack', 'settings.js');
     const javascriptSettings = require(pathn);
     javascriptSettings.javascriptSettings = jsWebpack[before];
     fs.writeFileSync(pathn, JSON.stringify(javascriptSettings));
