@@ -82,7 +82,7 @@ const command = (type, options) => {
 
             const regexReduxString = `{}`;
 
-            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
         'angular': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
@@ -127,7 +127,7 @@ const command = (type, options) => {
 
             const regexReduxString = `{}`;
 
-            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
         'vue': (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
@@ -172,7 +172,7 @@ const command = (type, options) => {
 
             const regexReduxString = `{}`;
 
-            fs.writeFileSync(pathn, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
     };
 
