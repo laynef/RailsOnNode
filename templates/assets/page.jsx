@@ -8,7 +8,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import { declareMainRoutes } from './routes';
 
-import './route-path';
+const route = /* CLI: Route Path */;
+
+require(route);
 import 'velocity-animate';
 import 'velocity-animate/velocity.ui';
 
