@@ -172,11 +172,11 @@ const command = (type, options) => {
 
     if (TYPING.javascripts[before]) {
         javascriptSettings.jsType = after;
-        javascriptSettings.javascriptSettings = jsWebpack[before];
+        javascriptSettings.javascriptSettings = jsWebpack[type];
     } else if (TYPING.stylesheets[before]) {
         javascriptSettings.styleType = after;
     }
-    
+
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(javascriptSettings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
