@@ -16,11 +16,11 @@ const command = (type, options) => {
 
     if (type === 'bootstrap') {
         if (options.switch == 'true') {
-            javascriptSettings.bootstrap = true;
+            javascriptSettings.useBootstrapToggle = true;
         } else {
-            javascriptSettings.bootstrap = false;
+            javascriptSettings.useBootstrapToggle = false;
         }
-        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify()};`)
+        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(javascriptSettings, null, 4)};`)
         return;
     }
 
