@@ -15,12 +15,12 @@ const command = (type, options) => {
     const javascriptSettings = require(pathn);
 
     if (type === 'bootstrap') {
-        if (options.switch == 'true') {
+        if (options.switch == true) {
             javascriptSettings.useBootstrapToggle = true;
         } else {
             javascriptSettings.useBootstrapToggle = false;
         }
-        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(javascriptSettings, null, 4)};`)
+        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(javascriptSettings, null, 4)};`);
         return;
     }
 
@@ -52,7 +52,7 @@ const command = (type, options) => {
             const regexJsString = pathNames;
             const regexReduxString = `{}`;
             const routeCss = pathNames.split('/').reduce((acc, item) => {
-                let bool = false
+                let bool = false;
                 if (item === 'assets') {
                     bool = true;
                 } else if (bool) {
@@ -80,6 +80,8 @@ const command = (type, options) => {
                     return e;
                 }
             }).join('/');
+
+            console.log(routeCss)
 
             const regexStylesString = pathNames.replace(regexJsPathnames, routeCss);
 

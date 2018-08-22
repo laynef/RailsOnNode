@@ -1,7 +1,7 @@
 module.exports = {
-    styleType: "css",
-    jsType: "js",
-    useBootstrapToggle: true,
+    styleType: 'css',
+    jsType: 'js',
+    useBootstrapToggle: false,
     bootstrap: {
         scripts: {
             alert: true,
@@ -18,8 +18,8 @@ module.exports = {
         },
     },
     javascriptSettings: {
-        test: ".js$",
-        exclude: "node_modules",
-        use: ["babel-loader"],
+        test: '.js$',
+        exclude: 'node_modules',
+        use: ['babel-loader'],
     },
 };

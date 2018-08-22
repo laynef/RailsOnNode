@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import '/* CLI: Route Path */';
+import '/Users/laynefaler/Desktop/Code/Serverside/assets/ts/pages/about/us/about.jsx';
 
 function createStore(data) {
 
