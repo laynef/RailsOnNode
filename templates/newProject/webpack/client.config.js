@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const noProduction = process.env.NODE_ENV !== 'production';
-const settings = require('./settings.json');
+const settings = require('./settings');
 const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -69,7 +69,7 @@ const setByRoute = (data, object, assetType) => {
 
 const updateArray = (array) => {
     let firstItem = array.shift();
-    const jsFiles = array.filter(e => e.endsWith('.js'));
+    const jsFiles = array.filter(e => e.endsWith('.js') || e.endsWith('.ts') || e.endsWith('.jsx') || e.endsWith('.vue'));
     const cssFiles = array.filter(e => e.endsWith('.css') || e.endsWith('.scss') || e.endsWith('.sass') || e.endsWith('.less'));
     firstItem = noProduction ? [firstItem] : [];
     return [].concat(firstItem).concat(cssFiles).concat(jsFiles);
@@ -87,6 +87,7 @@ let withJavascripts = setByRoute({}, jsPaths, 'javascript');
 let withStylesheets = setByRoute(withJavascripts, cssPaths, 'stylesheet');
 
 const entry = bundleJavaScriptLast(withStylesheets);
+
 let plugins = [
     new webpack.LoaderOptionsPlugin({
         options: {
@@ -141,7 +142,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['*', '.js', '.jsx', '.json', '.scss', '.sass', '.css', '.less'],
+        extensions: ['*', '.js', '.jsx', '.ts', '.vue', '.json', '.scss', '.sass', '.css', '.less'],
         moduleExtensions: ['-loader'],
     },
     plugins: plugins,

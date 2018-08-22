@@ -135,12 +135,7 @@ const command = (type, options) => {
         return data;
     };
 
-    const beforeTypes = arrayOfPaths([], path.join(__dirname, 'assets', before, 'pages')).map(e => {
-        if (TYPING.javascripts[before]) {
-            jsStrings[before](e);
-        }
-        return e;
-    });
+    const beforeTypes = arrayOfPaths([], path.join(__dirname, 'assets', before, 'pages'));
 
     shell.mv(path.join(__dirname, 'assets', before), path.join(__dirname, 'assets', after));
     beforeTypes.forEach(dir => {
@@ -148,10 +143,11 @@ const command = (type, options) => {
         const filename = fileArray[fileArray.length - 1].split('.')[0] + '.' + after;
         const newFile = fileArray.slice(0, fileArray.length - 2).join('/') + filename;
 
-        if (TYPING.javascripts[before]) {
+        if (TYPING.javascripts[after]) {
             shell.mv(dir);
             shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
-        } else {
+            jsStrings[after](dir);
+        } else if (TYPING.stylesheets[after]) {
             shell.mv(dir, newFile);
         }
     });
