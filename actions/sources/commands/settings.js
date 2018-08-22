@@ -214,10 +214,19 @@ const command = (type, options) => {
         return acc;
     }, {});
 
+    let CURR_JS = '';
+    let CURR_CSS = '';
+
     const trail = fs.readdirSync(path.join(root, 'assets')).reduce((acc, item) => {
         if (reverseCss[item] && TYPING.stylesheets[type]) {
             acc.push(item);
             acc.push(TYPING.stylesheets[type]);
+        }
+        if (reverseCss[item]) {
+            CURR_CSS = item;
+        }
+        if (reverseJs[item]) {
+            CURR_JS = item;
         }
         if (reverseJs[item] && TYPING.javascripts[type]) {
             acc.push(item);
@@ -256,6 +265,9 @@ const command = (type, options) => {
             shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
             if (type !== 'js') jsStrings[type](newFile);
         } else if (TYPING.stylesheets[type] === after) {
+            const jsPaths = dir.replace(RegExp(CURR_CSS, 'ig'), CURR_JS);
+            const str = fs.readFileSync(jsPaths, { encoding: 'utf8' });
+            fs.writeFileSync(jsPaths, str.replace(RegExp(CURR_CSS, 'ig'), after));
             shell.mv(dir, newFile);
         }
     });
