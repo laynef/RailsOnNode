@@ -3,7 +3,8 @@ html(lang="en")
     head
         include ../utils/meta.pug
         title 403: Nice Try!
+        link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/homepage.css?id=${hashId}`)
     body
-        h1 403 Error
-        h2 Forbidden Page
+        h1(style='text-align: center;') 403 Error
+        h2(style='text-align: center;') Forbidden Page
         include ../utils/noscript.pug

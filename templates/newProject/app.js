@@ -84,6 +84,14 @@ if (process.env.NODE_ENV !== 'production') {
 app.get('/', render('pages/homepage', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
 
+app.use('*', (req, res) => {
+    res.status(404).render('errors/404');
+});
+
+app.use((error, req, res, next) => {
+    res.status(500).render('errors/500');
+});
+
 const server = http.createServer(app);
 const httpPort = process.env.PORT || 8080;
 server.listen(httpPort, () => {
