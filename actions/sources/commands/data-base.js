@@ -2,6 +2,24 @@ const shell = require('shelljs');
 
 const description = 'Use wrapper for the CLIs used for databases';
 
+const documentation = () => {
+    console.yellow(`
+Command:
+
+Types:
+    Database-Types
+    -> sql
+    -> mongodb
+
+Helps:
+    Database-Types
+    -> sql --help
+    -> mongodb help
+
+node-rails data-base <data-type> <native commands>
+    `);
+};
+
 const command = (type) => {
     if (!type) {
         console.red('Enter a database type');
@@ -20,21 +38,8 @@ const command = (type) => {
         shell.exec(`${dbType[type]} ${str}`);
         console.green('Wrapper for database type used.');
     } else {
-        shell.exec(`${dbType[type]} --help`);
+        documentation();
     }
-};
-
-const documentation = () => {
-    console.yellow(`
-Command:
-
-Types:
-    Data-Types
-    -> sql
-    -> mongodb
-
-node-rails data-base <data-type> <native commands>
-    `);
 };
 
 module.exports = {

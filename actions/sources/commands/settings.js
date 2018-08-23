@@ -283,9 +283,6 @@ const command = (type, options) => {
         },
         vue: {
             "vue": "^2.1.0",
-            "vue-loader": "^10.0.0",
-            "vue-style-loader": "^1.0.0",
-            "vue-template-compiler": "^2.1.0",
         },
         js: {
 
@@ -311,12 +308,17 @@ const command = (type, options) => {
             "typescript": "~2.7.2"
         },
         vue: {
-
+            "vue-loader": "^10.0.0",
+            "vue-style-loader": "^1.0.0",
+            "vue-template-compiler": "^2.1.0",
         },
         js: {
 
         }
     }
+
+    const files = fs.readFileSync(path.join(root, 'package.json'), { encoding: 'utf8' });
+    
 
     const reverseJs = Object.values(TYPING.javascripts).reduce((acc, item) => {
         acc[item] = item;
