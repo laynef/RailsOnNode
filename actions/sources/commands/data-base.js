@@ -1,4 +1,4 @@
-const shell = reuqire('shelljs');
+const shell = require('shelljs');
 
 const description = 'Use wrapper for the CLIs used for databases';
 
