@@ -83,7 +83,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'redux', before), path.join(root, 'assets', CURR_JS, 'redux'))
+            shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'redux', after), path.join(root, 'assets', after, 'redux'))
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
