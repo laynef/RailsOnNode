@@ -4,6 +4,7 @@ const settings = require('./settings');
 const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { reduce } = require('lodash');
 
 const context = path.join(__dirname, '..');
 const jsLoader = settings.javascriptSettings;
@@ -33,8 +34,13 @@ const useBootstrapToggle = settings.useBootstrapToggle;
 
 const cssPath = path.join(context, 'assets', styleType, 'pages');
 const jsPath = path.join(context, 'assets', jsType, 'pages');
+const docsPath = path.join(context, 'assets', jsType, 'pages', 'docs');
+
 const cssPaths = recursiveFind({}, cssPath);
-const jsPaths = recursiveFind({}, jsPath);
+const jsPaths = Object.assign({}, recursiveFind({}, jsPath), reduce(recursiveFind({}, docsPath), (acc, val, key) => {
+    acc[key] = { ...val, docs: true };
+    return acc;
+}, {}));
 
 const setByRoute = (data, object, assetType) => {
     const obj = data;
@@ -42,6 +48,7 @@ const setByRoute = (data, object, assetType) => {
         const cssRegex = new RegExp(cssPath, 'ig');
         const jsRegex = new RegExp(jsPath, 'ig');
         const routePath = route.replace(cssRegex, '').replace(jsRegex, '') + object[route].pageName;
+
         if (assetType === 'javascript') {
             obj[routePath] = obj[routePath] || [];
             obj[routePath].push('webpack-hot-middleware/client.js');
@@ -53,6 +60,12 @@ const setByRoute = (data, object, assetType) => {
             } else {
                 obj[routePath].push(object[route].fullPath);
             }
+            if (obj[routePath].docs) {
+                for (let setting in settings.bootstrap.scripts) {
+                    obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
+                }
+                obj[routePath].push(object[route].fullPath);
+            }
         } else if (assetType === 'stylesheet') {
             if (useBootstrapToggle) {
                 obj[routePath] = obj[routePath] || [];
@@ -60,6 +73,11 @@ const setByRoute = (data, object, assetType) => {
                 obj[routePath].push(object[route].fullPath);
             } else {
                 obj[routePath] = obj[routePath] || [];
+                obj[routePath].push(object[route].fullPath);
+            }
+            if (obj[routePath].docs) {
+                obj[routePath] = obj[routePath] || [];
+                obj[routePath].push(`${context}/bootstrap/index.scss`);
                 obj[routePath].push(object[route].fullPath);
             }
         }
