@@ -26,16 +26,16 @@ const command = (type) => {
         return;
     }
 
-    const dbType = {
-        sql: 'sequelize',
-        mongodb: 'mongoose',
+    const dbTypes = {
+        sql: './node_modules/sequelize-cli/src/sequelize',
+        mongodb: './node_modules/mongoose-model-cli/bin/mongoose-model-cli',
     };
 
     const strs = [...arguments];
     const str = strs.slice(1).join(' ');
 
-    if (dbType[type]) {
-        shell.exec(`${dbType[type]} ${str}`);
+    if (dbTypes[type]) {
+        shell.exec(`${dbTypes[type]} ${str}`);
         console.green('Wrapper for database type used.');
     } else {
         documentation();

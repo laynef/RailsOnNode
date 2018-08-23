@@ -10,7 +10,7 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
         .header.p-3.bg-info
             h1.h-100.align-items-center.text-white=`API ${apiVersion} Documentation`
         .card-body.p-3.w-100
-            each data in routes
+            each data in allRoutes
                 .card.card-outline-secondary.w-100.flex-respond-row
                     .col-xs-12.col-sm-12-col-md-12.col-lg-6.col-xl-6.p-1
                         .card-header
