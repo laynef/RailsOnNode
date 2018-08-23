@@ -1,14 +1,17 @@
 const fs = require('fs');
 const path = require('path');
+const settings = require('../../webpack/settings');
 
 module.exports = {
 
     documentation: ({ allRoutes, apiVersion }) => {
         let javascriptString = '';
-        for (let route in allRoutes) {
-            javascriptString += `function ${route.method.toLowerCase()}${apiVersion.toUpperCase()}${route.route.split('/').map(e => e[0].toUpperCase() + e.slice(1)).join('')}() {
+        for (let i = 0; i < allRoutes.length; i++) {
+            const route = allRoutes[i];
+            const camelCased = `${route.method.toLowerCase()}${apiVersion.toUpperCase()}${route.route.split('/').slice(1).map(e => e[0].toUpperCase() + e.slice(1)).join('')}`;
+            javascriptString += `function ${camelCased}() {
         var allData = ${JSON.stringify(route, null, 4)};
-        var routeName = "${route.method.toLowerCase()}${apiVersion.toUpperCase()}${route.route.split('/').map(e => e[0].toUpperCase() + e.slice(1)).join('')}";
+        var routeName = "${camelCased}";
 
         var xhr = new XMLHttpRequest();
         var formData = new FormData();
@@ -50,7 +53,8 @@ module.exports = {
     };`;
         }
 
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'docs', apiVersion + '.js'), javascriptString);
+        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages', 'docs', apiVersion + '.' + settings.jsType), javascriptString);
+        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.styleType, 'pages', 'docs', apiVersion + '.' + settings.styleType), '');
     }
 
 }

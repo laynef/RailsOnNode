@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 
 each(routeVersions, (versionDetails, apiVersion) => {
     const allRoutes = versionDetails[apiVersion];
-    documentation({ allRoutes });
+    documentation({ allRoutes, apiVersion });
     app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
@@ -91,7 +91,8 @@ app.use('*', (req, res) => {
 });
 
 app.use((error, req, res, next) => {
-    res.status(500).render('errors/500');
+    if (error) res.status(500).render('errors/500');
+    next();
 });
 
 const server = http.createServer(app);
