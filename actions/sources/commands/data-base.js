@@ -31,8 +31,8 @@ const command = (type) => {
         mongodb: 'mongoose',
     };
 
-    const strs = arguments.slice(1);
-    const str = strs.join(' ');
+    const strs = [...arguments];
+    const str = strs.slice(1).join(' ');
 
     if (dbType[type]) {
         shell.exec(`${dbType[type]} ${str}`);
