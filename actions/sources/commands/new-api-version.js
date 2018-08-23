@@ -27,7 +27,7 @@ const documentation = () => {
     console.yellow(`
 Command:
 
-neutron new-api-version <version-number>
+node-rails new-api-version <version-number>
     `);
 };
 

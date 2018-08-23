@@ -24,7 +24,7 @@ const documentation = () => {
     console.yellow(`
 Command:
 
-neurton create <directory-name>
+node-rails create <directory-name>
     `);
 };
 

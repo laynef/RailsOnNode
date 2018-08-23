@@ -36,7 +36,7 @@ Command:
 Route Path: '/route-path'
 => Adding a route path will autogenerate a route with all it's assets
 
-neutron new-page <page-name> <route-path>
+node-rails new-page <page-name> <route-path>
     `);
 };
 

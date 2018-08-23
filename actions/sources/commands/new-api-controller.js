@@ -21,7 +21,7 @@ const documentation = () => {
     console.yellow(`
 Command:
 
-neutron new-api-controller <controller-name>
+node-rails new-api-controller <controller-name>
     `);
 };
 

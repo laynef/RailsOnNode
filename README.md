@@ -1,4 +1,4 @@
-# Neutron Go: Opinionated Node.js Framework
+# node-rails Go: Opinionated Node.js Framework
 
 ## Requirements
 - Node.js >= 8
@@ -27,18 +27,18 @@
 ```
 // brew install redis
 // Must have redis running on default port 6379: redis-server
-npm i -g @lfaler/neutronjs
-neutron create <Your project>
-neutron setup-data-base <Your database type [sql *or* mongodb]>
-neutron new-page blogs --routePath='/blogs'
+npm i -g @lfaler/node-railsjs
+node-rails create <Your project>
+node-rails setup-data-base <Your database type [sql *or* mongodb]>
+node-rails new-page blogs --routePath='/blogs'
 npm start
 ```
 
 ## Documentation
 ```
 // For all commands
-neutron
+node-rails
 
 // For a single command
-neutron <command-name> --help
+node-rails <command-name> --help
 ```

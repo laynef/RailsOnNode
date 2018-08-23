@@ -415,7 +415,7 @@ Commands:
     -> vue
 
 Command:
-neutron settings <command-name> [Options]
+node-rails settings <command-name> [Options]
     `);
 };
 
