@@ -7,13 +7,13 @@ import { Provider } from 'react-redux';
 // Route Path
 
 function createStore(data) {
-
+    
 };
 
 class Application extends Component {
     render() {
         return (
-            <div style={{ textAlign: 'center' }}>Hello World</div>
+            <h1 style={{ textAlign: 'center' }}>Hello World</h1>
         );
     };
 }

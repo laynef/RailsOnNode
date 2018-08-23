@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 
 @Component({
   template: `
-    <div style="text-align: center;">Hello World</div>
+    <h1 style="text-align: center;">Hello World</h1>
   `,
   selector: 'app',
   styleUrl: [
