@@ -59,7 +59,7 @@ module.exports = ({ apiVersion, allRoutes }) => (req, res) => {
         jsDir += jsTypes[dir];
     });
 
-    fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'docs.js'), javascriptString);
+    fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'docs', apiVersion + '.js'), javascriptString);
 
     res.status(200).render('utils/docs', { allRoutes, apiVersion });
 };
