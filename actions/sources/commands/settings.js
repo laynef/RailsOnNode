@@ -39,7 +39,7 @@ const command = (type, options) => {
     };
 
     const jsStrings = {
-        'react': (pathNames) => {
+        react: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
@@ -83,11 +83,12 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
+            shell.mv(dir, newFile);
             shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'react'), path.join(root, 'assets', after, 'redux'))
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
-        'angular': (pathNames) => {
+        angular: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
@@ -135,7 +136,7 @@ const command = (type, options) => {
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}",`));
         },
-        'vue': (pathNames) => {
+        vue: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
@@ -183,7 +184,7 @@ const command = (type, options) => {
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
-        'js': (pathNames) => {
+        js: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
@@ -223,7 +224,7 @@ const command = (type, options) => {
             const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
-            fs.writeFileSync(pugFile, 'h1(style="text-align: center;" Hello World');
+            fs.writeFileSync(pugFile, 'h1(style="text-align: center;") Hello World');
 
             const regexReduxString = reduxRecursive.join('/');
 
@@ -312,24 +313,23 @@ const command = (type, options) => {
 
     const beforeTypes = arrayOfPaths([], path.join(root, 'assets', before, 'pages'));
 
+    shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
+
     beforeTypes.forEach(dir => {
         const fileArray = dir.split('/');
         const filename = fileArray[fileArray.length - 1].split('.')[0] + '.' + after;
         const newFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + filename;
 
         if (TYPING.javascripts[type] === after) {
-            shell.mv(dir, newFile);
             shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
+            shell.mv(dir, newFile);
             jsStrings[type](newFile);
         } else if (TYPING.stylesheets[type] === after) {
             const jsPaths = dir.replace(RegExp(CURR_CSS, 'ig'), CURR_JS);
             const str = fs.readFileSync(jsPaths, { encoding: 'utf8' });
             fs.writeFileSync(jsPaths, str.replace(RegExp(CURR_CSS, 'ig'), after));
-            shell.mv(dir, newFile);
         }
     });
-
-    shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
     // Handle webpack here
     if (TYPING.javascripts[before]) {
