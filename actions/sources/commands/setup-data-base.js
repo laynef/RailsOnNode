@@ -44,7 +44,7 @@ const command = (databaseType, options) => {
     }
 
     const root = process.cwd();
-    const packages = requrie(path.join(root, 'package.json'));
+    const packages = require(path.join(root, 'package.json'));
     packages.dependiences = Object.assign({}, packages.dependiences, packageJson[databaseType]);
     packages.devDependencies = Object.assign({}, packages.devDependencies, packageJsonDev[databaseType]);
     fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify(packages, null, 4));
