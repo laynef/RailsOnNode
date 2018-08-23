@@ -61,5 +61,5 @@ module.exports = ({ apiVersion, allRoutes }) => (req, res) => {
 
     fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'docs.js'), javascriptString);
 
-    res.status(200).render('utils/docs', Object.assign({}, allRoutes));
+    res.status(200).render('utils/docs', { allRoutes, apiVersion });
 };

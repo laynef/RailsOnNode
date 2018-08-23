@@ -10,4 +10,3 @@ const index = fs.readdirSync(path.join(__dirname)).reduce((acculum, item) => {
 }, {});
 
 module.exports = index;
-
