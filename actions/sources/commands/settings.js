@@ -183,6 +183,54 @@ const command = (type, options) => {
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
+        'js': (pathNames) => {
+            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
+            const str = fs.readFileSync(pathn, { encoding: 'utf8' });
+
+            const root = process.cwd();
+            const settings = require(path.join(root, 'webpack', 'settings.js'));
+
+            // replacements
+            const regexStyles = /\/\/ Route Path/ig; // for styles
+            const regexRedux = /\/\/ Redux here/ig; // for redux
+
+            const pathnm = pathNames.split('/');
+            let boolOne = false;
+            const rescurveStr = pathnm.reduce((acc, item) => {
+                if (item === 'assets') {
+                    boolOne = true;
+                }
+                if (boolOne) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []).slice(1);
+            const recursiveStrings = rescurveStr.map(() => {
+                return '..';
+            });
+            const reduxRecursive = recursiveStrings.slice(2).concat(['redux', 'store']);
+            const rescurveNames = rescurveStr.map((e, i, a) => {
+                if (i === a.length - 1) {
+                    const filen = e.split('.');
+                    const filename = filen[0];
+                    return filename;
+                } else if (i === 0) {
+                    return settings.styleType;
+                } else {
+                    return e;
+                }
+            });
+            const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
+
+            const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
+            fs.writeFileSync(pugFile, 'h1(style="text-align: center;" Hello World');
+
+            const regexReduxString = reduxRecursive.join('/');
+
+            shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'redux', before), path.join(root, 'assets', CURR_JS, 'redux'))
+
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
+        }
     };
 
     const jsWebpack = {
@@ -272,7 +320,7 @@ const command = (type, options) => {
         if (TYPING.javascripts[type] === after) {
             shell.mv(dir, newFile);
             shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
-            if (type !== 'js') jsStrings[type](newFile);
+            jsStrings[type](newFile);
         } else if (TYPING.stylesheets[type] === after) {
             const jsPaths = dir.replace(RegExp(CURR_CSS, 'ig'), CURR_JS);
             const str = fs.readFileSync(jsPaths, { encoding: 'utf8' });
