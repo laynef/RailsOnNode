@@ -261,6 +261,36 @@ const command = (type, options) => {
         },
     };
 
+    const packageJsonDependiences = {
+        react: {
+
+        },
+        angular: {
+
+        },
+        vue: {
+
+        },
+        js: {
+
+        },
+    }
+
+    const packageJsonDependiencesDev = {
+        react: {
+
+        },
+        angular: {
+
+        },
+        vue: {
+
+        },
+        js: {
+
+        },   
+    }
+
     const reverseJs = Object.values(TYPING.javascripts).reduce((acc, item) => {
         acc[item] = item;
         return acc;
