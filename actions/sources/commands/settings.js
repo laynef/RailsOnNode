@@ -21,7 +21,7 @@ const command = (type, options) => {
             settings.useBootstrapToggle = false;
         }
         fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
-        return;
+        return null;
     }
 
     const TYPING = {
@@ -83,7 +83,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            shell.mv(dir, newFile);
+            shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
             shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'react'), path.join(root, 'assets', after, 'redux'))
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
@@ -132,6 +132,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
+            shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
             shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'angular'), path.join(root, 'assets', after, 'redux'))
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}",`));
@@ -180,6 +181,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
+            shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
             shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'vue'), path.join(root, 'assets', after, 'redux'))
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
@@ -228,7 +230,8 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'js'), path.join(root, 'assets', after, 'redux'))
+            shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
+            shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'js'), path.join(root, 'assets', after, 'redux'));
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         }
@@ -312,8 +315,6 @@ const command = (type, options) => {
     };
 
     const beforeTypes = arrayOfPaths([], path.join(root, 'assets', before, 'pages'));
-
-    shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
     beforeTypes.forEach(dir => {
         const fileArray = dir.split('/');

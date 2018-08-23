@@ -1,6 +1,6 @@
 const description = '<ENTER YOUR DESCRIPTION>';
 
-const command = (argument1, argumentN, options) => {
+const command = (argument1, options) => {
     console.green('ENTER YOUR COMMAND');
 };
 
