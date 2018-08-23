@@ -26,6 +26,11 @@ const command = (databaseType, options) => {
         },
         sql: {
             "sequelize": "^4.38.0",
+            "pg": "^6.1.0",
+            "pg-hstore": "^2.3.2",
+            "sqlite3": "^3.1.8",
+            "mysql": "^2.16.0",
+            "tedious": "^1.14.0",
         },
     }
 
