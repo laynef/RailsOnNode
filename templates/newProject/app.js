@@ -55,7 +55,7 @@ each(routeVersions, (versionDetails, apiVersion) => {
 
 // Static Pages
 const render = (pageName, customObject = {}) => (req, res) => {
-    res.status(200).render(pageName, globalRenders(pageName, req, res, { ...serverSide('homepage', req) }));
+    res.status(200).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(req))));
 };
 
 if (process.env.NODE_ENV !== 'production') {
@@ -83,7 +83,7 @@ if (process.env.NODE_ENV !== 'production') {
     }));
 }
 
-app.get('/', render('pages/homepage', { hashId: makeHash(40) }));
+app.get('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
 
 app.use('*', (req, res) => {
@@ -91,7 +91,10 @@ app.use('*', (req, res) => {
 });
 
 app.use((error, req, res, next) => {
-    if (error) res.status(500).render('errors/500');
+    if (error) {
+        console.error(error);
+        res.status(500).render('errors/500');
+    }
     next();
 });
 

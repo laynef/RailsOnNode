@@ -3,14 +3,13 @@ const settings = require('../../webpack/settings');
 
 module.exports = {
 
-    serverSide: (pageName, req) => {
-        let assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
-        let route = {};
-        let pathRoute = assets += '/pages' + req.url + '/' + pageName;
-        route[req.url] = require(pathRoute);
+    serverSide: (req) => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'redux', 'store');
+        const store = require(assets);
+        req.session.redux = req.session.redux || store();
+
         return {
-            serversideStorage: req.session.redux,
+            serversideStorage: JSON.stringify(req.session.redux),
         };
     },
 
