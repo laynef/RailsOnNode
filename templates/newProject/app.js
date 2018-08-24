@@ -55,7 +55,7 @@ each(routeVersions, (versionDetails, apiVersion) => {
 
 // Static Pages
 const render = (pageName, customObject = {}) => (req, res) => {
-    res.status(200).render(pageName, globalRenders(pageName, req, res, customObject));
+    res.status(200).render(pageName, globalRenders(pageName, req, res, { ...serverSide('homepage', req) }));
 };
 
 if (process.env.NODE_ENV !== 'production') {
@@ -83,7 +83,7 @@ if (process.env.NODE_ENV !== 'production') {
     }));
 }
 
-app.get('/', render('pages/homepage', { hashId: makeHash(40), ...serverSide('homepage', req) }));
+app.get('/', render('pages/homepage', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
 
 app.use('*', (req, res) => {
