@@ -51,9 +51,23 @@ const command = (type, options) => {
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
             const regexRedux = new RegExp('// Redux here', 'ig'); // for redux
+            const regexRoute = new RegExp('// Route Url', 'ig'); // for redux
 
             const pathnm = pathNames.split('/');
             let boolOne = false;
+            let strPathNames = pathnm.reduce((acc, item) => {
+                if (item === 'pages') {
+                    boolOne = true;
+                }
+                if (boolOne) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []);
+            strPathNames.pop();
+            strPathNames.unshift('');
+
+            const routePath = strPathNames.join('/');
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
                     boolOne = true;
@@ -85,7 +99,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
+            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
         angular: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
@@ -97,9 +111,23 @@ const command = (type, options) => {
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
             const regexRedux = new RegExp('// Redux here', 'ig'); // for redux
+            const regexRoute = new RegExp('// Route Url', 'ig'); // for redux
 
             const pathnm = pathNames.split('/');
             let boolOne = false;
+            let strPathNames = pathnm.reduce((acc, item) => {
+                if (item === 'pages') {
+                    boolOne = true;
+                }
+                if (boolOne) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []);
+            strPathNames.pop();
+            strPathNames.unshift('');
+
+            const routePath = strPathNames.join('/');
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
                     boolOne = true;
@@ -131,7 +159,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}",`));
+            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}",`));
         },
         vue: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
@@ -143,9 +171,22 @@ const command = (type, options) => {
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
             const regexRedux = new RegExp('// Redux here', 'ig'); // for redux
+            const regexRoute = new RegExp('// Route Url', 'ig'); // for redux
 
             const pathnm = pathNames.split('/');
             let boolOne = false;
+            let strPathNames = pathnm.reduce((acc, item) => {
+                if (item === 'pages') {
+                    boolOne = true;
+                }
+                if (boolOne) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []);
+            strPathNames.pop();
+            strPathNames.unshift('');
+
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
                     boolOne = true;
@@ -177,7 +218,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
+            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
         js: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.js');
@@ -259,7 +300,10 @@ const command = (type, options) => {
         react: {
             "react": "^16.4.2",
             "react-dom": "^16.4.2",
+            "react-redux": "^5.0.7",
             "react-router": "^4.3.1",
+            "react-router-config": "^1.0.0-beta.4",
+            "react-router-dom": "^4.3.1"
         },
         angular: {
             "@angular/animations": "^6.1.0",
@@ -277,6 +321,21 @@ const command = (type, options) => {
         },
         vue: {
             "vue": "^2.1.0",
+        },
+        js: {
+
+        },
+    }
+
+    const babelRc = {
+        react: {
+            
+        },
+        angular: {
+
+        },
+        vue: {
+
         },
         js: {
 
@@ -473,7 +532,7 @@ module.exports = {
     }
 
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
-    if (TYPING.javascripts[before]) shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type), path.join(root, 'assets', after, 'redux'));
+    if (TYPING.javascripts[before]) shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type) + '/*', path.join(root, 'assets', after, 'redux'));
 
     if (serverSideRendering[after]) serverSideRendering[after]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);

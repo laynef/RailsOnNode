@@ -4,23 +4,31 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import createStore from '// Redux here';
+import { BrowserRouter } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
 
 // Route Path
 
 class Application extends Component {
-    render() {
+    render () {
         return (
             <h1 style={{ textAlign: 'center' }}>Hello World</h1>
         );
     };
 }
 
+const component = (
+	<BrowserRouter>
+		{renderRoutes([{ '// Route Url': Application }])}
+	</BrowserRouter>
+);
+
 const dest = document.getElementById('app');
 const store = createStore(window.STORAGE);
 
 const application = (
     <Provider store={store}>
-        <Application></Application>
+        {component}
     </Provider>
 );
 
@@ -33,7 +41,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
 
 		const newApplication = (
 			<Provider store={newStore}>
-				<Application></Application>
+				{component}
 			</Provider>
         );
         
@@ -41,4 +49,4 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
 	});
 }
 
-module.exports = application;
+module.exports = Application;
