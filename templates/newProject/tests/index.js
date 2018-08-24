@@ -17,6 +17,6 @@ for (let customTests in customCircle) {
 for (let apiVersion in allRoutes) {
     for (let route in allRoutes[apiVersion]) {
         const data = route;
-        const controller = data.controller;
+        const controller = data.controller();
     }
 }

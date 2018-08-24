@@ -12,15 +12,17 @@ const command = (type, options) => {
 
     const root = process.cwd();
     const pathn = path.join(root, 'webpack', 'settings.js');
-    const settings = require(pathn);
+    let settings = require(pathn);
 
     if (type === 'bootstrap') {
-        if (options.switch == true) {
+        if (Boolean(options.switch)) {
             settings.useBootstrapToggle = true;
         } else {
             settings.useBootstrapToggle = false;
         }
         fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
+
+        console.green(`Toggled bootstrap ${settings.useBootstrapToggle ? 'on' : 'off'}`);
         return null;
     }
 
@@ -385,6 +387,7 @@ const command = (type, options) => {
             const jsPaths = dir.replace(RegExp(CURR_CSS, 'ig'), CURR_JS);
             const str = fs.readFileSync(jsPaths, { encoding: 'utf8' });
             fs.writeFileSync(jsPaths, str.replace(RegExp(CURR_CSS, 'ig'), after));
+            shell.mv(dir, newFile);
         }
     });
 
@@ -395,6 +398,8 @@ const command = (type, options) => {
     } else if (TYPING.stylesheets[before]) {
         settings.styleType = after;
     }
+
+    shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 

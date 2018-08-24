@@ -54,7 +54,10 @@ module.exports = {
         }
 
         fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages', 'docs', apiVersion + '.' + settings.jsType), javascriptString);
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.styleType, 'pages', 'docs', apiVersion + '.' + settings.styleType), '');
+        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.styleType, 'pages', 'docs', apiVersion + '.' + settings.styleType), `.card-shadow {
+    box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+}
+`);
     }
 
 }
