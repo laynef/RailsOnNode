@@ -473,7 +473,7 @@ module.exports = {
     }
 
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
-    shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type), path.join(root, 'assets', after, 'redux'));
+    if (TYPING.javascripts[before]) shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type), path.join(root, 'assets', after, 'redux'));
 
     if (serverSideRendering[after]) serverSideRendering[after]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
