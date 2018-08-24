@@ -3,12 +3,9 @@ import 'babel-polyfill';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import createStore from '// Redux here';
 
 // Route Path
-
-function createStore(data) {
-    
-};
 
 class Application extends Component {
     render() {
@@ -19,11 +16,11 @@ class Application extends Component {
 }
 
 const dest = document.getElementById('app');
-const store = createStore(window.STORE);
+const store = createStore(window.STORAGE);
 
 const application = (
     <Provider store={store}>
-        {Application}
+        <Application></Application>
     </Provider>
 );
 
@@ -32,14 +29,16 @@ ReactDOM.render(application, dest);
 /* eslint-disable */
 if (process.env.NODE_ENV !== 'production' && module.hot) {
 	module.hot.accept([], () => {
-		const newStore = createStore(window.STORE);
+		const newStore = createStore(window.STORAGE);
 
 		const newApplication = (
 			<Provider store={newStore}>
-				{Application}
+				<Application></Application>
 			</Provider>
         );
         
 		ReactDOM.render(newApplication, dest);
 	});
 }
+
+module.exports = application;
