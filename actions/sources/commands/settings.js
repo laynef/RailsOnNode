@@ -482,7 +482,7 @@ module.exports = {
 
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
-    serverSideRendering[after]();
+    if (serverSideRendering[after]) serverSideRendering[after]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
