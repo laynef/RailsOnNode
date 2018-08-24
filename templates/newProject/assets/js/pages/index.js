@@ -1,0 +1,1 @@
+const store = require('../redux/store');

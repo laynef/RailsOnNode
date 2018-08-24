@@ -83,7 +83,7 @@ if (process.env.NODE_ENV !== 'production') {
     }));
 }
 
-app.get('/', render('pages/homepage', { hashId: makeHash(40) }));
+app.get('/', render('pages/homepage', { hashId: makeHash(40), ...serverSide('homepage', req) }));
 // Leave Here For Static Routes
 
 app.use('*', (req, res) => {
