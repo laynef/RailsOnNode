@@ -1,2 +1,2 @@
 // Stored from server in window.STORAGE
-import store from '// Redux here';
+import store from '../redux/store';
