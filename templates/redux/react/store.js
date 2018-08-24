@@ -3,14 +3,12 @@ import thunk from 'redux-thunk';
 import ReduxPromise from 'redux-promise';
 
 
-export default function createStore(data) {
+export default function (data) {
 	// Sync dispatched route actions to the history
 	const middleware = [thunk, ReduxPromise];
 
-    let finalCreateStore = compose(
-		applyMiddleware(...middleware),
-	)(_createStore);
-    
+	let finalCreateStore = compose(applyMiddleware(...middleware))(_createStore);
+
 	const reducer = require('./reducers');
 	const store = finalCreateStore(reducer, data);
 
@@ -22,4 +20,4 @@ export default function createStore(data) {
 	}
 
 	return store;
-}
+};
