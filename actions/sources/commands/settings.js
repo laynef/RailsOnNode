@@ -85,8 +85,6 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'react'), path.join(root, 'assets', after, 'redux'))
-
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
         angular: (pathNames) => {
@@ -132,8 +130,6 @@ const command = (type, options) => {
             fs.writeFileSync(pugFile, '#app!=serverSideRendering');
 
             const regexReduxString = reduxRecursive.join('/');
-
-            shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'angular'), path.join(root, 'assets', after, 'redux'))
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}",`));
         },
@@ -181,8 +177,6 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'vue'), path.join(root, 'assets', after, 'redux'))
-
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
         js: (pathNames) => {
@@ -228,8 +222,6 @@ const command = (type, options) => {
             fs.writeFileSync(pugFile, 'h1(style="text-align: center;") Hello World');
 
             const regexReduxString = reduxRecursive.join('/');
-
-            shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', 'js'), path.join(root, 'assets', after, 'redux'));
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         }
@@ -366,7 +358,7 @@ import { createRenderer } from 'vue-server-render';
             
 module.exports = {
 
-    (pageName, req) => {
+    serverSide: (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         req.session.state = req.session.state || require(path.join(assets, 'redux', 'store'))();
         let pathRoute = assets += '/pages' + req.url + '/' + pageName;
@@ -481,6 +473,7 @@ module.exports = {
     }
 
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
+    shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type), path.join(root, 'assets', after, 'redux'));
 
     if (serverSideRendering[after]) serverSideRendering[after]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
