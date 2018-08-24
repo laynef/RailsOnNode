@@ -29,7 +29,7 @@ module.exports = {
 			</Provider>
         );
         return {
-            serversideString: renderToStaticMarkup(component),
+            serverSideString: renderToStaticMarkup(component),
             serversideStorage: req.session.redux
         };
     },
@@ -47,7 +47,7 @@ module.exports = {
         const vue = require(pathRoute);
         return renderer.renderToString(vue, context).then((html) => ({
             serversideStorage: req.session.state,
-            serversideString: html,
+            serverSideString: html,
         }));
     },
 

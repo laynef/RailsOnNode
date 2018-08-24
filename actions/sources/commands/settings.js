@@ -81,7 +81,7 @@ const command = (type, options) => {
             const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
-            fs.writeFileSync(pugFile, '#app!=serverSideRendering');
+            fs.writeFileSync(pugFile, '#app!=serverSideString');
 
             const regexReduxString = reduxRecursive.join('/');
 
@@ -127,7 +127,7 @@ const command = (type, options) => {
             const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
-            fs.writeFileSync(pugFile, '#app!=serverSideRendering');
+            fs.writeFileSync(pugFile, '#app!=serverSideString');
 
             const regexReduxString = reduxRecursive.join('/');
 
@@ -173,7 +173,7 @@ const command = (type, options) => {
             const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
-            fs.writeFileSync(pugFile, '#app!=serverSideRendering');
+            fs.writeFileSync(pugFile, '#app!=serverSideString');
 
             const regexReduxString = reduxRecursive.join('/');
 
@@ -324,7 +324,7 @@ import { renderRoutes } from 'react-router-config';
 module.exports = {
 
     serverSide: (pageName, req) => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        let assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
         let context = {};
         let userStore = req.session.redux;
