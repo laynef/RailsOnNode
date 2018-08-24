@@ -319,6 +319,87 @@ const command = (type, options) => {
         }
     }
 
+    const serverSideRendering = {
+        react: () => {
+            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import path from 'path';
+import settings from '../../webpack/settings';
+import { renderRoutes } from 'react-router-config';
+
+module.exports = {
+
+    serverSide: (pageName, req) => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
+        let context = {};
+        let userStore = req.session.redux;
+        let route = {};
+        let pathRoute = assets += '/pages' + req.url + '/' + pageName;
+        route[req.url] = require(pathRoute);
+		const component = (
+			<Provider store={userStore}>
+				<StaticRouter location={req.url} context={context}>
+					{renderRoutes([route])}
+				</StaticRouter>
+			</Provider>
+        );
+        return {
+            serversideString: renderToStaticMarkup(component),
+            serversideStorage: req.session.redux
+        };
+    }
+
+};
+            `);
+        },
+        angular: () => {
+            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `
+            
+            `);
+        },
+        vue: () => {
+            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `import Vue from 'vue';
+import { createRenderer } from 'vue-server-render';
+            
+module.exports = {
+
+    (pageName, req) => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        req.session.state = req.session.state || require(path.join(assets, 'redux', 'store'))();
+        let pathRoute = assets += '/pages' + req.url + '/' + pageName;
+        let context = {};
+        const renderer = createRenderer();
+        const vue = require(pathRoute);
+        return renderer.renderToString(vue, context).then((html) => ({
+            serversideStorage: req.session.state,
+            serversideString: html,
+        }));
+    },
+
+};
+            `);
+        },
+        js: () => {
+            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `module.exports = {
+    serverSide: () => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
+        let route = {};
+        let pathRoute = assets += '/pages' + req.url + '/' + pageName;
+        route[req.url] = require(pathRoute);
+        return {
+            serversideStorage: req.session.redux
+        };
+
+    },
+};
+            `);
+        },
+    }
+
     const packageJson = require(path.join(root, 'package.json'));
     packageJson.dependiences = Object.assign({}, packageJsonDependiences[type], packageJson.dependiences);
     packageJson.devDependiences = Object.assign({}, packageJsonDevDependiences[type], packageJson.devDependiences);
@@ -401,6 +482,7 @@ const command = (type, options) => {
 
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
+    serverSideRendering[after]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
