@@ -7,12 +7,12 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
         style.
             .flex-respond-row {display: flex;flex-direction: column;}@media (min-width: 992px) {.flex-respond-row {display: flex;flex-direction: row;}}
     body(style={'width': '100%', 'overflow-x': 'hidden'})
-        .header.p-3.bg-info
+        .header.p-3.bg-info.card-shadow
             h1.h-100.align-items-center.text-white=`API ${apiVersion} Documentation`
         .card-body.p-3.w-100
             each data in allRoutes
-                .card.card-outline-secondary.w-100.flex-respond-row
-                    .col-xs-12.col-sm-12-col-md-12.col-lg-6.col-xl-6.p-1
+                .card.card-outline-secondary.w-100.flex-respond-row.card-shadow
+                    .col-xs-12.col-sm-12-col-md-12.col-lg-6.col-xl-6.p-1.card-shadow
                         .card-header
                             span.mr-1=data.method
                             span=data.route
@@ -23,7 +23,7 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
                                         li=ware
                             h2.h6='Description: '
                             p=data.description
-                    .col-xs-12.col-sm-12-col-md-12.col-lg-6.col-xl-6.p-1
+                    .col-xs-12.col-sm-12-col-md-12.col-lg-6.col-xl-6.p-1.card-shadow
                         .card-header
                             h2.h5='Sample Data'
                         .card-body

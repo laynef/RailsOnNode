@@ -317,8 +317,9 @@ const command = (type, options) => {
         }
     }
 
-    const files = fs.readFileSync(path.join(root, 'package.json'), { encoding: 'utf8' });
-    
+    const packageJson = require(path.join(root, 'package.json'));
+    packageJson.dependiences = Object.assign({}, packageJsonDependiences[type], packageJson.dependiences);
+    packageJson.devDependiences = Object.assign({}, packageJsonDevDependiences[type], packageJson.devDependiences);
 
     const reverseJs = Object.values(TYPING.javascripts).reduce((acc, item) => {
         acc[item] = item;

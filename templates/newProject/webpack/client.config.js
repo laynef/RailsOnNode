@@ -33,11 +33,15 @@ const jsType = settings.jsType;
 const useBootstrapToggle = settings.useBootstrapToggle;
 
 const cssPath = path.join(context, 'assets', styleType, 'pages');
+const docsCssPath = path.join(context, 'assets', styleType, 'pages', 'docs');
 const jsPath = path.join(context, 'assets', jsType, 'pages');
-const docsPath = path.join(context, 'assets', jsType, 'pages', 'docs');
+const docsJsPath = path.join(context, 'assets', jsType, 'pages', 'docs');
 
-const cssPaths = recursiveFind({}, cssPath);
-const jsPaths = Object.assign({}, recursiveFind({}, jsPath), reduce(recursiveFind({}, docsPath), (acc, val, key) => {
+const cssPaths = Object.assign({}, recursiveFind({}, cssPath), reduce(recursiveFind({}, docsCssPath), (acc, val, key) => {
+    acc[key] = { ...val, docs: true };
+    return acc;
+}, {}));
+const jsPaths = Object.assign({}, recursiveFind({}, jsPath), reduce(recursiveFind({}, docsJsPath), (acc, val, key) => {
     acc[key] = { ...val, docs: true };
     return acc;
 }, {}));
@@ -52,32 +56,28 @@ const setByRoute = (data, object, assetType) => {
         if (assetType === 'javascript') {
             obj[routePath] = obj[routePath] || [];
             obj[routePath].push('webpack-hot-middleware/client.js');
+            if (object[route].docs && !useBootstrapToggle) {
+                for (let setting in settings.bootstrap.scripts) {
+                    obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
+                }
+            }
             if (useBootstrapToggle) {
                 for (let setting in settings.bootstrap.scripts) {
                     obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
                 }
                 obj[routePath].push(object[route].fullPath);
             } else {
-                obj[routePath].push(object[route].fullPath);
-            }
-            if (obj[routePath].docs) {
-                for (let setting in settings.bootstrap.scripts) {
-                    obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
-                }
                 obj[routePath].push(object[route].fullPath);
             }
         } else if (assetType === 'stylesheet') {
+            obj[routePath] = obj[routePath] || [];
+            if (object[route].docs && !useBootstrapToggle) {
+                obj[routePath].push(`${context}/bootstrap/index.scss`);
+            }
             if (useBootstrapToggle) {
-                obj[routePath] = obj[routePath] || [];
                 obj[routePath].push(`${context}/bootstrap/index.scss`);
                 obj[routePath].push(object[route].fullPath);
             } else {
-                obj[routePath] = obj[routePath] || [];
-                obj[routePath].push(object[route].fullPath);
-            }
-            if (obj[routePath].docs) {
-                obj[routePath] = obj[routePath] || [];
-                obj[routePath].push(`${context}/bootstrap/index.scss`);
                 obj[routePath].push(object[route].fullPath);
             }
         }
