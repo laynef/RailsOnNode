@@ -29,7 +29,7 @@ const command = (type, options) => {
     let settings = require(pathn);
 
     if (type === 'bootstrap') {
-        if (Boolean(options.switch)) {
+        if (options.switch) {
             settings.useBootstrapToggle = true;
         } else {
             settings.useBootstrapToggle = false;
@@ -320,7 +320,7 @@ const command = (type, options) => {
             const regexReduxString = reduxRecursive.join('/');
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
-        }
+        },
     };
 
     const jsWebpack = {
@@ -353,38 +353,38 @@ const command = (type, options) => {
 
     const packageJsonDependiences = {
         react: {
-            "react": "^16.4.2",
-            "react-dom": "^16.4.2",
-            "react-redux": "^5.0.7",
-            "react-router": "^4.3.1",
-            "react-router-config": "^1.0.0-beta.4",
-            "react-router-dom": "^4.3.1"
+            'react': '^16.4.2',
+            'react-dom': '^16.4.2',
+            'react-redux': '^5.0.7',
+            'react-router': '^4.3.1',
+            'react-router-config': '^1.0.0-beta.4',
+            'react-router-dom': '^4.3.1',
         },
         angular: {
-            "@angular/animations": "^6.1.0",
-            "@angular/common": "^6.1.0",
-            "@angular/compiler": "^6.1.0",
-            "@angular/core": "^6.1.0",
-            "@angular/forms": "^6.1.0",
-            "@angular/http": "^6.1.0",
-            "@angular/platform-browser": "^6.1.0",
-            "@angular/platform-browser-dynamic": "^6.1.0",
-            "@angular/router": "^6.1.0",
-            "core-js": "^2.5.4",
-            "rxjs": "^6.0.0",
-            "zone.js": "~0.8.26"
+            '@angular/animations': '^6.1.0',
+            '@angular/common': '^6.1.0',
+            '@angular/compiler': '^6.1.0',
+            '@angular/core': '^6.1.0',
+            '@angular/forms': '^6.1.0',
+            '@angular/http': '^6.1.0',
+            '@angular/platform-browser': '^6.1.0',
+            '@angular/platform-browser-dynamic': '^6.1.0',
+            '@angular/router': '^6.1.0',
+            'core-js': '^2.5.4',
+            'rxjs': '^6.0.0',
+            'zone.js': '~0.8.26',
         },
         vue: {
-            "vue": "^2.1.0",
+            'vue': '^2.1.0',
         },
         js: {
 
         },
-    }
+    };
 
     const babelRc = {
         react: {
-            
+
         },
         angular: {
 
@@ -395,35 +395,35 @@ const command = (type, options) => {
         js: {
 
         },
-    }
+    };
 
     const packageJsonDevDependiences = {
         react: {
 
         },
         angular: {
-            "@angular-devkit/build-angular": "~0.7.0",
-            "@angular/cli": "~6.1.3",
-            "@angular/compiler-cli": "^6.1.0",
-            "@angular/language-service": "^6.1.0",
-            "@types/jasmine": "~2.8.6",
-            "@types/jasminewd2": "~2.0.3",
-            "@types/node": "~8.9.4",
-            "codelyzer": "~4.2.1",
-            "protractor": "~5.3.0",
-            "ts-node": "~5.0.1",
-            "tslint": "~5.9.1",
-            "typescript": "~2.7.2"
+            '@angular-devkit/build-angular': '~0.7.0',
+            '@angular/cli': '~6.1.3',
+            '@angular/compiler-cli': '^6.1.0',
+            '@angular/language-service': '^6.1.0',
+            '@types/jasmine': '~2.8.6',
+            '@types/jasminewd2': '~2.0.3',
+            '@types/node': '~8.9.4',
+            'codelyzer': '~4.2.1',
+            'protractor': '~5.3.0',
+            'ts-node': '~5.0.1',
+            'tslint': '~5.9.1',
+            'typescript': '~2.7.2',
         },
         vue: {
-            "vue-loader": "^10.0.0",
-            "vue-style-loader": "^1.0.0",
-            "vue-template-compiler": "^2.1.0",
+            'vue-loader': '^10.0.0',
+            'vue-style-loader': '^1.0.0',
+            'vue-template-compiler': '^2.1.0',
         },
         js: {
 
-        }
-    }
+        },
+    };
 
     const serverSideRendering = {
         react: () => {
@@ -489,22 +489,25 @@ module.exports = {
             `);
         },
         js: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `module.exports = {
-    serverSide: () => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
-        let route = {};
-        let pathRoute = assets += '/pages' + req.url + '/' + pageName;
-        route[req.url] = require(pathRoute);
-        return {
-            serversideStorage: req.session.redux
-        };
+            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
+const settings = require('../../webpack/settings');
 
+module.exports = {
+
+    serverSide: (req) => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'redux', 'store');
+        const store = require(assets);
+        req.session.redux = req.session.redux || store();
+
+        return {
+            serversideStorage: JSON.stringify(req.session.redux),
+        };
     },
+
 };
             `);
         },
-    }
+    };
 
     const packageJson = require(path.join(root, 'package.json'));
     packageJson.dependiences = Object.assign({}, packageJsonDependiences[type], packageJson.dependiences);

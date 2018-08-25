@@ -23,38 +23,38 @@ const command = (databaseType, options) => {
 
     const packageJson = {
         mongodb: {
-            "mongoose": "^5.2.9",
+            'mongoose': '^5.2.9',
         },
         sql: {
-            "sequelize": "^4.38.0",
-            "pg": "^6.1.0",
-            "pg-hstore": "^2.3.2",
-            "sqlite3": "^3.1.8",
-            "mysql": "^2.16.0",
-            "tedious": "^1.14.0",
+            'sequelize': '^4.38.0',
+            'pg': '^6.1.0',
+            'pg-hstore': '^2.3.2',
+            'sqlite3': '^3.1.8',
+            'mysql': '^2.16.0',
+            'tedious': '^1.14.0',
         },
-    }
+    };
 
     const packageJsonDev = {
         mongodb: {
-            "mongoose-model-cli": "^1.4.0",
+            'mongoose-model-cli': '^1.4.0',
         },
         sql: {
-            "sequelize-cli": "^4.0.0",
-        }
-    }
+            'sequelize-cli': '^4.0.0',
+        },
+    };
 
     const root = process.cwd();
     const packages = require(path.join(root, 'package.json'));
     packages.dependencies = Object.assign({}, packages.dependencies, packageJson[databaseType]);
     packages.devDependencies = Object.assign({}, packages.devDependencies, packageJsonDev[databaseType]);
     fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify(packages, null, 4));
-    
+
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
     shell.cp('-R', path.join(templatePath, database[databaseType]), path.join(root, 'temp'));
     shell.mv(`${path.join(root, 'temp')}/*`, '.');
     shell.rm('-rf', path.join(root, 'temp'));
-    shell.exec('npm install')
+    shell.exec('npm install');
 
     console.green('Your database has been setup');
 };
