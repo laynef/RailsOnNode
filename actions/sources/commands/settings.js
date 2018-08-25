@@ -96,11 +96,11 @@ const command = (type, options) => {
             const pathnm = pathNames.split('/');
             let boolZero = false;
             let strPathNames = pathnm.reduce((acc, item) => {
-                if (item === 'pages') {
-                    boolZero = true;
-                }
                 if (boolZero) {
                     acc.push(item);
+                }
+                if (item === 'pages') {
+                    boolZero = true;
                 }
                 return acc;
             }, []);
@@ -157,11 +157,11 @@ const command = (type, options) => {
             const pathnm = pathNames.split('/');
             let boolZero = false;
             let strPathNames = pathnm.reduce((acc, item) => {
-                if (item === 'pages') {
-                    boolZero = true;
-                }
                 if (boolZero) {
                     acc.push(item);
+                }
+                if (item === 'pages') {
+                    boolZero = true;
                 }
                 return acc;
             }, []);
@@ -213,16 +213,15 @@ const command = (type, options) => {
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
             const regexRedux = /\/\/ Redux here/ig; // for redux
-            const regexRoute = /\/\/ Route Url/ig; // for routes
 
             const pathnm = pathNames.split('/');
             let boolZero = false;
             let strPathNames = pathnm.reduce((acc, item) => {
-                if (item === 'pages') {
-                    boolZero = true;
-                }
                 if (boolZero) {
                     acc.push(item);
+                }
+                if (item === 'pages') {
+                    boolZero = true;
                 }
                 return acc;
             }, []);
@@ -261,7 +260,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
         },
         js: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.js');
@@ -277,11 +276,11 @@ const command = (type, options) => {
             const pathnm = pathNames.split('/');
             let boolZero = false;
             let strPathNames = pathnm.reduce((acc, item) => {
-                if (item === 'pages') {
-                    boolZero = true;
-                }
                 if (boolZero) {
                     acc.push(item);
+                }
+                if (item === 'pages') {
+                    boolZero = true;
                 }
                 return acc;
             }, []);
