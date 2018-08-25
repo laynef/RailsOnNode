@@ -75,7 +75,7 @@ const command = (type, options) => {
     const after = trail[1];
 
     // Final catch for same types
-    if ((TYPING.stylesheets[type] && CURR_CSS === before) || (TYPING.javascripts[type] && CURR_JS === before)) {
+    if ((TYPING.stylesheets[type] && CURR_CSS === after) || (TYPING.javascripts[type] && CURR_JS === after)) {
         console.red(`Your settings are already set to ${type}`);
         return null;
     }
