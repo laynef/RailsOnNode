@@ -3,8 +3,9 @@ html(lang="en")
     head
         include ../utils/meta.pug
         title 404: Page Not Found
-        link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/homepage.css?id=${hashId}`)
+        link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/errors/404.css?id=${hashId}`)
     body
         h1(style='text-align: center;') 404 Error
         h2(style='text-align: center;') Page Not Found
         include ../utils/noscript.pug
+        script(src=`/assets/dist/pages/errors/404.js?id=${hashId}`, async)
