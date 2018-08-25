@@ -104,7 +104,7 @@ const command = (type, options) => {
                 }
                 return acc;
             }, []);
-            strPathNames.pop();
+
             strPathNames.unshift('');
 
             let boolOne = false;
@@ -165,7 +165,7 @@ const command = (type, options) => {
                 }
                 return acc;
             }, []);
-            strPathNames.pop();
+
             strPathNames.unshift('');
 
             let boolOne = false;
@@ -225,7 +225,7 @@ const command = (type, options) => {
                 }
                 return acc;
             }, []);
-            strPathNames.pop();
+
             strPathNames.unshift('');
 
             let boolOne = false;
@@ -284,7 +284,7 @@ const command = (type, options) => {
                 }
                 return acc;
             }, []);
-            strPathNames.pop();
+
             strPathNames.unshift('');
 
             let boolOne = false;
