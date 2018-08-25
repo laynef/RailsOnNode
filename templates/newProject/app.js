@@ -87,13 +87,13 @@ app.get('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
 
 app.use('*', (req, res) => {
-    res.status(404).render('errors/404');
+    res.status(404).render('errors/404', { hashId: makeHash(40) });
 });
 
 app.use((error, req, res, next) => {
     if (error) {
         console.error(error);
-        res.status(500).render('errors/500');
+        res.status(500).render('errors/500', { hashId: makeHash(40) });
     }
     next();
 });

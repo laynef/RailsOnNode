@@ -556,9 +556,12 @@ module.exports = {
     }
 
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
-    if (TYPING.javascripts[before]) shell.rm('-rf', path.join(root, 'assets', after, 'redux'));
-    if (TYPING.javascripts[before]) shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type) + '/*', path.join(root, 'assets', after, 'redux'));
-
+    if (TYPING.javascripts[before]) {
+        shell.rm('-rf', path.join(root, 'assets', after, 'redux'));
+        shell.mkdir(path.join(root, 'assets', after, 'redux'));
+        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type) + '/*', path.join(root, 'assets', after, 'redux') + '/');
+    }
+    
     if (serverSideRendering[after]) serverSideRendering[after]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 
