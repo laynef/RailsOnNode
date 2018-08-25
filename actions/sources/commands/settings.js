@@ -10,6 +10,20 @@ const command = (type, options) => {
         return;
     }
 
+    const TYPING = {
+        'javascripts': {
+            'react': 'jsx',
+            'angular': 'ts',
+            'vue': 'vue',
+            'js': 'js',
+        },
+        'stylesheets': {
+            'less': 'less',
+            'sass': 'scss',
+            'css': 'css',
+        },
+    };
+
     const root = process.cwd();
     const pathn = path.join(root, 'webpack', 'settings.js');
     let settings = require(pathn);
@@ -26,19 +40,42 @@ const command = (type, options) => {
         return null;
     }
 
-    const TYPING = {
-        'javascripts': {
-            'react': 'jsx',
-            'angular': 'ts',
-            'vue': 'vue',
-            'js': 'js',
-        },
-        'stylesheets': {
-            'less': 'less',
-            'sass': 'scss',
-            'css': 'css',
-        },
-    };
+    let CURR_JS = '';
+    let CURR_CSS = '';
+
+    const reverseJs = Object.values(TYPING.javascripts).reduce((acc, item) => {
+        acc[item] = item;
+        return acc;
+    }, {});
+
+    const reverseCss = Object.values(TYPING.stylesheets).reduce((acc, item) => {
+        acc[item] = item;
+        return acc;
+    }, {});
+
+    const trail = fs.readdirSync(path.join(root, 'assets')).reduce((acc, item) => {
+        if (reverseCss[item] && TYPING.stylesheets[type]) {
+            acc.push(item);
+            acc.push(TYPING.stylesheets[type]);
+        }
+        if (reverseCss[item]) {
+            CURR_CSS = item;
+        }
+        if (reverseJs[item]) {
+            CURR_JS = item;
+        }
+        if (reverseJs[item] && TYPING.javascripts[type]) {
+            acc.push(item);
+            acc.push(TYPING.javascripts[type]);
+        }
+        return acc;
+    }, []);
+
+    // Final catch for same types
+    if (CURR_CSS === type || CURR_JS === type) {
+        console.red(`Your settings are already set to ${type}`);
+        return null;
+    }
 
     const jsStrings = {
         react: (pathNames) => {
@@ -454,43 +491,6 @@ module.exports = {
     const packageJson = require(path.join(root, 'package.json'));
     packageJson.dependiences = Object.assign({}, packageJsonDependiences[type], packageJson.dependiences);
     packageJson.devDependiences = Object.assign({}, packageJsonDevDependiences[type], packageJson.devDependiences);
-
-    const reverseJs = Object.values(TYPING.javascripts).reduce((acc, item) => {
-        acc[item] = item;
-        return acc;
-    }, {});
-
-    const reverseCss = Object.values(TYPING.stylesheets).reduce((acc, item) => {
-        acc[item] = item;
-        return acc;
-    }, {});
-
-    let CURR_JS = '';
-    let CURR_CSS = '';
-
-    const trail = fs.readdirSync(path.join(root, 'assets')).reduce((acc, item) => {
-        if (reverseCss[item] && TYPING.stylesheets[type]) {
-            acc.push(item);
-            acc.push(TYPING.stylesheets[type]);
-        }
-        if (reverseCss[item]) {
-            CURR_CSS = item;
-        }
-        if (reverseJs[item]) {
-            CURR_JS = item;
-        }
-        if (reverseJs[item] && TYPING.javascripts[type]) {
-            acc.push(item);
-            acc.push(TYPING.javascripts[type]);
-        }
-        return acc;
-    }, []);
-
-    // Final catch for same types
-    if (CURR_CSS === type || CURR_JS === type) {
-        console.red(`Your settings are already set to ${type}`);
-        return null;
-    }
 
     const before = trail[0];
     const after = trail[1];
