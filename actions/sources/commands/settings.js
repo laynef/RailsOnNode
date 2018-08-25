@@ -140,7 +140,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
+            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
         },
         angular: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
@@ -201,7 +201,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `"${regexStylesString}",`));
+            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `'${regexStylesString}',`));
         },
         vue: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
@@ -260,7 +260,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
         },
         js: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.js');
@@ -319,7 +319,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import "${regexStylesString}";`));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
         }
     };
 
