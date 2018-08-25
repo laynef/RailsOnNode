@@ -90,16 +90,16 @@ const command = (type, options) => {
 
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
-            const regexRedux = new RegExp('// Redux here', 'ig'); // for redux
-            const regexRoute = new RegExp('// Route Url', 'ig'); // for redux
+            const regexRedux = /\/\/ Redux here/ig; // for redux
+            const regexRoute = /\/\/ Route Url/ig; // for routes
 
             const pathnm = pathNames.split('/');
-            let boolOne = false;
+            let boolZero = false;
             let strPathNames = pathnm.reduce((acc, item) => {
                 if (item === 'pages') {
-                    boolOne = true;
+                    boolZero = true;
                 }
-                if (boolOne) {
+                if (boolZero) {
                     acc.push(item);
                 }
                 return acc;
@@ -107,6 +107,7 @@ const command = (type, options) => {
             strPathNames.pop();
             strPathNames.unshift('');
 
+            let boolOne = false;
             const routePath = strPathNames.join('/');
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
@@ -150,16 +151,16 @@ const command = (type, options) => {
 
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
-            const regexRedux = new RegExp('// Redux here', 'ig'); // for redux
-            const regexRoute = new RegExp('// Route Url', 'ig'); // for redux
+            const regexRedux = /\/\/ Redux here/ig; // for redux
+            const regexRoute = /\/\/ Route Url/ig; // for routes
 
             const pathnm = pathNames.split('/');
-            let boolOne = false;
+            let boolZero = false;
             let strPathNames = pathnm.reduce((acc, item) => {
                 if (item === 'pages') {
-                    boolOne = true;
+                    boolZero = true;
                 }
-                if (boolOne) {
+                if (boolZero) {
                     acc.push(item);
                 }
                 return acc;
@@ -167,6 +168,7 @@ const command = (type, options) => {
             strPathNames.pop();
             strPathNames.unshift('');
 
+            let boolOne = false;
             const routePath = strPathNames.join('/');
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
@@ -210,16 +212,16 @@ const command = (type, options) => {
 
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
-            const regexRedux = new RegExp('// Redux here', 'ig'); // for redux
-            const regexRoute = new RegExp('// Route Url', 'ig'); // for redux
+            const regexRedux = /\/\/ Redux here/ig; // for redux
+            const regexRoute = /\/\/ Route Url/ig; // for routes
 
             const pathnm = pathNames.split('/');
-            let boolOne = false;
+            let boolZero = false;
             let strPathNames = pathnm.reduce((acc, item) => {
                 if (item === 'pages') {
-                    boolOne = true;
+                    boolZero = true;
                 }
-                if (boolOne) {
+                if (boolZero) {
                     acc.push(item);
                 }
                 return acc;
@@ -227,6 +229,7 @@ const command = (type, options) => {
             strPathNames.pop();
             strPathNames.unshift('');
 
+            let boolOne = false;
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
                     boolOne = true;
@@ -272,6 +275,19 @@ const command = (type, options) => {
             const regexRedux = /\/\/ Redux here/ig; // for redux
 
             const pathnm = pathNames.split('/');
+            let boolZero = false;
+            let strPathNames = pathnm.reduce((acc, item) => {
+                if (item === 'pages') {
+                    boolZero = true;
+                }
+                if (boolZero) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []);
+            strPathNames.pop();
+            strPathNames.unshift('');
+
             let boolOne = false;
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
