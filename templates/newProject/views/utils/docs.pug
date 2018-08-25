@@ -3,7 +3,7 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
     head
         title=`API ${apiVersion} Documentation`
         link(type='image/png', rel='shortcut icon', href=`/favicon`)
-        link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/docs/${apiVersion}.css?id=${hashId}`)
+        link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/docs/${apiVersion}/${apiVersion}.css?id=${hashId}`)
         style.
             .flex-respond-row {display: flex;flex-direction: column;}@media (min-width: 992px) {.flex-respond-row {display: flex;flex-direction: row;}}
     body(style={'width': '100%', 'overflow-x': 'hidden'})
@@ -29,4 +29,4 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
                         .card-body
                             code(style={'white-space': 'pre', 'overflow': 'auto', 'display': 'block'})
                                 span=data.data
-        script(src=`/assets/dist/pages/docs/${apiVersion}.js?id=${hashId}`, async)
+        script(src=`/assets/dist/pages/docs/${apiVersion}/${apiVersion}.js?id=${hashId}`, async)
