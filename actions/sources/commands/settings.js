@@ -10,6 +10,8 @@ const command = (type, options) => {
         return;
     }
 
+    const TYPES = type;
+
     const TYPING = {
         'javascripts': {
             'react': 'jsx',
@@ -445,12 +447,12 @@ module.exports = {
         let route = {};
         let pathRoute = assets += '/pages' + req.url + '/' + pageName;
         route[req.url] = require(pathRoute);
-		const component = (
-			<Provider store={userStore}>
-				<StaticRouter location={req.url} context={context}>
-					{renderRoutes([route])}
-				</StaticRouter>
-			</Provider>
+        const component = (
+            <Provider store={userStore}>
+                <StaticRouter location={req.url} context={context}>
+                    {renderRoutes([route])}
+                </StaticRouter>
+            </Provider>
         );
         return {
             serversideString: renderToStaticMarkup(component),
@@ -557,11 +559,10 @@ module.exports = {
 
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
     if (TYPING.javascripts[before]) {
-        shell.rm('-rf', path.join(root, 'assets', after, 'redux'));
-        shell.mkdir(path.join(root, 'assets', after, 'redux'));
-        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type) + '/*', path.join(root, 'assets', after, 'redux') + '/');
+        shell.rm('-rf', path.join(root, 'assets', after, 'redux') + '/');
+        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', TYPES) + '/', path.join(root, 'assets', after, 'redux'));
     }
-    
+
     if (serverSideRendering[after]) serverSideRendering[after]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 
