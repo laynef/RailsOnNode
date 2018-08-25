@@ -486,6 +486,12 @@ module.exports = {
         return acc;
     }, []);
 
+    // Final catch for same types
+    if (CURR_CSS === type || CURR_JS === type) {
+        console.red(`Your settings are already set to ${type}`);
+        return null;
+    }
+
     const before = trail[0];
     const after = trail[1];
 
