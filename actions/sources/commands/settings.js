@@ -71,8 +71,11 @@ const command = (type, options) => {
         return acc;
     }, []);
 
+    const before = trail[0];
+    const after = trail[1];
+
     // Final catch for same types
-    if (CURR_CSS === type || CURR_JS === type) {
+    if (before === type || before === type) {
         console.red(`Your settings are already set to ${type}`);
         return null;
     }
@@ -491,9 +494,6 @@ module.exports = {
     const packageJson = require(path.join(root, 'package.json'));
     packageJson.dependiences = Object.assign({}, packageJsonDependiences[type], packageJson.dependiences);
     packageJson.devDependiences = Object.assign({}, packageJsonDevDependiences[type], packageJson.devDependiences);
-
-    const before = trail[0];
-    const after = trail[1];
 
     // styles change file path types
     // javascript change full root files
