@@ -3,9 +3,9 @@ html(lang="en")
     head
         include ../utils/meta.pug
         title 500: Internal Server Error
-        link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/errors/500.css?id=${hashId}`)
+        link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/errors/500/500.css?id=${hashId}`)
     body
         h1(style='text-align: center;') 500 Error
         h2(style='text-align: center;') Internal Server Error
         include ../utils/noscript.pug
-        script(src=`/assets/dist/pages/errors/500.js?id=${hashId}`, async)
+        script(src=`/assets/dist/pages/errors/500/500.js?id=${hashId}`, async)
