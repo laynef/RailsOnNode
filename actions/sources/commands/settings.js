@@ -559,8 +559,8 @@ module.exports = {
 
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
     if (TYPING.javascripts[before]) {
-        shell.rm('-rf', path.join(root, 'assets', after, 'redux') + '/');
-        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', TYPES) + '/', path.join(root, 'assets', after, 'redux'));
+        shell.rm('-rf', path.join(root, 'assets', after, 'redux'));
+        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', TYPES), path.join(root, 'assets', after, 'redux'));
     }
 
     if (serverSideRendering[after]) serverSideRendering[after]();
