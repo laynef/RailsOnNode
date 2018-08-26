@@ -3,7 +3,6 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
     head
         title=`API ${apiVersion} Documentation`
         include ./meta.pug
-        link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/docs/${apiVersion}/${apiVersion}.css?id=${hashId}`)
         style.
             .flex-respond-row {display: flex;flex-direction: column;}@media (min-width: 992px) {.flex-respond-row {display: flex;flex-direction: row;}}
     body(style={'width': '100%', 'overflow-x': 'hidden'})
