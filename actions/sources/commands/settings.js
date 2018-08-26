@@ -26,6 +26,11 @@ const command = (type, options) => {
         },
     };
 
+    if (TYPING.javascripts[type]) {
+        console.red(`Not supported yet.`);
+        return;
+    }
+
     const root = process.cwd();
     const pathn = path.join(root, 'webpack', 'settings.js');
     let settings = require(pathn);

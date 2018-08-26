@@ -3,9 +3,14 @@ const path = require('path');
 const packager = require('../../../package.json');
 const { kebabCase } = require('lodash');
 
+const tempRemoval = {
+    'new-redux-reducer': 'new-redux-reducer',
+    'text-editor-config': 'text-editor-config',
+};
+
 const keyMapOfCommands = fs.readdirSync(path.join(__dirname)).map(e => e.replace(RegExp('.js', 'ig'), '')).filter(e => e !== 'documentation').reduce((accumulation, file) => {
-    const shortcut = file.split('-').map(e => e[0]).join('').toLowerCase();
-    if (file !== 'not-removal' && file !== 'returns') {
+    if (file !== 'not-removal' && file !== 'returns' && !tempRemoval[file]) {
+        const shortcut = file.split('-').map(e => e[0]).join('').toLowerCase();
         accumulation[file] = require(path.join(__dirname, file));
         accumulation[shortcut] = require(path.join(__dirname, file));
     }
