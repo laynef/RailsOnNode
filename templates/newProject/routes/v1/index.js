@@ -12,10 +12,7 @@ const apiVersion = versionArray[versionArray.length - 1];
 const setRoutes = (array, method) => {
     array.forEach(e => {
         let middleware = Array.isArray(e.middleware) && e.middleware.length > 0 ? e.middleware.map(e => Object.values(e)[0]) : [(req, res, next) => { next(); }];
-        Promise.all([e.controller])
-            .then((controller) => {
-                router[method](e.route, ...middleware, (req, res) => controller[0](req, res));
-            });
+        router[method](e.route, ...middleware, e.controller);
     });
 };
 
