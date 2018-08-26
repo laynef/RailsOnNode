@@ -3,7 +3,7 @@ const path = require('path');
 
 const tempRemoval = {
     'new-redux-reducer': 'new-redux-reducer',
-    'text-editor-config': 'text-editor-config',
+    'text-editor-configs': 'text-editor-configs',
 };
 
 const index = fs.readdirSync(path.join(__dirname, 'commands')).map(e => e.replace(RegExp('.js', 'ig'), '')).reduce((accumulation, file) => {

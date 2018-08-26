@@ -5,7 +5,7 @@ const { kebabCase } = require('lodash');
 
 const tempRemoval = {
     'new-redux-reducer': 'new-redux-reducer',
-    'text-editor-config': 'text-editor-config',
+    'text-editor-configs': 'text-editor-configs',
 };
 
 const keyMapOfCommands = fs.readdirSync(path.join(__dirname)).map(e => e.replace(RegExp('.js', 'ig'), '')).filter(e => e !== 'documentation').reduce((accumulation, file) => {
