@@ -32,17 +32,17 @@ const styleType = settings.styleType;
 const jsType = settings.jsType;
 const useBootstrapToggle = settings.useBootstrapToggle;
 
-const cssPath = path.join(context, 'assets', styleType, 'pages');
-const docsCssPath = path.join(context, 'assets', styleType, 'pages', 'docs');
-const jsPath = path.join(context, 'assets', jsType, 'pages');
-const docsJsPath = path.join(context, 'assets', jsType, 'pages', 'docs');
+const apiVersions = require('../controllers');
 
-const cssPaths = Object.assign({}, recursiveFind({}, cssPath), reduce(recursiveFind({}, docsCssPath), (acc, val, key) => {
-    acc[key] = { ...val, docs: true };
+const cssPath = path.join(context, 'assets', styleType, 'pages');
+const jsPath = path.join(context, 'assets', jsType, 'pages');
+
+const cssPaths = Object.assign({}, reduce(recursiveFind({}, cssPath), (acc, val, key) => {
+    acc[key] = { ...val, docs: !!apiVersions[val.pageName] };
     return acc;
 }, {}));
-const jsPaths = Object.assign({}, recursiveFind({}, jsPath), reduce(recursiveFind({}, docsJsPath), (acc, val, key) => {
-    acc[key] = { ...val, docs: true };
+const jsPaths = Object.assign({}, reduce(recursiveFind({}, jsPath), (acc, val, key) => {
+    acc[key] = { ...val, docs: !!apiVersions[val.pageName] };
     return acc;
 }, {}));
 
@@ -139,15 +139,15 @@ module.exports = {
             jsLoader,
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+                use: [noProduction ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [noProduction ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
                 test: /\.less$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
+                use: [noProduction ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
             },
             {
                 test: /\.json$/,
