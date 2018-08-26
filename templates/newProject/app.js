@@ -69,9 +69,9 @@ if (process.env.NODE_ENV !== 'production') {
         serverSideRender: true,
         quiet: true,
         lazy: false,
-        contentBase: path.join(__dirname, '..', 'assets', 'dist'),
+        contentBase: path.join(__dirname, '..', 'assets', 'dist', 'pages'),
         stats: {
-            context: path.join(__dirname, '..', 'assets', 'dist'),
+            context: path.join(__dirname, '..', 'assets', 'dist', 'pages'),
             assets: true,
             cachedAssets: true,
         },
