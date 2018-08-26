@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const compression = require('compression');
 const favicon = require('serve-favicon');
 const csrf = require('csurf');
+const parser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
@@ -25,7 +26,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/assets', Express.static(path.join(__dirname, 'assets')));
 app.use(helmet());
 app.use(morgan('dev'));
-app.use(compression());
+app.use(compression({ level: 7 }));
+app.use(parser.urlencoded({ extended: false }));
+app.use(parser.json());
+app.use(parser.raw());
 app.use(favicon(path.join(__dirname, 'assets', 'img', 'nodejs.png')));
 app.use(session({
     secret: fs.readFileSync(path.join(__dirname, 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
@@ -34,22 +38,20 @@ app.use(session({
     resave: false,
     name: 'Example',
     cookie: {
-        secure: true,
-        httpOnly: true,
         token: null,
     },
 }));
 app.use(protection);
 app.use((req, res, next) => {
     req.session.cookie.token = req.csrfToken();
-    res.locals.csrftoken = req.csrfToken();
+    res.locals.csrfToken = req.csrfToken();
     next();
 });
 
 each(routeVersions, (versionDetails, apiVersion) => {
     const allRoutes = versionDetails[apiVersion];
-    documentation({ allRoutes, apiVersion });
-    app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
+    if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
+    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
