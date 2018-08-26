@@ -5,9 +5,6 @@ html(lang="en")
         title Node On Rails
         if process.env.NODE_ENV === 'production'
             link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/CLIPAGE.css?id=${hashId}`)
-        else 
-            each file in cssFiles
-                link(src=`/assets/dist/pages${file}?id=${hashId}`, async)
     body
         include ./utils/new-page.pug
         include ./utils/scripts.pug
