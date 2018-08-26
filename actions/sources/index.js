@@ -4,7 +4,7 @@ const path = require('path');
 const tempRemoval = {
     'settings': 'settings',
     'new-redux-reducer': 'new-redux-reducer',
-    'setup-data-base': 'setup-data-base',
+    'text-editor-config': 'text-editor-config',
 };
 
 const index = fs.readdirSync(path.join(__dirname, 'commands')).map(e => e.replace(RegExp('.js', 'ig'), '')).reduce((accumulation, file) => {
