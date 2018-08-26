@@ -28,11 +28,11 @@ const recursiveFind = (data, pathnm) => {
     return data;
 };
 
+const apiVersions = require(path.join(context, 'controllers'));
+
 const styleType = settings.styleType;
 const jsType = settings.jsType;
 const useBootstrapToggle = settings.useBootstrapToggle;
-
-const apiVersions = require('../controllers');
 
 const cssPath = path.join(context, 'assets', styleType, 'pages');
 const jsPath = path.join(context, 'assets', jsType, 'pages');
