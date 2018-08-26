@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const tempRemoval = {
-    'new-redux-reducer': 'new-redux-reducer',
     'text-editor-configs': 'text-editor-configs',
 };
 

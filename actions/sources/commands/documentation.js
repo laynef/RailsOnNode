@@ -4,7 +4,6 @@ const packager = require('../../../package.json');
 const { kebabCase } = require('lodash');
 
 const tempRemoval = {
-    'new-redux-reducer': 'new-redux-reducer',
     'text-editor-configs': 'text-editor-configs',
 };
 

@@ -27,6 +27,7 @@ const command = (pageName, routePath, options) => {
     fs.writeFileSync(path.join(root, 'views', 'pages', routePath, `${pageName}.pug`), newTemplate);
     shell.cp(path.join(templatePath, 'assets', `page.${settings.styleType}`), path.join(root, 'assets', settings.styleType, 'pages', routePath, `${pageName}.${settings.styleType}`));
     shell.cp(path.join(templatePath, 'assets', `page.${settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType}`));
+    if (path.join(templatePath, 'assets', `component.${settings.jsType}`)) shell.cp(path.join(templatePath, 'assets', `component.${settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `component.${settings.jsType}`));
     const reduxPath = path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType}`);
     const reduxFs = fs.readFileSync(reduxPath, { encoding: 'utf8' });
     fs.writeFileSync(reduxPath, reduxFs.replace(reduxRegex, `${routePathDepth}/redux/store`));
