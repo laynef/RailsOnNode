@@ -25,6 +25,7 @@ const command = (versionNumber, options) => {
     shell.cp('-R', controllerPath, path.join(root, 'controllers', `v${versionNumber}`));
     shell.cp('-R', routePath, path.join(root, 'routes', `v${versionNumber}`));
     shell.mkdir(path.join(root, 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`));
+    shell.mkdir(path.join(root, 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`));
 
     const cssString = fs.readFileSync(path.join(docPath, 'page.css'), { encoding: 'utf8' });
     fs.writeFileSync(path.join(root, 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.styleType}`), cssString);
