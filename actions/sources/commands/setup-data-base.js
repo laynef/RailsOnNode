@@ -54,7 +54,6 @@ const command = (databaseType, options) => {
     shell.cp('-R', path.join(templatePath, database[databaseType]), path.join(root, 'temp'));
     shell.mv(`${path.join(root, 'temp')}/*`, '.');
     shell.rm('-rf', path.join(root, 'temp'));
-    shell.exec('npm install');
 
     console.green('Your database has been setup');
 };

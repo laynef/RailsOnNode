@@ -584,12 +584,6 @@ Commands:
     -> less
     -> sass
 
-    javascripts
-    -> js
-    -> react
-    -> angular
-    -> vue
-
 Command:
 node-rails settings <command-name> [Options]
     `);

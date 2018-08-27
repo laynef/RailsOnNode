@@ -1,30 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NgModule } from '@angular/core';
-import { Component } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-@Component({
-  template: `
-    <h1 style="text-align: center;">Hello World</h1>
-  `,
-  selector: 'app',
-  styleUrl: [
-    // Route Path
-  ]
-})
+import Application from './component';
 
-class AppComponent {
-
-}
-
-class Redux {
-  
+if (process.env.NODE_ENV !== 'production') {
+  enableProdMode();
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [Application],
   imports: [BrowserModule],
-  providers: [Redux],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [Application]
 })
+class AppModule { }
 
-export class AppModule { }
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.log(err));
