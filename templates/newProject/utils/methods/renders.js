@@ -33,6 +33,7 @@ module.exports = {
         const filename = '/' + filenameArray;
 
         return Object.assign({}, meta, {
+            name: filename.slice(1).split('').map((e, i) => i === 0 ? e.toUpperCase() : e.toLowerCase()).join(''),
             csrf: req.session.cookie.token,
             host: `${req.protocol}://${req.hostname}${req.port && navtivePorts[req.port] ? '' : `:${req.port || 8080}`}${req.url}`,
             jsFiles: webpackHotReloads(res, filename).js,
