@@ -4,7 +4,7 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
         title=`API ${apiVersion} Documentation`
         include ./meta.pug
         style.
-            .flex-respond-row {display: flex;flex-direction: column;}@media (min-width: 992px) {.flex-respond-row {display: flex;flex-direction: row;}}
+            .flex-respond-row {display: flex !important;flex-direction: column !important;}@media (min-width: 992px) {.flex-respond-row {display: flex !important;flex-direction: row !important;}}.card-shadow {box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);}
     body(style={'width': '100%', 'overflow-x': 'hidden'})
         .header.p-3.bg-dark.card-shadow.d-flex.flex-row
             a(href='/')
