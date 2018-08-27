@@ -29,11 +29,13 @@ module.exports = {
             '80': true,
         };
 
-        const filenameArray = name.split('/').slice(1).join('/');
+        const nameArray = name.split('/');
+        const filenameArray = nameArray.slice(1).join('/');
         const filename = '/' + filenameArray;
+        const pageName = nameArray[nameArray.length - 1];
 
         return Object.assign({}, meta, {
-            name: filename.slice(1).split('').map((e, i) => i === 0 ? e.toUpperCase() : e.toLowerCase()).join(''),
+            name: pageName.split('').map((e, i) => i === 0 ? e.toUpperCase() : e.toLowerCase()).join(''),
             csrf: req.session.cookie.token,
             host: `${req.protocol}://${req.hostname}${req.port && navtivePorts[req.port] ? '' : `:${req.port || 8080}`}${req.url}`,
             jsFiles: webpackHotReloads(res, filename).js,
