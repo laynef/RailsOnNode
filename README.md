@@ -49,6 +49,14 @@ http://localhost:8080/docs/v2/
 ...etc
 ```
 
+## Settings
+- Set different style types
+```
+node-rails settings sass
+node-rails settings less
+node-rails settings css // default
+```
+
 ## Documentation
 ```
 // For all commands
