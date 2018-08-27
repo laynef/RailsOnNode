@@ -20,7 +20,7 @@ const command = (versionNumber, options) => {
     const docPath = path.join(templatePath, 'docs');
 
     const root = process.cwd();
-    const settings = require(path.join(root, 'webpack', 'settings.json'));
+    const settings = require(path.join(root, 'webpack', 'settings.js'));
 
     shell.cp('-R', controllerPath, path.join(root, 'controllers', `v${versionNumber}`));
     shell.cp('-R', routePath, path.join(root, 'routes', `v${versionNumber}`));
