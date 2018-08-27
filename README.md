@@ -24,8 +24,8 @@
 npm i -g @lfaler/node-railsjs
 node-rails create <Your project>
 node-rails setup-data-base <Your database type [sql *or* mongodb]>
-node-rails new-api-controller users
-node-rails new-page blogs '/blogs'
+node-rails new-api-controller users --version=1 // Add new controler in version 1
+node-rails new-page blogs '/blogs' // Add new route
 npm install
 npm run build:prod
 npm start
@@ -58,7 +58,7 @@ node-rails
 node-rails <command-name> --help
 ```
 
-## Installation
+## New Routes
 ```
 // brew install redis
 // Must have redis running on default port 6379: redis-server
