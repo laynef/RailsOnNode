@@ -72,9 +72,11 @@ const setByRoute = (data, object, assetType) => {
         } else if (assetType === 'stylesheet') {
             obj[routePath] = obj[routePath] || [];
             if (object[route].docs && !useBootstrapToggle) {
+                obj[routePath].push(`font-awesome-loader`);
                 obj[routePath].push(`${context}/bootstrap/index.scss`);
             }
             if (useBootstrapToggle) {
+                obj[routePath].push(`font-awesome-loader`);
                 obj[routePath].push(`${context}/bootstrap/index.scss`);
                 obj[routePath].push(object[route].fullPath);
             } else {

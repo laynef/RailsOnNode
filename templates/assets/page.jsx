@@ -1,5 +1,5 @@
 require('dotenv').config();
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import createStore from '// Redux here';

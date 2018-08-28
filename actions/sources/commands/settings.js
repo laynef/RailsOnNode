@@ -363,9 +363,6 @@ const command = (type, options) => {
             'react': '^16.4.2',
             'react-dom': '^16.4.2',
             'react-redux': '^5.0.7',
-            'react-router': '^4.3.1',
-            'react-router-config': '^1.0.0-beta.4',
-            'react-router-dom': '^4.3.1',
         },
         angular: {
             '@angular/animations': '^6.1.0',
@@ -391,16 +388,36 @@ const command = (type, options) => {
 
     const babelRc = {
         react: {
-
+            presets: [
+                'react',
+                'env',
+                'stage-0',
+            ],
+            plugins: [
+                'transform-runtime',
+                'add-module-exports',
+                'transform-decorators-legacy',
+                'transform-react-display-name',
+                'transform-imports',
+            ],
         },
         angular: {
 
         },
         vue: {
-
+            presets: [
+                'es2015',
+                'stage-2',
+            ],
+            plugins: [
+                'transform-runtime',
+            ],
         },
         js: {
-
+            presets: [
+                'env',
+                'stage-0',
+            ],
         },
     };
 
