@@ -7,9 +7,18 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { reduce } = require('lodash');
 
 const context = path.join(__dirname, '..');
-const jsLoader = settings.javascriptSettings;
-jsLoader.test = new RegExp(jsLoader.test);
-jsLoader.exclude = new RegExp(jsLoader.exclude);
+const jsLoader = settings.javascriptSettings.map(e => {
+    const test = e.test;
+    const exclude = e.exclude;
+    delete e.test;
+    delete e.exclude;
+
+    return {
+        ...e,
+        test: new RegExp(test),
+        exclude: new RegExp(exclude),
+    }
+});
 
 const recursiveFind = (data, pathnm) => {
     fs.readdirSync(pathnm).forEach(dir => {
@@ -138,7 +147,7 @@ module.exports = {
     target: 'web',
     module: {
         rules: [
-            jsLoader,
+            ...jsLoader,
             {
                 test: /\.css$/,
                 use: [noProduction ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],

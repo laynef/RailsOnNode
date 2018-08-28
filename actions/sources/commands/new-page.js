@@ -30,7 +30,7 @@ const command = (pageName, routePath, options) => {
     if (fs.existsSync(path.join(templatePath, 'assets', `component.${settings.jsType}`))) shell.cp(path.join(templatePath, 'assets', `component.${settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `component.${settings.jsType}`));
     const reduxPath = path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType}`);
     const reduxFs = fs.readFileSync(reduxPath, { encoding: 'utf8' });
-    fs.writeFileSync(reduxPath, reduxFs.replace(reduxRegex, `${routePathDepth}/redux/store`));
+    fs.writeFileSync(reduxPath, reduxFs.replace(reduxRegex, `${routePathDepth}redux/store`));
     if (routePath) fs.writeFileSync(path.join(root, 'app.js'), application.replace(/\/\/ Leave Here For Static Routes/g, `// Leave Here For Static Routes\napp.get('${routePath}', render('pages${routePath}/${pageName}', { hashId: makeHash(40) }));`));
     console.green('Your new page assets have be created.');
 };

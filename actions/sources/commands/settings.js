@@ -26,7 +26,7 @@ const command = (type, options) => {
         },
     };
 
-    if (TYPING.javascripts[type]) {
+    if (TYPING.javascripts[type] !== 'react') {
         console.red(`Not supported yet.`);
         return;
     }
@@ -98,7 +98,6 @@ const command = (type, options) => {
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
             const regexRedux = /\/\/ Redux here/ig; // for redux
-            const regexRoute = /\/\/ Route Url/ig; // for routes
 
             const pathnm = pathNames.split('/');
             let boolZero = false;
@@ -115,7 +114,7 @@ const command = (type, options) => {
             strPathNames.unshift('');
 
             let boolOne = false;
-            const routePath = strPathNames.join('/');
+
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
                     boolOne = true;
@@ -147,7 +146,7 @@ const command = (type, options) => {
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
         },
         angular: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
@@ -331,17 +330,30 @@ const command = (type, options) => {
     };
 
     const jsWebpack = {
-        'react': {
-            'test': '.jsx$',
+        'react': [{
+            'test': '.js?x$',
             'exclude': 'node_modules',
-            'use': ['babel-loader'],
-        },
-        'angular': {
+            'use': [{ 
+                'loader': 'babel-loader',
+                'options': {
+                    'presets': ['react-hmre'],
+                    "plugins": [
+                        ["react-transform", {
+                            "transforms": [{
+                            "transform": "react-transform-hmr",
+                            "imports": ["react"],
+                            "locals": ["module"],
+                        }],
+                    }]],
+                },
+            }],
+        }],
+        'angular': [{
             'test': '.ts$',
             'exclude': 'node_modules',
             'use': ['babel-loader'],
-        },
-        'vue': {
+        }],
+        'vue': [{
             'test': '.vue$',
             'exclude': '(node_modules|bower_components)',
             'use': ['vue-loader'],
@@ -350,12 +362,12 @@ const command = (type, options) => {
                 'plugins': ['transform-runtime'],
                 'comments': false,
             },
-        },
-        'js': {
+        }],
+        'js': [{
             'test': '.js$',
             'exclude': 'node_modules',
             'use': ['babel-loader'],
-        },
+        }],
     };
 
     const packageJsonDependiences = {
@@ -453,32 +465,20 @@ const command = (type, options) => {
         react: () => {
             fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import path from 'path';
 import settings from '../../webpack/settings';
-import { renderRoutes } from 'react-router-config';
 
 module.exports = {
 
     serverSide: (pageName, req) => {
         let assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
-        let context = {};
-        let userStore = req.session.redux;
-        let route = {};
-        let pathRoute = assets += '/pages' + req.url + '/' + pageName;
-        route[req.url] = require(pathRoute);
-        const component = (
-            <Provider store={userStore}>
-                <StaticRouter location={req.url} context={context}>
-                    {renderRoutes([route])}
-                </StaticRouter>
-            </Provider>
-        );
+        let pathRoute = assets += '/pages' + req.url + '/' + component.jsx;
+        const Application = require(pathRoute);
         return {
-            serversideString: renderToStaticMarkup(component),
-            serversideStorage: req.session.redux
+            serversideString: renderToStaticMarkup(Application),
+            serversideStorage: JSON.stringify(req.session.redux)
         };
     }
 
@@ -500,11 +500,10 @@ module.exports = {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         req.session.state = req.session.state || require(path.join(assets, 'redux', 'store'))();
         let pathRoute = assets += '/pages' + req.url + '/' + pageName;
-        let context = {};
         const renderer = createRenderer();
-        const vue = require(pathRoute);
+        const vue = new require(pathRoute);
         return renderer.renderToString(vue, context).then((html) => ({
-            serversideStorage: req.session.state,
+            serversideStorage: JSON.stringify(req.session.state),
             serversideString: html,
         }));
     },
@@ -558,9 +557,11 @@ module.exports = {
         const fileArray = dir.split('/');
         const filename = fileArray[fileArray.length - 1].split('.')[0] + '.' + after;
         const newFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + filename;
+        const newComponentFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + `component.${after}`;
 
         if (TYPING.javascripts[type] === after) {
             shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
+            shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `component.${after}`), newComponentFile);
             shell.mv(dir, newFile);
             jsStrings[type](newFile);
         } else if (TYPING.stylesheets[type] === after) {
