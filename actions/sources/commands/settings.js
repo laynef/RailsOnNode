@@ -616,10 +616,10 @@ module.exports = (Component, store) => {
     });
 
     // Handle webpack here
-    if (TYPING.javascripts[before]) {
+    if (TYPING.javascripts[type]) {
         settings.jsType = after;
         settings.javascriptSettings = jsWebpack[type];
-    } else if (TYPING.stylesheets[before]) {
+    } else if (TYPING.stylesheets[type]) {
         settings.styleType = after;
     }
 
