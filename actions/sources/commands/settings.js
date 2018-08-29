@@ -26,7 +26,7 @@ const command = (type, options) => {
         },
     };
 
-    if (TYPING.javascripts[type] !== 'react') {
+    if (TYPING.javascripts[type] && TYPING.javascripts[type] !== 'jsx') {
         console.red(`Not supported yet.`);
         return;
     }
@@ -330,24 +330,30 @@ const command = (type, options) => {
     };
 
     const jsWebpack = {
-        'react': [{
-            'test': '.js?x$',
-            'exclude': 'node_modules',
-            'use': [{ 
-                'loader': 'babel-loader',
-                'options': {
-                    'presets': ['react-hmre'],
-                    "plugins": [
-                        ["react-transform", {
-                            "transforms": [{
-                            "transform": "react-transform-hmr",
-                            "imports": ["react"],
-                            "locals": ["module"],
-                        }],
-                    }]],
-                },
+        'react': {
+            "development": [{
+                'test': '.jsx?$',
+                'exclude': 'node_modules',
+                'use': [{ 
+                    'loader': 'babel-loader',
+                    'options': {
+                        "presets": ["react","env","stage-0","react-hmre"],
+                        "plugins": [ "transform-runtime", "add-module-exports", "transform-decorators-legacy", "transform-react-display-name", "transform-imports", ["react-transform", {"transforms": [{"transform": "react-transform-hmr","imports": ["react"],"locals": ["module"]}]}]],
+                    },
+                }],
             }],
-        }],
+            "production": [{
+                'test': '.jsx?$',
+                'exclude': 'node_modules',
+                'use': [{ 
+                    'loader': 'babel-loader',
+                    'options': {
+                        'presets': ["react","env","stage-0"],
+                        "plugins": ["transform-runtime","add-module-exports","transform-decorators-legacy","transform-react-display-name"],
+                    },
+                }],
+            }],
+        },
         'angular': [{
             'test': '.ts$',
             'exclude': 'node_modules',
@@ -363,11 +369,18 @@ const command = (type, options) => {
                 'comments': false,
             },
         }],
-        'js': [{
-            'test': '.js$',
-            'exclude': 'node_modules',
-            'use': ['babel-loader'],
-        }],
+        'js': {
+            "development": [{
+                'test': '.js$',
+                'exclude': 'node_modules',
+                'use': ['babel-loader'],
+            }],
+            "production": [{
+                'test': '.js$',
+                'exclude': 'node_modules',
+                'use': ['babel-loader'],
+            }]
+        },
     };
 
     const packageJsonDependiences = {
@@ -576,6 +589,8 @@ module.exports = {
     if (TYPING.javascripts[before]) {
         settings.jsType = after;
         settings.javascriptSettings = jsWebpack[type];
+        const babelrc = path.join(root, 'webpack', '.babelrc');
+        fs.writeFileSync(babelrc, JSON.stringify(babelRc[type]));
     } else if (TYPING.stylesheets[before]) {
         settings.styleType = after;
     }
