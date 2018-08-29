@@ -38,6 +38,13 @@ const command = (type, options) => {
         js: 'js',
     };
 
+    const suffixReplacements = {
+        jsx: 'jsx',
+        ts: 'ts',
+        vue: 'js',
+        js: 'js',
+    };
+
     const notSupported = {
         'angular': 'angular',
     }
@@ -620,7 +627,7 @@ module.exports = (Component, store) => {
                 const fileArray = jsPaths.split('/');
                 const fileName = fileArray.pop();
                 const fileSuffixArray = fileName.split('.');
-                fileSuffixArray[1] = componentReplacements[CURR_JS];
+                fileSuffixArray[1] = suffixReplacements[CURR_JS];
                 const finalPath = fileArray.join('/') + '/' + fileSuffixArray.join('.');
                 const str = fs.readFileSync(finalPath, { encoding: 'utf8' });
                 fs.writeFileSync(finalPath, str.replace(RegExp(CURR_CSS, 'ig'), after));
