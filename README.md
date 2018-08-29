@@ -11,9 +11,9 @@
 - Generate new api versions
 - Creates automatic API documentation for endpoints on creation with no extra configuration
 - Generate new pages with assets with a custom route with code splitting
+- Use serverside React or jQuery
 
 ## Coming Soon
-- Generate server side React Application
 - Generate server side Angular 4 Application
 - Generate server side Vue Application
 
@@ -55,6 +55,11 @@ http://localhost:8080/docs/v2/
 node-rails settings sass
 node-rails settings less
 node-rails settings css // default
+```
+- Set different javascript types
+```
+node-rails settings react
+node-rails settings js // default
 ```
 
 ## Documentation
