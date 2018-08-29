@@ -596,11 +596,18 @@ module.exports = (Component, store) => {
         js: 'page.js',
     };
 
+    const componentReplacements = {
+        react: 'jsx',
+        angular: 'ts',
+        vue: 'js',
+        js: 'js',
+    };
+
     beforeTypes.forEach(dir => {
         const fileArray = dir.split('/');
         const filename = fileArray[fileArray.length - 1].split('.')[0];
         if (filename !== 'component') {
-            const newFilename = filename + '.' + after;
+            const newFilename = filename + '.' + componentReplacements[type];
             const newFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + newFilename;
             const newComponentFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + `component.${after}`;
 
