@@ -4,33 +4,23 @@ const settings = require('./settings');
 const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { reduce } = require('lodash');
+const { reduce, map } = require('lodash');
 
 const context = path.join(__dirname, '..');
-const jsLoader = settings.javascriptSettings.map(e => {
-    const test = e.test;
-    const exclude = e.exclude;
-    delete e.test;
-    delete e.exclude;
-
-    return {
-        ...e,
-        test: new RegExp(test),
-        exclude: new RegExp(exclude),
-    }
-});
 
 const recursiveFind = (data, pathnm) => {
     fs.readdirSync(pathnm).forEach(dir => {
-        if (fs.lstatSync(path.join(pathnm, dir)).isDirectory()) {
-            recursiveFind(data, path.join(pathnm, dir));
-        } else {
-            const fullPath = path.join(pathnm, dir);
-            const pageName = dir.split('.')[0];
-            data[`${pathnm}/`] = {
-                pageName: pageName,
-                fullPath: fullPath,
-            };
+        if (dir !== `component.${settings.jsType}`) {
+            if (fs.lstatSync(path.join(pathnm, dir)).isDirectory()) {
+                recursiveFind(data, path.join(pathnm, dir));
+            } else {
+                const fullPath = path.join(pathnm, dir);
+                const pageName = dir.split('.')[0];
+                data[`${pathnm}/`] = {
+                    pageName: pageName,
+                    fullPath: fullPath,
+                };
+            }
         }
     });
 
@@ -54,6 +44,19 @@ const jsPaths = Object.assign({}, reduce(recursiveFind({}, jsPath), (acc, val, k
     acc[key] = { ...val, docs: !!apiVersions[val.pageName] };
     return acc;
 }, {}));
+
+const jsLoader = settings.javascriptSettings[noProduction ? 'development': 'production'].map(e => {
+    const test = e.test;
+    const exclude = e.exclude;
+    delete e.test;
+    delete e.exclude;
+
+    return {
+        ...e,
+        test: new RegExp(test),
+        exclude: new RegExp(exclude),
+    }
+});
 
 const setByRoute = (data, object, assetType) => {
     const obj = data;
