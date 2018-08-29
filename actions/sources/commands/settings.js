@@ -617,8 +617,13 @@ module.exports = (Component, store) => {
                 jsStrings[type](newFile);
             } else if (TYPING.stylesheets[type] === after) {
                 const jsPaths = dir.replace(RegExp(CURR_CSS, 'ig'), CURR_JS);
-                const str = fs.readFileSync(jsPaths, { encoding: 'utf8' });
-                fs.writeFileSync(jsPaths, str.replace(RegExp(CURR_CSS, 'ig'), after));
+                const fileArray = jsPaths.split('/');
+                const fileName = fileArray.pop();
+                const fileSuffixArray = fileName.split('.');
+                fileSuffixArray[1] = componentReplacements[CURR_JS];
+                const finalPath = fileArray.join('/') + '/' + fileSuffixArray.join('.');
+                const str = fs.readFileSync(finalPath, { encoding: 'utf8' });
+                fs.writeFileSync(finalPath, str.replace(RegExp(CURR_CSS, 'ig'), after));
                 shell.mv(dir, newFile);
             }
         } else {
