@@ -24,6 +24,20 @@ const command = (type, options) => {
         },
     };
 
+    const assetsReplacements = {
+        react: 'page.jsx',
+        angular: 'page.ts',
+        vue: 'vue.js',
+        js: 'page.js',
+    };
+
+    const componentReplacements = {
+        react: 'jsx',
+        angular: 'ts',
+        vue: 'js',
+        js: 'js',
+    };
+
     const notSupported = {
         'angular': 'angular',
     }
@@ -210,7 +224,7 @@ const command = (type, options) => {
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `'${regexStylesString}',`));
         },
         vue: (pathNames) => {
-            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
+            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'component.vue');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const root = process.cwd();
@@ -587,21 +601,6 @@ module.exports = (Component, store) => {
     };
 
     const beforeTypes = arrayOfPaths([], path.join(root, 'assets', before, 'pages'));
-
-
-    const assetsReplacements = {
-        react: 'page.jsx',
-        angular: 'page.ts',
-        vue: 'vue.js',
-        js: 'page.js',
-    };
-
-    const componentReplacements = {
-        react: 'jsx',
-        angular: 'ts',
-        vue: 'js',
-        js: 'js',
-    };
 
     beforeTypes.forEach(dir => {
         const fileArray = dir.split('/');
