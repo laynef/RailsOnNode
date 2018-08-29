@@ -26,7 +26,7 @@ const command = (type, options) => {
         },
     };
 
-    if (TYPING.javascripts[type] && TYPING.javascripts[type] !== 'jsx') {
+    if (TYPING.javascripts[type] && (TYPING.javascripts[type] !== 'jsx' || TYPING.javascripts[type] !== 'js')) {
         console.red(`Not supported yet.`);
         return;
     }
