@@ -47,6 +47,7 @@ const command = (type, options) => {
 
     const notSupported = {
         'angular': 'angular',
+        'vue': 'vue',
     }
 
     if (notSupported[type]) {
@@ -418,18 +419,18 @@ const command = (type, options) => {
         react: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-            presets: [
-                'react',
-                'env',
-                'stage-0',
+            "presets": [
+                "react",
+                "env",
+                "stage-0",
             ],
 
-            plugins: [
-                'transform-runtime',
-                'add-module-exports',
-                'transform-decorators-legacy',
-                'transform-react-display-name',
-                'transform-imports',
+            "plugins": [
+                "transform-runtime",
+                "add-module-exports",
+                "transform-decorators-legacy",
+                "transform-react-display-name",
+                "transform-imports",
             ]
 
         }`)
@@ -437,18 +438,18 @@ const command = (type, options) => {
         angular: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-                presets: [
-                    'react',
-                    'env',
-                    'stage-0',
+                "presets": [
+                    "react",
+                    "env",
+                    "stage-0",
                 ],
     
-                plugins: [
-                    'transform-runtime',
-                    'add-module-exports',
-                    'transform-decorators-legacy',
-                    'transform-react-display-name',
-                    'transform-imports',
+                "plugins": [
+                    "transform-runtime",
+                    "add-module-exports",
+                    "transform-decorators-legacy",
+                    "transform-react-display-name",
+                    "transform-imports",
                 ]
     
             }`)
@@ -456,13 +457,13 @@ const command = (type, options) => {
         vue: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
                 
-                presets: [
-                    'es2015',
-                    'stage-2',
+                "presets": [
+                    "es2015",
+                    "stage-2",
                 ],
 
-                plugins: [
-                    'transform-runtime',
+                "plugins": [
+                    "transform-runtime",
                 ],
 
             }`)
@@ -470,9 +471,9 @@ const command = (type, options) => {
         js: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-            presets: [
-                'env',
-                'stage-0',
+            "presets": [
+                "env",
+                "stage-0",
             ]
 
         }`)
