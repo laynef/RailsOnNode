@@ -139,7 +139,7 @@ const command = (type, options) => {
                     return e;
                 }
             });
-            const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
+            const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideString');
@@ -158,7 +158,6 @@ const command = (type, options) => {
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
             const regexRedux = /\/\/ Redux here/ig; // for redux
-            const regexRoute = /\/\/ Route Url/ig; // for routes
 
             const pathnm = pathNames.split('/');
             let boolZero = false;
@@ -175,7 +174,6 @@ const command = (type, options) => {
             strPathNames.unshift('');
 
             let boolOne = false;
-            const routePath = strPathNames.join('/');
             const rescurveStr = pathnm.reduce((acc, item) => {
                 if (item === 'assets') {
                     boolOne = true;
@@ -200,14 +198,14 @@ const command = (type, options) => {
                     return e;
                 }
             });
-            const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
+            const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideString');
 
             const regexReduxString = reduxRecursive.join('/');
 
-            fs.writeFileSync(pathNames, str.replace(regexRoute, routePath).replace(regexRedux, regexReduxString).replace(regexStyles, `'${regexStylesString}',`));
+            fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `'${regexStylesString}',`));
         },
         vue: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
@@ -259,7 +257,7 @@ const command = (type, options) => {
                     return e;
                 }
             });
-            const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
+            const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serverSideString');
@@ -318,7 +316,7 @@ const command = (type, options) => {
                     return e;
                 }
             });
-            const regexStylesString = recursiveStrings.concat(rescurveNames).join('/');
+            const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, 'h1(style="text-align: center;") Hello World');
@@ -495,12 +493,13 @@ import settings from '../../webpack/settings';
 module.exports = {
 
     serverSide: (pageName, req) => {
-        let assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
-        let pathRoute = assets += '/pages' + req.url + '/' + component.jsx;
-        const Application = require(pathRoute);
+        // let assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        // req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
+        // let pathRoute = assets += '/pages' + req.url + '/' + component.jsx;
+        // const Application = require(pathRoute);
+        req.session.redux = {};
         return {
-            serversideString: renderToStaticMarkup(Application),
+            // serversideString: renderToStaticMarkup(Application),
             serversideStorage: JSON.stringify(req.session.redux)
         };
     }
@@ -599,15 +598,13 @@ module.exports = {
     if (TYPING.javascripts[before]) {
         settings.jsType = after;
         settings.javascriptSettings = jsWebpack[type];
-        const babelrc = path.join(root, 'webpack', '.babelrc');
-        fs.writeFileSync(babelrc, JSON.stringify(babelRc[type]));
     } else if (TYPING.stylesheets[before]) {
         settings.styleType = after;
     }
 
     if (TYPING.javascripts[before]) {
         shell.rm('-rf', path.join(root, 'assets', before, 'redux') + '/*');
-        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', TYPES) + '/', path.join(root, 'assets', before, 'redux'));
+        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', TYPES) + '/*', path.join(root, 'assets', before, 'redux'));
     }
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
