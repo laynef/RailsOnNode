@@ -588,6 +588,14 @@ module.exports = (Component, store) => {
 
     const beforeTypes = arrayOfPaths([], path.join(root, 'assets', before, 'pages'));
 
+
+    const assetsReplacements = {
+        react: 'page.jsx',
+        angular: 'page.ts',
+        vue: 'vue.js',
+        js: 'page.js',
+    };
+
     beforeTypes.forEach(dir => {
         const fileArray = dir.split('/');
         const filename = fileArray[fileArray.length - 1].split('.')[0];
@@ -597,7 +605,7 @@ module.exports = (Component, store) => {
             const newComponentFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + `component.${after}`;
 
             if (TYPING.javascripts[type] === after) {
-                shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
+                shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', assetsReplacements[type]), newFile);
                 if (after !== 'js') shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `component.${after}`), newComponentFile);
                 shell.mv(dir, newFile);
                 jsStrings[type](newFile);
