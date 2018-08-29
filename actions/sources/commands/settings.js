@@ -10,8 +10,6 @@ const command = (type, options) => {
         return;
     }
 
-    const TYPES = type;
-
     const TYPING = {
         'javascripts': {
             'react': 'jsx',
@@ -24,6 +22,27 @@ const command = (type, options) => {
             'sass': 'scss',
             'css': 'css',
         },
+    };
+
+    const assetsReplacements = {
+        react: 'page.jsx',
+        angular: 'page.ts',
+        vue: 'vue.js',
+        js: 'page.js',
+    };
+
+    const componentReplacements = {
+        react: 'jsx',
+        angular: 'ts',
+        vue: 'js',
+        js: 'js',
+    };
+
+    const suffixReplacements = {
+        jsx: 'jsx',
+        ts: 'ts',
+        vue: 'js',
+        js: 'js',
     };
 
     const notSupported = {
@@ -213,7 +232,7 @@ const command = (type, options) => {
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `'${regexStylesString}',`));
         },
         vue: (pathNames) => {
-            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.vue');
+            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'vue.js');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const root = process.cwd();
@@ -400,18 +419,18 @@ const command = (type, options) => {
         react: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-            presets: [
-                'react',
-                'env',
-                'stage-0',
+            "presets": [
+                "react",
+                "env",
+                "stage-0",
             ],
 
-            plugins: [
-                'transform-runtime',
-                'add-module-exports',
-                'transform-decorators-legacy',
-                'transform-react-display-name',
-                'transform-imports',
+            "plugins": [
+                "transform-runtime",
+                "add-module-exports",
+                "transform-decorators-legacy",
+                "transform-react-display-name",
+                "transform-imports",
             ]
 
         }`)
@@ -419,18 +438,18 @@ const command = (type, options) => {
         angular: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-                presets: [
-                    'react',
-                    'env',
-                    'stage-0',
+                "presets": [
+                    "react",
+                    "env",
+                    "stage-0",
                 ],
     
-                plugins: [
-                    'transform-runtime',
-                    'add-module-exports',
-                    'transform-decorators-legacy',
-                    'transform-react-display-name',
-                    'transform-imports',
+                "plugins": [
+                    "transform-runtime",
+                    "add-module-exports",
+                    "transform-decorators-legacy",
+                    "transform-react-display-name",
+                    "transform-imports",
                 ]
     
             }`)
@@ -438,13 +457,13 @@ const command = (type, options) => {
         vue: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
                 
-                presets: [
-                    'es2015',
-                    'stage-2',
+                "presets": [
+                    "es2015",
+                    "stage-2",
                 ],
 
-                plugins: [
-                    'transform-runtime',
+                "plugins": [
+                    "transform-runtime",
                 ],
 
             }`)
@@ -452,9 +471,9 @@ const command = (type, options) => {
         js: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-            presets: [
-                'env',
-                'stage-0',
+            "presets": [
+                "env",
+                "stage-0",
             ]
 
         }`)
@@ -595,19 +614,24 @@ module.exports = (Component, store) => {
         const fileArray = dir.split('/');
         const filename = fileArray[fileArray.length - 1].split('.')[0];
         if (filename !== 'component') {
-            const newFilename = filename + '.' + after;
+            const newFilename = filename + '.' + componentReplacements[type];
             const newFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + newFilename;
             const newComponentFile = fileArray.slice(0, fileArray.length - 1).join('/') + '/' + `component.${after}`;
 
             if (TYPING.javascripts[type] === after) {
-                shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `page.${after}`), newFile);
+                shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', assetsReplacements[type]), newFile);
                 if (after !== 'js') shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `component.${after}`), newComponentFile);
                 shell.mv(dir, newFile);
                 jsStrings[type](newFile);
             } else if (TYPING.stylesheets[type] === after) {
                 const jsPaths = dir.replace(RegExp(CURR_CSS, 'ig'), CURR_JS);
-                const str = fs.readFileSync(jsPaths, { encoding: 'utf8' });
-                fs.writeFileSync(jsPaths, str.replace(RegExp(CURR_CSS, 'ig'), after));
+                const fileArray = jsPaths.split('/');
+                const fileName = fileArray.pop();
+                const fileSuffixArray = fileName.split('.');
+                fileSuffixArray[1] = suffixReplacements[CURR_JS];
+                const finalPath = fileArray.join('/') + '/' + fileSuffixArray.join('.');
+                const str = fs.readFileSync(finalPath, { encoding: 'utf8' });
+                fs.writeFileSync(finalPath, str.replace(RegExp(CURR_CSS, 'ig'), after));
                 shell.mv(dir, newFile);
             }
         } else {
