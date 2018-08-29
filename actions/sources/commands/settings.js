@@ -47,7 +47,7 @@ const command = (type, options) => {
 
     const notSupported = {
         'angular': 'angular',
-        'vue': 'vue',
+        // 'vue': 'vue',
     }
 
     if (notSupported[type]) {
@@ -515,24 +515,41 @@ module.exports = {
             `);
         },
         vue: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `import Vue from 'vue';
-import { createRenderer } from 'vue-server-render';
-            
+            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
+const settings = require('../../webpack/settings');
+
+           
 module.exports = {
 
     serverSide: (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         req.session.state = req.session.state || require(path.join(assets, 'redux', 'store'))();
-        let pathRoute = assets += '/pages' + req.url + '/' + pageName;
-        const renderer = createRenderer();
-        const vue = new require(pathRoute);
-        return renderer.renderToString(vue, context).then((html) => ({
-            serversideStorage: JSON.stringify(req.session.state),
-            serversideString: html,
-        }));
+        const getServersideString = require('../../webpack/serverside');
+
+        const assetPath = path.join(assets, pageName);
+        const fileArray = assetPath.split('/');
+        fileArray.pop();
+        const filePath = fileArray.join('/') + '/component.vue';
+
+        return Promise.all([
+            getServersideString(filePath)
+        ])
+        .then((htmls) => {
+            return {
+                serversideStorage: JSON.stringify(req.session.state),
+                serversideString: htmls[0],
+            };
+        })
+        .catch(() => {
+            return {
+                serversideStorage: JSON.stringify(req.session.state),
+                serversideString: '',
+            };
+        });
     },
 
 };
+                        
             `);
         },
         js: () => {
@@ -578,9 +595,16 @@ module.exports = (Component, store) => {
             `)
         },
         vue: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
+            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `const Vue = require('vue');
+const { createRenderer } = require('vue-server-render');
 
-};
+module.exports = (filePath) => {
+    const renderer = createRenderer();
+    const vue = new Vue(require(filePath));
+    return renderer.renderToString(vue, context)
+        .then((html) => html)
+        .catch(() => '');
+};  
             `)
         },
         js: () => {
