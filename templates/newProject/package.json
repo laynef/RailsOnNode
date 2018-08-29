@@ -5,8 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "mocha ./tests/index.js",
-        "start": "NODE_ENV='production' node server.js",
-        "dev": "NODE_ENV='development' node app.js",
+        "start": "NODE_ENV='production' npx babel-node server.js",
+        "dev": "NODE_ENV='development' npx babel-node app.js",
         "build:dev": "NODE_ENV='development' webpack --config ./webpack/client.config.js",
         "build:prod": "NODE_ENV='production' webpack --config ./webpack/client.config.js -p",
         "clean:assets": "rm -rf ./assets/dist"
