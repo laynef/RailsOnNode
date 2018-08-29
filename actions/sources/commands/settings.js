@@ -206,7 +206,7 @@ const command = (type, options) => {
             const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
-            fs.writeFileSync(pugFile, '#app!=serverSideString');
+            fs.writeFileSync(pugFile, '#app!=serversideString');
 
             const regexReduxString = reduxRecursive.join('/');
 
@@ -265,7 +265,7 @@ const command = (type, options) => {
             const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
-            fs.writeFileSync(pugFile, '#app!=serverSideString');
+            fs.writeFileSync(pugFile, '#app!=serversideString');
 
             const regexReduxString = reduxRecursive.join('/');
 
@@ -623,9 +623,9 @@ module.exports = (Component, store) => {
         settings.styleType = after;
     }
 
-    if (TYPING.javascripts[before]) {
+    if (TYPING.javascripts[type]) {
         shell.rm('-rf', path.join(root, 'assets', before, 'redux') + '/*');
-        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', TYPES) + '/*', path.join(root, 'assets', before, 'redux'));
+        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type) + '/*', path.join(root, 'assets', before, 'redux'));
     }
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
