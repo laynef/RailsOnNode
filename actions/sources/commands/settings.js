@@ -10,8 +10,6 @@ const command = (type, options) => {
         return;
     }
 
-    const TYPES = type;
-
     const TYPING = {
         'javascripts': {
             'react': 'jsx',
@@ -28,7 +26,6 @@ const command = (type, options) => {
 
     const notSupported = {
         'angular': 'angular',
-        'vue': 'vue',
     }
 
     if (notSupported[type]) {
