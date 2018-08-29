@@ -18,8 +18,25 @@ module.exports = {
         },
     },
     javascriptSettings: {
-        test: '.js$',
-        exclude: 'node_modules',
-        use: ['babel-loader'],
+        development: [{
+            test: '.js$',
+            exclude: 'node_modules',
+            use: [{ 
+                loader: 'babel-loader',
+                options: {
+                    "presets": ["env","stage-0"],
+                }
+            }],
+        }],
+        production: [{
+            test: '.js$',
+            exclude: 'node_modules',
+            use: [{ 
+                loader: 'babel-loader',
+                options: {
+                    "presets": ["env","stage-0"],
+                }
+            }],
+        }]
     },
 };
