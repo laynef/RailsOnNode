@@ -26,7 +26,12 @@ const command = (type, options) => {
         },
     };
 
-    if (TYPING.javascripts[type] && (TYPING.javascripts[type] !== 'jsx' || TYPING.javascripts[type] !== 'js')) {
+    const notSupported = {
+        'angular': 'angular',
+        'vue': 'vue',
+    }
+
+    if (notSupported[type]) {
         console.red(`Not supported yet.`);
         return;
     }
