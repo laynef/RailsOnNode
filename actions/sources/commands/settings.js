@@ -224,7 +224,7 @@ const command = (type, options) => {
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `'${regexStylesString}',`));
         },
         vue: (pathNames) => {
-            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'component.vue');
+            const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'vue.js');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const root = process.cwd();
