@@ -142,7 +142,7 @@ const command = (type, options) => {
             const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
             const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
-            fs.writeFileSync(pugFile, '#app!=serverSideString');
+            fs.writeFileSync(pugFile, '#app!=serversideString');
 
             const regexReduxString = reduxRecursive.join('/');
 
