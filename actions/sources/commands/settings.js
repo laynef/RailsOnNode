@@ -441,7 +441,7 @@ const command = (type, options) => {
                 plugins: [
                     'transform-runtime',
                 ],
-                
+
             }`)
         },
         js: () => {
@@ -566,10 +566,6 @@ module.exports = (Component, store) => {
             `);
         }
     }
-
-    const packageJson = require(path.join(root, 'package.json'));
-    packageJson.dependiences = Object.assign({}, packageJsonDependiences[type], packageJson.dependiences);
-    packageJson.devDependiences = Object.assign({}, packageJsonDevDependiences[type], packageJson.devDependiences);
 
     // styles change file path types
     // javascript change full root files
