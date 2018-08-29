@@ -420,19 +420,24 @@ const command = (type, options) => {
     };
 
     const babelRc = {
-        react: {
+        react: () => {
+            fs.writeFileSync(path.join(root, '.babelrc'), `{
+
             presets: [
                 'react',
                 'env',
                 'stage-0',
             ],
+
             plugins: [
                 'transform-runtime',
                 'add-module-exports',
                 'transform-decorators-legacy',
                 'transform-react-display-name',
                 'transform-imports',
-            ],
+            ]
+
+        }`)
         },
         angular: {
 
@@ -484,27 +489,31 @@ const command = (type, options) => {
 
     const serverSideRendering = {
         react: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { Provider } from 'react-redux';
-import path from 'path';
-import settings from '../../webpack/settings';
+            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
+const settings = require('../../webpack/settings');
+
 
 module.exports = {
 
     serverSide: (pageName, req) => {
-        // let assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        // req.session.redux = req.session.redux || require(path.join(assets, 'redux', 'store'))();
-        // let pathRoute = assets += '/pages' + req.url + '/' + component.jsx;
-        // const Application = require(pathRoute);
-        req.session.redux = {};
-        return {
-            // serversideString: renderToStaticMarkup(Application),
-            serversideStorage: JSON.stringify(req.session.redux)
-        };
-    }
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        const store = require(path.join(assets, 'redux', 'store'))();
+        const componentArray = pageName.split('/');
+        componentArray.pop();
+        const componentPath = componentArray.join('/') + \`/component.\${settings.jsType}\`;
 
-};
+        const Application = require(path.join(assets, componentPath));
+        req.session.redux = req.session.redux || store.getState();
+
+        const string = require('../../webpack/serverside');
+
+        return {
+            serversideStorage: JSON.stringify(req.session.redux),
+            serversideString: string(Application, store),
+        };
+    },
+
+};    
             `);
         },
         angular: () => {
@@ -554,6 +563,41 @@ module.exports = {
         },
     };
 
+    const webpackServersideFunction = {
+        react: () => {
+            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `const React = require('react');
+const { Provider } = require('react-redux');
+const { renderToStaticMarkup } = require('react-dom/server');
+
+module.exports = (Component, store) => {
+    return renderToStaticMarkup(
+        <Provider store={store}>
+            <Component />
+        </Provider>
+    );
+}       
+            `);
+        },
+        angular: () => {
+            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
+
+};
+            `)
+        },
+        vue: () => {
+            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
+
+};
+            `)
+        },
+        js: () => {
+            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
+
+};
+            `);
+        }
+    }
+
     const packageJson = require(path.join(root, 'package.json'));
     packageJson.dependiences = Object.assign({}, packageJsonDependiences[type], packageJson.dependiences);
     packageJson.devDependiences = Object.assign({}, packageJsonDevDependiences[type], packageJson.devDependiences);
@@ -562,11 +606,13 @@ module.exports = {
     // javascript change full root files
     const arrayOfPaths = (data, pathn) => {
         fs.readdirSync(pathn).forEach(dir => {
-            if (fs.lstatSync(path.join(pathn, dir)).isDirectory()) {
-                const temp = data;
-                arrayOfPaths(temp, path.join(pathn, dir));
-            } else {
-                data.push(path.join(pathn, dir));
+            if (dir !== 'docs') {
+                if (fs.lstatSync(path.join(pathn, dir)).isDirectory()) {
+                    const temp = data;
+                    arrayOfPaths(temp, path.join(pathn, dir));
+                } else {
+                    data.push(path.join(pathn, dir));
+                }
             }
         });
 
@@ -609,6 +655,8 @@ module.exports = {
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
     if (serverSideRendering[after]) serverSideRendering[after]();
+    if (webpackServersideFunction[after]) webpackServersideFunction[after]();
+    if (babelRc[after]) babelRc[after]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);

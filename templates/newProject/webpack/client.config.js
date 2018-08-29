@@ -4,7 +4,7 @@ const settings = require('./settings');
 const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { reduce, map } = require('lodash');
+const { reduce, filter } = require('lodash');
 
 const context = path.join(__dirname, '..');
 
