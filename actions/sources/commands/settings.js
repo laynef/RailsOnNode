@@ -391,34 +391,6 @@ const command = (type, options) => {
         },
     };
 
-    const packageJsonDependiences = {
-        react: {
-            'react': '^16.4.2',
-            'react-dom': '^16.4.2',
-            'react-redux': '^5.0.7',
-        },
-        angular: {
-            '@angular/animations': '^6.1.0',
-            '@angular/common': '^6.1.0',
-            '@angular/compiler': '^6.1.0',
-            '@angular/core': '^6.1.0',
-            '@angular/forms': '^6.1.0',
-            '@angular/http': '^6.1.0',
-            '@angular/platform-browser': '^6.1.0',
-            '@angular/platform-browser-dynamic': '^6.1.0',
-            '@angular/router': '^6.1.0',
-            'core-js': '^2.5.4',
-            'rxjs': '^6.0.0',
-            'zone.js': '~0.8.26',
-        },
-        vue: {
-            'vue': '^2.1.0',
-        },
-        js: {
-
-        },
-    };
-
     const babelRc = {
         react: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
@@ -439,51 +411,48 @@ const command = (type, options) => {
 
         }`)
         },
-        angular: {
+        angular: () => {
+            fs.writeFileSync(path.join(root, '.babelrc'), `{
 
+                presets: [
+                    'react',
+                    'env',
+                    'stage-0',
+                ],
+    
+                plugins: [
+                    'transform-runtime',
+                    'add-module-exports',
+                    'transform-decorators-legacy',
+                    'transform-react-display-name',
+                    'transform-imports',
+                ]
+    
+            }`)
         },
-        vue: {
-            presets: [
-                'es2015',
-                'stage-2',
-            ],
-            plugins: [
-                'transform-runtime',
-            ],
+        vue: () => {
+            fs.writeFileSync(path.join(root, '.babelrc'), `{
+                
+                presets: [
+                    'es2015',
+                    'stage-2',
+                ],
+
+                plugins: [
+                    'transform-runtime',
+                ],
+                
+            }`)
         },
-        js: {
+        js: () => {
+            fs.writeFileSync(path.join(root, '.babelrc'), `{
+
             presets: [
                 'env',
                 'stage-0',
-            ],
-        },
-    };
+            ]
 
-    const packageJsonDevDependiences = {
-        react: {
-
-        },
-        angular: {
-            '@angular-devkit/build-angular': '~0.7.0',
-            '@angular/cli': '~6.1.3',
-            '@angular/compiler-cli': '^6.1.0',
-            '@angular/language-service': '^6.1.0',
-            '@types/jasmine': '~2.8.6',
-            '@types/jasminewd2': '~2.0.3',
-            '@types/node': '~8.9.4',
-            'codelyzer': '~4.2.1',
-            'protractor': '~5.3.0',
-            'ts-node': '~5.0.1',
-            'tslint': '~5.9.1',
-            'typescript': '~2.7.2',
-        },
-        vue: {
-            'vue-loader': '^10.0.0',
-            'vue-style-loader': '^1.0.0',
-            'vue-template-compiler': '^2.1.0',
-        },
-        js: {
-
+        }`)
         },
     };
 
@@ -505,11 +474,11 @@ module.exports = {
         const Application = require(path.join(assets, componentPath));
         req.session.redux = req.session.redux || store.getState();
 
-        const string = require('../../webpack/serverside');
+        const getServersideString = require('../../webpack/serverside');
 
         return {
             serversideStorage: JSON.stringify(req.session.redux),
-            serversideString: string(Application, store),
+            serversideString: getServersideString(Application, store),
         };
     },
 

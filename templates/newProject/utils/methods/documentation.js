@@ -139,7 +139,7 @@ module.exports = {
     `;
         }
 
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages', 'docs', apiVersion, apiVersion + '.' + settings.jsType), javascriptString);
+        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages', 'docs', apiVersion, apiVersion + '.js'), javascriptString);
         fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.styleType, 'pages', 'docs', apiVersion, apiVersion + '.' + settings.styleType), ``);
     },
 
