@@ -57,7 +57,7 @@ each(routeVersions, (versionDetails, apiVersion) => {
 
 // Static Pages
 const render = (pageName, customObject = {}) => (req, res) => {
-    res.status(200).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(req))));
+    res.status(200).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(pageName, req))));
 };
 
 if (process.env.NODE_ENV !== 'production') {
