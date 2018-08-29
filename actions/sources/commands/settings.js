@@ -654,9 +654,9 @@ module.exports = (Component, store) => {
     }
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
-    if (serverSideRendering[after]) serverSideRendering[after]();
-    if (webpackServersideFunction[after]) webpackServersideFunction[after]();
-    if (babelRc[after]) babelRc[after]();
+    if (serverSideRendering[before]) serverSideRendering[before]();
+    if (webpackServersideFunction[before]) webpackServersideFunction[before]();
+    if (babelRc[before]) babelRc[before]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
