@@ -6,8 +6,19 @@ const description = 'Change javascript frameworks or style types';
 
 const command = (type, options) => {
     if (!type || !options) {
-        console.red(`Please select a type of asset to change`);
+        console.red(`Please select a type of asset to change.`);
         return;
+    }
+
+    const allTypes = {
+        'react': 'jsx',
+        'angular': 'ts',
+        'vue': 'vue',
+        'js': 'js',
+        'less': 'less',
+        'sass': 'scss',
+        'css': 'css',
+        'bootstrap': 'bootstrap',
     }
 
     const TYPING = {
@@ -23,6 +34,11 @@ const command = (type, options) => {
             'css': 'css',
         },
     };
+
+    if (!allTypes[type]) {
+        console.red('Must use a supported type for settings.');
+        return;
+    }
 
     const assetsReplacements = {
         react: 'page.jsx',
@@ -387,16 +403,71 @@ const command = (type, options) => {
             'exclude': 'node_modules',
             'use': ['babel-loader'],
         }],
-        'vue': [{
-            'test': '.vue$',
-            'exclude': '(node_modules|bower_components)',
-            'use': ['vue-loader'],
-            'query': {
-                'presets': ['es2015', 'stage-2'],
-                'plugins': ['transform-runtime'],
-                'comments': false,
-            },
-        }],
+        'vue': {
+            "development": [
+                {
+                    "test": ".vue$",
+                    "exclude": "node_modules",
+                    "use": [{
+                        "loader": "vue-loader",
+                        "options": { 
+                            "presets": ["vue","env","stage-3"],
+                            "plugins": ["transform-runtime"]
+                        }
+                    }]
+                },
+                {
+                    "test": ".js$",
+                    "loader": "babel-loader",
+                    "exclude": "node_modules"
+                },
+                {
+                    "test": ".pug$",
+                    "oneOf": [
+                        { "resourceQuery": "^\\?vue", "use": ["pug-plain-loader"] },
+                        { "use": ["raw-loader", "pug-plain-loader"] }
+                    ]
+                },
+                {
+                    "test": ".html$",
+                    "oneOf": [
+                        { "resourceQuery": "^\\?vue", "use": ["html-loader"] },
+                        { "use": ["html-loader"] }
+                    ]
+                }
+            ],
+            "production": [
+                {
+                    "test": ".vue$",
+                    "exclude": "node_modules",
+                    "use": [{
+                            "loader": "vue-loader",
+                            "options": { 
+                                "presets": ["vue", "env", "stage-3"], 
+                                "plugins": ["transform-runtime"] 
+                            }
+                        }]
+                },
+                {
+                    "test": ".js$",
+                    "loader": "babel-loader",
+                    "exclude": "node_modules"
+                },
+                {
+                    "test": ".pug$",
+                    "oneOf": [
+                        { "resourceQuery": "^\\?vue", "use": ["pug-plain-loader"] },
+                        { "use": ["raw-loader", "pug-plain-loader"] }
+                    ]
+                },
+                {
+                    "test": ".html$",
+                    "oneOf": [
+                        { "resourceQuery": "^\\?vue", "use": [ "html-loader" ] },
+                        { "use": ["html-loader"] }
+                    ]
+                }]
+        },
         'js': {
             "development": [{
                 'test': '.js$',
@@ -464,8 +535,9 @@ const command = (type, options) => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
                 
                 "presets": [
-                    "es2015",
-                    "stage-2",
+                    "vue",
+                    "env",
+                    "stage-3",
                 ],
 
                 "plugins": [
@@ -524,7 +596,7 @@ module.exports = {
             fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
 const settings = require('../../webpack/settings');
 
-           
+            
 module.exports = {
 
     serverSide: (pageName, req) => {
@@ -537,25 +609,27 @@ module.exports = {
         fileArray.pop();
         const filePath = fileArray.join('/') + '/component.vue';
 
+        console.log(getServersideString(filePath))
+
         return Promise.all([
-            getServersideString(filePath)
+            getServersideString(filePath),
+            req.session.state,
         ])
         .then((htmls) => {
             return {
-                serversideStorage: JSON.stringify(req.session.state),
+                serversideStorage: JSON.stringify(htmls[1]),
                 serversideString: htmls[0],
             };
         })
         .catch(() => {
             return {
-                serversideStorage: JSON.stringify(req.session.state),
+                serversideStorage: JSON.stringify({}),
                 serversideString: '',
             };
         });
     },
-
-};
                         
+};                     
             `);
         },
         js: () => {
@@ -602,15 +676,15 @@ module.exports = (Component, store) => {
         },
         vue: () => {
             fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `const Vue = require('vue');
-const { createRenderer } = require('vue-server-render');
+const { createRenderer } = require('vue-server-renderer');
 
 module.exports = (filePath) => {
     const renderer = createRenderer();
-    const vue = new Vue(require(filePath));
-    return renderer.renderToString(vue, context)
+    const vue = new Vue({ render: h => h(require(filePath)) });
+    return renderer.renderToString(vue, {})
         .then((html) => html)
         .catch(() => '');
-};  
+};        
             `)
         },
         js: () => {
