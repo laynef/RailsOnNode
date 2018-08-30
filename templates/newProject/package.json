@@ -72,6 +72,7 @@
         "babel-register": "^6.26.0",
         "babel-runtime": "^6.26.0",
         "chai": "^4.1.2",
+        "cors": "^2.8.4",
         "css-loader": "^0.28.11",
         "exports-loader": "^0.7.0",
         "extract-text-webpack-plugin": "^4.0.0-beta.0",
