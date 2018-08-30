@@ -6,8 +6,19 @@ const description = 'Change javascript frameworks or style types';
 
 const command = (type, options) => {
     if (!type || !options) {
-        console.red(`Please select a type of asset to change`);
+        console.red(`Please select a type of asset to change.`);
         return;
+    }
+
+    const allTypes = {
+        'react': 'jsx',
+        'angular': 'ts',
+        'vue': 'vue',
+        'js': 'js',
+        'less': 'less',
+        'sass': 'scss',
+        'css': 'css',
+        'bootstrap': 'bootstrap',
     }
 
     const TYPING = {
@@ -23,6 +34,11 @@ const command = (type, options) => {
             'css': 'css',
         },
     };
+
+    if (!allTypes[type]) {
+        console.red('Must use a supported type for settings.');
+        return;
+    }
 
     const assetsReplacements = {
         react: 'page.jsx',

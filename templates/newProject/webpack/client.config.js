@@ -71,6 +71,7 @@ const setByRoute = (data, object, assetType) => {
         if (assetType === 'javascript') {
             obj[routePath] = obj[routePath] || [];
             obj[routePath].push('webpack-hot-middleware/client.js');
+            obj[routePath].push('babel-polyfill');
             if (object[route].docs && !useBootstrapToggle) {
                 for (let setting in settings.bootstrap.scripts) {
                     obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
