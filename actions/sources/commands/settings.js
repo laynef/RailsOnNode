@@ -36,6 +36,9 @@ const command = (type, options) => {
         angular: 'ts',
         vue: 'js',
         js: 'js',
+        sass: 'scss',
+        less: 'less',
+        css: 'css',
     };
 
     const suffixReplacements = {
@@ -43,6 +46,9 @@ const command = (type, options) => {
         ts: 'ts',
         vue: 'js',
         js: 'js',
+        sass: 'scss',
+        less: 'less',
+        css: 'css',
     };
 
     const notSupported = {
