@@ -13,7 +13,13 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
 const client = redis.createClient('redis://localhost:6379');
-const { globalRenders, makeHash, documentation, serverSide } = require('./utils');
+const { 
+    globalRenders, 
+    makeHash, 
+    documentation, 
+    serverSide,
+    updateDocs
+} = require('./utils');
 const { docs } = require('./controllers');
 const routeVersions = require('./routes');
 const { each } = require('lodash');
@@ -53,6 +59,7 @@ app.use((req, res, next) => {
 each(routeVersions, (versionDetails, apiVersion) => {
     const allRoutes = versionDetails[apiVersion];
     if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
+    if (process.env.NODE_ENV !== 'production') updateDocs(apiVersion);
     if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
