@@ -3,8 +3,11 @@ const noProduction = process.env.NODE_ENV !== 'production';
 const settings = require('./settings');
 const fs = require('fs');
 const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { reduce, filter } = require('lodash');
+const { reduce } = require('lodash');
+
+const vueJs = settings.jsType === 'vue';
 
 const context = path.join(__dirname, '..');
 
@@ -136,6 +139,7 @@ let plugins = [
 ];
 
 if (!noProduction) plugins.splice(3, 1);
+if (vueJs) plugins = plugins.concat([new VueLoaderPlugin()]) 
 
 module.exports = {
     name: 'client',
@@ -153,15 +157,15 @@ module.exports = {
             ...jsLoader,
             {
                 test: /\.css$/,
-                use: [noProduction ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [noProduction ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
                 test: /\.less$/,
-                use: [noProduction ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
             },
             {
                 test: /\.json$/,
@@ -173,9 +177,9 @@ module.exports = {
             },
         ],
     },
-    resolve: {
+    resolve: Object.assign({}, vueJs ? { alias: { 'vue$': 'vue/dist/vue.esm.js' } } : {}, {
         extensions: ['*', '.js', '.jsx', '.ts', '.vue', '.json', '.scss', '.sass', '.css', '.less'],
         moduleExtensions: ['-loader'],
-    },
+    }),
     plugins: plugins,
 };
