@@ -20,7 +20,7 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
                         div(class=`card-header ${data.routeHeader}`)
                             span.mr-1=data.method + ':'
                             span=data.route
-                        .card-body.p-2.w-100
+                        div(class='card-body p-2 w-100', style='max-height: 500px; overflow: auto;')
                             if data.middleware.length > 0
                                 h2.h5='Middleware Used: '
                                     ul
@@ -77,7 +77,7 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
                     .col-xs-12.col-sm-12-col-md-12.col-lg-6.col-xl-6.p-1.card-shadow.p-1
                         .card-header
                             h2.h5='Sample Data'
-                        .card-body
+                        div(class='card-body', style='max-height: 500px; overflow: auto;')
                             code(style={'white-space': 'pre', 'overflow': 'auto', 'display': 'block'})
                                 span(id=`${data.camelCased}-results`)
         script.
