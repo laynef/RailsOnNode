@@ -4,3 +4,4 @@ assets/dist
 CONTRIBUTORS.md 
 *.pem
 package-lock.json
+.env
