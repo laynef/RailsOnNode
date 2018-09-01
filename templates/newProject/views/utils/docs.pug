@@ -29,6 +29,10 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
                             h2.h5='Description: '
                                 ul
                                     li.h6=data.description
+                            .d-flex.f-row.w-100
+                                h2.w-100.h6='Authorization Header'
+                            .d-flex.f-row.w-100
+                                input(id=`${data.camelCased}AuthorizationToken`, type='text', class='w-100 m-1 form-control', placeholder='Enter token')
                             if data.allowParams
                                 .d-flex.f-row.w-100
                                     h2.w-100.h6='Params: '

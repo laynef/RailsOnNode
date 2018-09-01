@@ -17,6 +17,8 @@ module.exports = {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     var csrfHeader = { headers: { 'X-CSRF-Token': null } };
     csrfHeader.headers['X-CSRF-Token'] = csrfToken;
+    var jsonWebToken = document.getElementById('${camelCased}AuthorizationToken');
+    if (jsonWebToken && jsonWebToken.value) csrfHeader.headers['Authorization'] = jsonWebToken.value;
 
     var paramObject = {};
     var tempParamKey = null;

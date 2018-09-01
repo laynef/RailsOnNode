@@ -59,15 +59,15 @@ app.use((req, res, next) => {
 
 each(routeVersions, (versionDetails, apiVersion) => {
     const allRoutes = versionDetails[apiVersion];
-    documentation({ allRoutes, apiVersion });
-    updateDocs(apiVersion);
-    app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
+    if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
+    if (process.env.NODE_ENV !== 'production') updateDocs(apiVersion);
+    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
 // Static Pages
 const render = (pageName, customObject = {}) => (req, res) => {
-    res.status(200).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(req))));
+    res.status(200).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(pageName, req))));
 };
 
 if (process.env.NODE_ENV !== 'production') {
