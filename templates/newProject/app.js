@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -12,9 +13,9 @@ const parser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
-const client = redis.createClient('redis://localhost:6379');
-const { 
-    globalRenders, 
+const client = redis.createClient(process.env.REDIS_URL);
+const {
+    globalRenders,
     makeHash, 
     documentation, 
     serverSide,
@@ -58,15 +59,15 @@ app.use((req, res, next) => {
 
 each(routeVersions, (versionDetails, apiVersion) => {
     const allRoutes = versionDetails[apiVersion];
-    if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
-    if (process.env.NODE_ENV !== 'production') updateDocs(apiVersion);
-    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
+    documentation({ allRoutes, apiVersion });
+    updateDocs(apiVersion);
+    app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
 // Static Pages
 const render = (pageName, customObject = {}) => (req, res) => {
-    res.status(200).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(pageName, req))));
+    res.status(200).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(req))));
 };
 
 if (process.env.NODE_ENV !== 'production') {
@@ -96,6 +97,23 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.get('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
+app.get('/api/middleware', render('pages/api/middleware/middleware', { hashId: makeHash(40) }));
+app.get('/default/config', render('pages/default/config/configuration', { hashId: makeHash(40) }));
+app.get('/routes/settings', render('pages/routes/settings/settings', { hashId: makeHash(40) }));
+app.get('/new/api/routes', render('pages/new/api/routes/routes', { hashId: makeHash(40) }));
+app.get('/new/api/versions', render('pages/new/api/versions/versions', { hashId: makeHash(40) }));
+app.get('/get/started', render('pages/get/started/start', { hashId: makeHash(40) }));
+app.get('/settings', render('pages/settings/settings', { hashId: makeHash(40) }));
+app.get('/blogs', render('pages/blogs/blogs', { hashId: makeHash(40) }));
+app.get('/meta/tags', render('pages/meta/tags/metatags', { hashId: makeHash(40) }));
+app.get('/bootstrap', render('pages/bootstrap/bootstrap', { hashId: makeHash(40) }));
+app.get('/new/api/controllers', render('pages/new/api/controllers/controllers', { hashId: makeHash(40) }));
+app.get('/new/routes', render('pages/new/routes/routes', { hashId: makeHash(40) }));
+app.get('/tutorials', render('pages/tutorials/tutorials', { hashId: makeHash(40) }));
+app.get('/database', render('pages/database/database', { hashId: makeHash(40) }));
+app.get('/api/documentation', render('pages/api/documentation/documentation', { hashId: makeHash(40) }));
+app.get('/help', render('pages/help/help', { hashId: makeHash(40) }));
+app.get('/controllers', render('pages/controllers/controllers', { hashId: makeHash(40) }));
 
 app.use('*', (req, res) => {
     res.status(404).render('errors/404', { hashId: makeHash(40) });
