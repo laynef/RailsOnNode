@@ -50,3 +50,8 @@ for (let commandName in allCommands) {
         });
     });
 }
+
+fs.readdirSync(path.join(__dirname, 'custom')).forEach(dir => {
+    const func = require(path.join(__dirname, 'custom', dir));
+    func();
+});

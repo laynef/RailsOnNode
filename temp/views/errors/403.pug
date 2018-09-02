@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        include ../utils/meta.pug
+        title 403: Nice Try!
+        if process.env.NODE_ENV === 'production'
+            link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/errors/403/403.css?id=${hashId}`)
+    body
+        h1(style='text-align: center;') 403 Error
+        h2(style='text-align: center;') Forbidden Page
+        include ../utils/noscript.pug
+        script(src=`/assets/dist/pages/errors/403/403.js?id=${hashId}`, async)

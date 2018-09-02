@@ -1,0 +1,15 @@
+<!DOCTYPE html5>
+html(lang="en")
+    head
+        include ../utils/meta.pug
+        title Node On Rails
+        if process.env.NODE_ENV === 'production'
+            link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/index.css?id=${hashId}`)
+    body
+        include ../utils/new-page.pug
+        include ../utils/scripts.pug
+        if process.env.NODE_ENV === 'production'
+            script(src=`/assets/dist/pages/index.js?id=${hashId}`, async)
+        else
+            each file in jsFiles
+                script(src=`/assets/dist/pages${file}?id=${hashId}`, async)
