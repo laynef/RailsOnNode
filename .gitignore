@@ -1,3 +1,5 @@
 node_modules
 CONTRIBUTORS.md
 temp
+*.rdb
+.DS_Store
