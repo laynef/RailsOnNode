@@ -3,6 +3,7 @@ const path = require('path');
 const { expect } = require('chai');
 const { size } = require('lodash');
 const colors = require('colors/safe');
+const shell = require('shelljs');
 
 console.blue = (str) => { console.log(colors.blue(str)); };
 console.green = (str) => { console.log(colors.green(str)); };
@@ -51,7 +52,16 @@ for (let commandName in allCommands) {
     });
 }
 
+const root = path.join(__dirname, '..');
+
+shell.exec(`node-rails create temp`);
+shell.cd(path.join(root, 'temp'));
+shell.exec(`npm install`);
+
 fs.readdirSync(path.join(__dirname, 'custom')).forEach(dir => {
     const func = require(path.join(__dirname, 'custom', dir));
     func();
 });
+
+shell.cd(root);
+shell.rm('-rf', path.join(root, 'temp'));
