@@ -15,10 +15,9 @@ const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
 const client = redis.createClient(process.env.REDIS_URL);
 const {
-    globalRenders,
+    render,
     makeHash, 
     documentation, 
-    serverSide,
     updateDocs
 } = require('./utils');
 const { docs } = require('./controllers');
@@ -65,11 +64,6 @@ each(routeVersions, (versionDetails, apiVersion) => {
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
-// Static Pages
-const render = (pageName, customObject = {}) => (req, res) => {
-    res.status(200).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(pageName, req))));
-};
-
 if (process.env.NODE_ENV !== 'production') {
     const webpackConfig = require('./webpack/client.config');
     const compiler = require('webpack')(webpackConfig);
@@ -97,23 +91,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.get('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
-app.get('/api/middleware', render('pages/api/middleware/middleware', { hashId: makeHash(40) }));
-app.get('/default/config', render('pages/default/config/configuration', { hashId: makeHash(40) }));
-app.get('/routes/settings', render('pages/routes/settings/settings', { hashId: makeHash(40) }));
-app.get('/new/api/routes', render('pages/new/api/routes/routes', { hashId: makeHash(40) }));
-app.get('/new/api/versions', render('pages/new/api/versions/versions', { hashId: makeHash(40) }));
-app.get('/get/started', render('pages/get/started/start', { hashId: makeHash(40) }));
-app.get('/settings', render('pages/settings/settings', { hashId: makeHash(40) }));
-app.get('/blogs', render('pages/blogs/blogs', { hashId: makeHash(40) }));
-app.get('/meta/tags', render('pages/meta/tags/metatags', { hashId: makeHash(40) }));
-app.get('/bootstrap', render('pages/bootstrap/bootstrap', { hashId: makeHash(40) }));
-app.get('/new/api/controllers', render('pages/new/api/controllers/controllers', { hashId: makeHash(40) }));
-app.get('/new/routes', render('pages/new/routes/routes', { hashId: makeHash(40) }));
-app.get('/tutorials', render('pages/tutorials/tutorials', { hashId: makeHash(40) }));
-app.get('/database', render('pages/database/database', { hashId: makeHash(40) }));
-app.get('/api/documentation', render('pages/api/documentation/documentation', { hashId: makeHash(40) }));
-app.get('/help', render('pages/help/help', { hashId: makeHash(40) }));
-app.get('/controllers', render('pages/controllers/controllers', { hashId: makeHash(40) }));
 
 app.use('*', (req, res) => {
     res.status(404).render('errors/404', { hashId: makeHash(40) });
@@ -127,8 +104,4 @@ app.use((error, req, res, next) => {
     next();
 });
 
-const server = http.createServer(app);
-const httpPort = process.env.PORT || 8080;
-server.listen(httpPort, () => {
-    console.log(`Running on port ${httpPort}`);
-});
+module.exports = app;

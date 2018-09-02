@@ -1,5 +1,6 @@
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
+const http = require('http');
 
 // Master process
 // This is the node that runs and controls where to distribute traffic it is slave processors
@@ -43,5 +44,10 @@ if (cluster.isMaster) {
 } else {
     // isMaster will be false
     // isWorker will be true: set the children's work
-    require('./app');
+
+    const server = http.createServer(require('./app'));
+    const httpPort = process.env.PORT || 8080;
+    server.listen(httpPort, () => {
+        console.log(`Running on port ${httpPort}`);
+    });
 }
