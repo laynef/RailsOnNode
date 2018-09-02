@@ -15,7 +15,7 @@ const command = (pageName, routePath, options) => {
 
     const testingpath = path.join(root, 'tests', 'routes.json');
     const routeTests = require(testingpath);
-    routeTests.push(pageName);
+    routeTests.push(`pages${routePath}/${pageName}`);
 
     fs.writeFileSync(testingpath, JSON.stringify(routeTests, null, 4));
 
