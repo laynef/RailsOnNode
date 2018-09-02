@@ -2,6 +2,8 @@
 
 Check out the API Documentation: https://railsonnode.com/
 
+Stable Version 1.3.1
+
 ## Requirements
 - Node.js >= 8
 - Redis >= 4
