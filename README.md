@@ -1,5 +1,7 @@
 # Rails On Node: Opinionated Node.js Framework
 
+Check out the API Documentation: https://railsonnode.com/
+
 ## Requirements
 - Node.js >= 8
 - Redis >= 4
