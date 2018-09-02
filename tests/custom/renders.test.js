@@ -10,5 +10,7 @@ module.exports = () => {
     shell.exec(`npm install`);
     shell.exec(`npm run build:dev`);
     shell.exec(`npm test`);
-
+    shell.exec(`npm test`);
+    shell.cd(root);
+    shell.rm('-rf', path.join(root, 'temp'));
 };
