@@ -13,6 +13,12 @@ const command = (pageName, routePath, options) => {
     const root = process.cwd();
     const settings = require(path.join(root, 'webpack', 'settings.js'));
 
+    const testingpath = path.join(root, 'tests', 'routes.json');
+    const routeTests = require(testingpath);
+    routeTests.push(pageName);
+
+    fs.writeFileSync(testingpath, JSON.stringify(routeTests, null, 4));
+
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
     const templates = fs.readFileSync(path.join(templatePath, 'assets', 'page.pug'), { encoding: 'utf8' });
     const newTemplateAssets = templates.replace(/\/CLIPAGE/g, `${routePath}/${pageName}`);
