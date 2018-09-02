@@ -10,7 +10,7 @@ const views = require('./routes.json');
 
 process.env.TESTING = true;
 
-const viewRoutes = views.map(pageName => {
+let viewRoutes = views.map(pageName => {
     const routeArray = pageName.split('/');
     routeArray[0] = '';
     routeArray[routeArray.length - 1] = '';
@@ -41,79 +41,79 @@ for (let apiVersion in routes) {
     for (let values in val) {
         const allRoutes = val[values];
         if (Array.isArray(allRoutes)) {
-            const allTestRoutes = viewRoutes.concat(allRoutes).filter(e => !e.ignore);
-
-            allTestRoutes.forEach(route => {
-
-                const tests = {
-                    'GET': (app, route, status, done) => {
-                        return request(app)
-                            .get(route)
-                            .expect(status)
-                            .end(function(err, res) {
-                                if (err) return done(err);
-                                else return done(res);
-                            });
-                    },
-                    'POST': (app, route, status, done) => {
-                        return request(app)
-                            .post(route)
-                            .expect(status)
-                            .end(function(err, res) {
-                                if (err) return done(err);
-                                else return done(res);
-                            });
-                    },
-                    'PATCH': (app, route, status, done) => {
-                        return request(app)
-                            .patch(route)
-                            .expect(status)
-                            .end(function(err, res) {
-                                if (err) return done(err);
-                                else return done(res);
-                            });
-                    },
-                    'PUT': (app, route, status, done) => {
-                        return request(app)
-                            .put(route)
-                            .expect(status)
-                            .end(function(err, res) {
-                                if (err) return done(err);
-                                else return done(res);
-                            });
-                    },
-                    'DELETE': (app, route, status, done) => {
-                        return request(app)
-                            .delete(route)
-                            .expect(status)
-                            .end(function(err, res) {
-                                if (err) return done(err);
-                                else return done(res);
-                            });
-                    },
-                }
-
-                const status = route.method === 'POST' ? 201 :
-                route.method === 'PATCH' ? 202 :
-                route.method === 'PUT' ? 202 :
-                route.method === 'DELETE' ? 203 : 200;
-
-                const paramReplacements = {
-                    ':id': 1,
-                }
-
-                const testRoute = route.route.split('/').map(e => {
-                    return paramReplacements[e] ? paramReplacements[e] : e;
-                }).join('/');
-
-                describe(`Testing Server Calls`, (done) => {
-                    const response = tests[route.method](app, testRoute, status, done);
-                    it(`Server call was successful`, () => {
-                        expect(typeof response === 'object').to.be.true;
-                    });
-                });
-            
-            });
+            viewRoutes = viewRoutes.concat(allRoutes).filter(e => !e.ignore);
         }
     }
 }
+
+viewRoutes.forEach(route => {
+
+    const tests = {
+        'GET': (app, route, status, done) => {
+            return request(app)
+                .get(route)
+                .expect(status)
+                .end(function(err, res) {
+                    if (err) return done(err);
+                    else return done(res);
+                });
+        },
+        'POST': (app, route, status, done) => {
+            return request(app)
+                .post(route)
+                .expect(status)
+                .end(function(err, res) {
+                    if (err) return done(err);
+                    else return done(res);
+                });
+        },
+        'PATCH': (app, route, status, done) => {
+            return request(app)
+                .patch(route)
+                .expect(status)
+                .end(function(err, res) {
+                    if (err) return done(err);
+                    else return done(res);
+                });
+        },
+        'PUT': (app, route, status, done) => {
+            return request(app)
+                .put(route)
+                .expect(status)
+                .end(function(err, res) {
+                    if (err) return done(err);
+                    else return done(res);
+                });
+        },
+        'DELETE': (app, route, status, done) => {
+            return request(app)
+                .delete(route)
+                .expect(status)
+                .end(function(err, res) {
+                    if (err) return done(err);
+                    else return done(res);
+                });
+        },
+    }
+
+    const status = route.method === 'POST' ? 201 :
+    route.method === 'PATCH' ? 202 :
+    route.method === 'PUT' ? 202 :
+    route.method === 'DELETE' ? 203 : 200;
+
+    const paramReplacements = {
+        ':id': 1,
+    }
+
+    const testRoute = route.route.split('/').map(e => {
+        return paramReplacements[e] ? paramReplacements[e] : e;
+    }).join('/');
+
+    describe(`Testing Server Calls`, (done) => {
+        const response = tests[route.method](app, testRoute, status, done);
+        it(`Server call was successful`, () => {
+            expect(typeof response === 'object').to.be.true;
+        });
+    });
+
+});
