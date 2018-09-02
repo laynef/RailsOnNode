@@ -48,20 +48,14 @@ app.use(session({
         token: null,
     },
 }));
-app.use(protection);
-app.use((req, res, next) => {
-    req.session.cookie.token = req.csrfToken();
-    res.locals.csrfToken = req.csrfToken();
-    next();
-});
-
-each(routeVersions, (versionDetails, apiVersion) => {
-    const allRoutes = versionDetails[apiVersion];
-    if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
-    if (process.env.NODE_ENV !== 'production') updateDocs(apiVersion);
-    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
-    app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
-});
+if (!process.env.TESTING) {
+    app.use(protection);
+    app.use((req, res, next) => {
+        req.session.cookie.token = req.csrfToken();
+        res.locals.csrfToken = req.csrfToken();
+        next();
+    });
+}
 
 if (process.env.NODE_ENV !== 'production') {
     const webpackConfig = require('./webpack/client.config');
@@ -87,6 +81,14 @@ if (process.env.NODE_ENV !== 'production') {
         reload: true,
     }));
 }
+
+each(routeVersions, (versionDetails, apiVersion) => {
+    const allRoutes = versionDetails[apiVersion];
+    if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
+    if (process.env.NODE_ENV !== 'production') updateDocs(apiVersion);
+    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
+    app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
+});
 
 app.get('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes

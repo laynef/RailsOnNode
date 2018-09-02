@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "mocha ./tests/index.js",
+        "test": "TESTING='true' mocha ./tests/index.js",
         "start": "NODE_ENV='production' npx babel-node server.js",
         "dev": "NODE_ENV='development' npx babel-node server.js",
         "build:dev": "NODE_ENV='development' webpack --config ./webpack/client.config.js",

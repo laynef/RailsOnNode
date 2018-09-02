@@ -1,3 +1,4 @@
+require('babel-register');
 const fs = require('fs');
 const path = require('path');
 const { expect } = require('chai');
@@ -6,6 +7,8 @@ const app = require('../app');
 const routes = require('../routes');
 const { render, makeHash } = require('../utils');
 const views = require('./routes.json');
+
+process.env.TESTING = true;
 
 const viewRoutes = views.map(pageName => {
     const routeArray = pageName.split('/');
