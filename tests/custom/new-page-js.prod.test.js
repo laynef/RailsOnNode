@@ -6,7 +6,8 @@ module.exports = () => {
     const temp = path.join(__dirname, '..', '..', 'temp');
 
     shell.exec(`npm run clean:assets`);
-    shell.exec(`npm run build:dev`);
+    shell.exec(`node-rails new-page blogs '/blogs'`);
+    shell.exec(`npm run build:prod`);
     shell.exec(`npm test`);
     
 };
