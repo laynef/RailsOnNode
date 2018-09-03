@@ -9,5 +9,6 @@ module.exports = () => {
     shell.exec(`node-rails settings react`);
     shell.exec(`npm run build:prod`);
     shell.exec(`npm test`);
+    shell.exec(`node-rails settings js`);
     
 };

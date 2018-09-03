@@ -9,5 +9,6 @@ module.exports = () => {
     shell.exec(`node-rails settings less`);
     shell.exec(`npm run build:dev`);
     shell.exec(`npm test`);
+    shell.exec(`node-rails settings css`);
     
 };
