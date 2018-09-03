@@ -1,5 +1,7 @@
 # Rails On Node: Opinionated Node.js Framework
 
+<div style="text-align:center"><img src ="./rails-black.svg" /></div>
+
 Check out the API Documentation: https://railsonnode.com/
 
 Stable Version 1.3.2
