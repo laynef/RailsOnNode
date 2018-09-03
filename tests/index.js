@@ -57,6 +57,8 @@ const root = path.join(__dirname, '..');
 shell.exec(`node-rails create temp`);
 shell.cd(path.join(root, 'temp'));
 shell.exec(`npm install`);
+shell.exec(`npm run build:prod`);
+shell.exec(`npm run clean:assets`);
 
 fs.readdirSync(path.join(__dirname, 'custom')).forEach(dir => {
     const func = require(path.join(__dirname, 'custom', dir));

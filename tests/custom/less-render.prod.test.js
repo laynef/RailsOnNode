@@ -7,7 +7,7 @@ module.exports = () => {
 
     shell.exec(`npm run clean:assets`);
     shell.exec(`node-rails settings less`);
-    shell.exec(`npm run build:production`);
+    shell.exec(`npm run build:prod`);
     shell.exec(`npm test`);
     
 };
