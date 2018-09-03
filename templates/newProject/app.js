@@ -57,7 +57,7 @@ if (!process.env.TESTING) {
     });
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (!process.env.TESTING && process.env.NODE_ENV !== 'production') {
     const webpackConfig = require('./webpack/client.config');
     const compiler = require('webpack')(webpackConfig);
     app.use(require('webpack-dev-middleware')(compiler, {
