@@ -2,7 +2,7 @@
 
 Check out the API Documentation: https://railsonnode.com/
 
-Stable Version 1.3.1
+Stable Version 1.3.2
 
 ## Requirements
 - Node.js >= 8
@@ -14,8 +14,9 @@ Stable Version 1.3.1
 - Generate new api controllers
 - Generate new api versions
 - Creates automatic API documentation for endpoints on creation with no extra configuration
+- Creates automatic unit tests for endpoints on creation with no extra configuration
 - Generate new pages with assets with a custom route with code splitting
-- Use serverside React or jQuery
+- Use serverside React or Vanilla JS (JQuery, etc.)
 
 ## Coming Soon
 - Generate server side Angular 4 Application
@@ -26,65 +27,22 @@ Stable Version 1.3.1
 // brew install redis
 // Must have redis running on default port 6379: redis-server
 npm i -g rails-on-node
+npm i -g sequelize-cli
+npm i -g mongoose-model-cli
 node-rails create <Your project>
 node-rails setup-data-base <Your database type [sql *or* mongodb]>
-node-rails new-api-controller users --version=1 // Add new controler in version 1
+node-rails new-api-controller users
 node-rails new-page blogs '/blogs' // Add new route
 npm install
 npm run build:prod
 npm start
 ```
 
-## Development
-```
-npm install
-npm run build:dev
-npm run dev
-```
-
-## API Documentation
-```
-API Version V1
-http://localhost:8080/docs/v1/
-
-API Version V2
-http://localhost:8080/docs/v2/
-
-...etc
-```
-
-## Settings
-- Set different style types
-```
-node-rails settings sass
-node-rails settings less
-node-rails settings css // default
-```
-- Set different javascript types
-```
-node-rails settings react
-node-rails settings js // default
-```
-
-## Documentation
+## CLI Documentation
 ```
 // For all commands
 node-rails
 
 // For a single command
 node-rails <command-name> --help
-```
-
-## New Routes
-```
-// brew install redis
-// Must have redis running on default port 6379: redis-server
-npm i -g rails-on-node
-node-rails create <Your project>
-node-rails setup-data-base <Your database type [sql *or* mongodb]>
-node-rails new-api-controller users
-node-rails new-page blogs '/blogs'
-npm install
-npm run build:prod
-npm start
 ```
