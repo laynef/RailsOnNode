@@ -1,6 +1,8 @@
 const cluster = require('cluster');
-const numCPUs = require('os').cpus().length;
+let numCPUs = require('os').cpus().length;
 const http = require('http');
+const isProduction = process.env.NODE_ENV === 'production';
+numCPUs = isProduction ? numCPUs : 1;
 
 // Master process
 // This is the node that runs and controls where to distribute traffic it is slave processors

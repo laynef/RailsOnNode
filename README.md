@@ -1,6 +1,6 @@
 # Rails On Node: Opinionated Node.js Framework
 
-<div style="text-align:center"><img src ="./rails-black.svg" /></div>
+<div style="text-align:center"><img src ="https://railsonnode.com/assets/img/rails-black.svg" /></div>
 
 Check out the API Documentation: https://railsonnode.com/
 

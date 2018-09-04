@@ -10,7 +10,7 @@ const webpackHotReloads = (res, application) => {
         const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
         const assets = normalizeAssets(assetsByChunkName[application]);
 
-        return assets.reduce((acc, item) => {
+        return assets.filter(e => !!e).reduce((acc, item) => {
             if (item.endsWith('.js')) acc.js.push(item);
             if (item.endsWith('.css')) acc.css.push(item);
             return acc;
