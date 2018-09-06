@@ -47,7 +47,6 @@
         "redux-thunk": "^2.3.0",
         "sequelize": "^4.38.0",
         "serve-favicon": "^2.5.0",
-        "sqlite3": "^3.1.8",
         "tedious": "^1.14.0",
         "vue": "^2.5.17",
         "vue-server-renderer": "^2.5.17"
@@ -99,6 +98,7 @@
         "resolve-url-loader": "^2.3.0",
         "sass-loader": "^6.0.7",
         "sequelize-cli": "^4.1.1",
+        "sqlite3": "^3.1.8",
         "style-loader": "^0.19.1",
         "sugarss": "^2.0.0",
         "supertest": "^3.1.0",
