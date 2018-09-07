@@ -7,13 +7,14 @@ module.exports =  {
     createServiceWorker: () => {
 		let now = Date();
         now = now.replace(/\s/g, '');
+        const root = process.cwd();
         const distDir = (pathname, data) => {
             return fs.readdirSync(pathname).reduce((acc, item) => {
                 const pathn = path.join(pathname, item);
                 if (fs.lstatSync(pathn).isDirectory()) {
                     distDir(pathn, data);
                 } else {
-                    data.push(pathn);
+                    data.push(`'${pathn.replace(RegExp(root, 'g'), '')}?timestamp=${now}'`);
                 }
                 return acc;
             }, data);
