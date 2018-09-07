@@ -1,8 +1,10 @@
 const cluster = require('cluster');
 let numCPUs = require('os').cpus().length;
 const http = require('http');
+const { createServiceWorker } = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
 numCPUs = isProduction ? numCPUs : 1;
+createServiceWorker();
 
 // Master process
 // This is the node that runs and controls where to distribute traffic it is slave processors
