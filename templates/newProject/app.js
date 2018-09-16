@@ -48,6 +48,7 @@ app.use(session({
         token: null,
     },
 }));
+
 if (!process.env.TESTING) {
     app.use(protection);
     app.use((req, res, next) => {
@@ -104,5 +105,15 @@ app.use((error, req, res, next) => {
     }
     next();
 });
+
+if (process.env.FOCUS_HTTPS) {
+    app.use((req, res, next) => {
+        if (req.protocol === 'http') {
+            res.redirect(`https://${req.hostname}${req.url}`)
+        } else {
+            next();
+        }
+    });
+}
 
 module.exports = app;
