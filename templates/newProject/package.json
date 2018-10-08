@@ -103,6 +103,7 @@
         "style-loader": "^0.19.1",
         "sugarss": "^2.0.0",
         "supertest": "^3.1.0",
+        "time-fix-plugin": "^2.0.3",
         "url-loader": "^1.0.1",
         "vue-loader": "^15.4.1",
         "vue-style-loader": "^4.1.2",
