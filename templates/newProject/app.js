@@ -68,6 +68,7 @@ if (!process.env.TESTING && process.env.NODE_ENV !== 'production') {
         serverSideRender: true,
         quiet: true,
         lazy: false,
+        logLevel: 'error',
         contentBase: path.join(__dirname, 'assets', 'dist', 'pages'),
         stats: {
             context: path.join(__dirname, 'assets', 'dist', 'pages'),
