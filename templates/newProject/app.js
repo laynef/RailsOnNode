@@ -22,6 +22,7 @@ const {
 const { docs } = require('./controllers');
 const routeVersions = require('./routes');
 const { each } = require('lodash');
+const meta = require('./app.json');
 
 const protection = csrf();
 const app = new Express();
@@ -43,11 +44,12 @@ app.use(session({
     store: new RedisStore({ client: client, disableTTL: true }),
     saveUninitialized: true,
     resave: false,
-    name: 'Example',
+    name: meta.title,
     cookie: {
         token: null,
     },
 }));
+
 if (!process.env.TESTING) {
     app.use(protection);
     app.use((req, res, next) => {
@@ -66,9 +68,9 @@ if (!process.env.TESTING && process.env.NODE_ENV !== 'production') {
         serverSideRender: true,
         quiet: true,
         lazy: false,
-        contentBase: path.join(__dirname, '..', 'assets', 'dist', 'pages'),
+        contentBase: path.join(__dirname, 'assets', 'dist', 'pages'),
         stats: {
-            context: path.join(__dirname, '..', 'assets', 'dist', 'pages'),
+            context: path.join(__dirname, 'assets', 'dist', 'pages'),
             assets: true,
             cachedAssets: true,
         },
@@ -78,7 +80,6 @@ if (!process.env.TESTING && process.env.NODE_ENV !== 'production') {
         dynamicPublicPath: webpackConfig.output.publicPath,
         heartbeat: 10 * 1000,
         timeout: 20 * 1000,
-        reload: true,
     }));
 }
 

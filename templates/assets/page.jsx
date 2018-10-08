@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import createStore from '// Redux here';
 import Application from './component';
 
-// Route Path
+import '// Route Path';
 
 const dest = document.getElementById('app');
 const store = createStore(window.STORAGE || {});
@@ -18,8 +18,12 @@ const application = (
 ReactDOM.render(application, dest);
 
 /* eslint-disable */
-if (process.env.NODE_ENV !== 'production' && module.hot) {
-	module.hot.accept([], () => {
+if (module.hot) {
+	module.hot.accept([
+		'./component',
+		'// Redux here',
+		'// Route Path',
+	], () => {
 		const newStore = createStore(window.STORAGE || {});
 
 		const newApplication = (

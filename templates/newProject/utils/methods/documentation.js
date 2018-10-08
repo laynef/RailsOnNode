@@ -146,10 +146,10 @@ module.exports = {
     },
 
     updateDocs: (apiVersion) => {
-        const bundle = fs.readFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'pages', 'docs', apiVersion, `${apiVersion}.js`), { encoding: 'utf8' });
+        const bundle = fs.readFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'pages', `docsV1.js`), { encoding: 'utf8' });
         const js = fs.readFileSync(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages', 'docs', apiVersion, `${apiVersion}.js`), { encoding: 'utf8' });
         const complete = bundle + js;
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'pages', 'docs', apiVersion, `${apiVersion}.js`), complete);
+        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'pages', `docsV1.js`), complete);
     }
 
 };

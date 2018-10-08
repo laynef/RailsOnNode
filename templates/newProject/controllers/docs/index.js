@@ -29,5 +29,5 @@ module.exports = ({ apiVersion, allRoutes }) => (req, res) => {
                             ? 'btn btn-outline-danger' : '',
     }));
 
-    res.status(200).render('utils/docs', globalRenders('utils/docs', req, res, { allRoutes: data, apiVersion, hashId: makeHash(40) }));
+    res.status(200).render('utils/docs', globalRenders('utils/docs', req, res, { allRoutes: data, apiVersion: apiVersion.toUpperCase(), hashId: makeHash(40) }));
 };

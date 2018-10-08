@@ -1,11 +1,13 @@
 const webpack = require('webpack');
 const noProduction = process.env.NODE_ENV !== 'production';
+const WriteFilePlugin = require('write-file-webpack-plugin');
+const TimeFixPlugin = require('time-fix-plugin');
 const settings = require('./settings');
 const fs = require('fs');
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { reduce } = require('lodash');
+const { reduce, camelCase } = require('lodash');
 
 const vueJs = settings.jsType === 'vue';
 
@@ -18,6 +20,7 @@ const recursiveFind = (data, pathnm) => {
                 recursiveFind(data, path.join(pathnm, dir));
             } else {
                 const fullPath = path.join(pathnm, dir);
+
                 const pageName = dir.split('.')[0];
                 data[`${pathnm}/`] = {
                     pageName: pageName,
@@ -49,6 +52,12 @@ const jsPaths = Object.assign({}, reduce(recursiveFind({}, jsPath), (acc, val, k
 }, {}));
 
 const jsLoader = settings.javascriptSettings[noProduction ? 'development': 'production'].map(e => {
+    const includes = e.use.reduce((a, i) => {
+        const include = i.loader === 'babel-loader' ? Object.keys(jsPaths)
+            .concat(path.join(context, 'assets', jsType, 'redux', `store.${jsType}`)) : false;
+        if (include) a = { include };
+        return a;
+    }, {});
     const test = e.test;
     const exclude = e.exclude;
     delete e.test;
@@ -56,6 +65,7 @@ const jsLoader = settings.javascriptSettings[noProduction ? 'development': 'prod
 
     return {
         ...e,
+        ...includes,
         test: new RegExp(test),
         exclude: new RegExp(exclude),
     }
@@ -70,7 +80,7 @@ const setByRoute = (data, object, assetType) => {
 
         if (assetType === 'javascript') {
             obj[routePath] = obj[routePath] || [];
-            obj[routePath].push('webpack-hot-middleware/client.js');
+            obj[routePath].push('webpack-hot-middleware/client');
             obj[routePath].push('babel-polyfill');
             if (object[route].docs && !useBootstrapToggle) {
                 for (let setting in settings.bootstrap.scripts) {
@@ -122,7 +132,17 @@ const bundleJavaScriptLast = (routeObject) => {
 let withJavascripts = setByRoute({}, jsPaths, 'javascript');
 let withStylesheets = setByRoute(withJavascripts, cssPaths, 'stylesheet');
 
-const entry = bundleJavaScriptLast(withStylesheets);
+const entrances = bundleJavaScriptLast(withStylesheets);
+
+const entry = {};
+for (let k in entrances) {
+    let key = null;
+    let array = k.split('/').map(e => e.replace(RegExp(':', 'ig'), ''));
+    array.pop()
+    if (k === '/index') key = camelCase('index')
+    else key = camelCase(array.join(' '));
+    entry[key] = entrances[k];
+}
 
 let plugins = [
     new webpack.LoaderOptionsPlugin({
@@ -132,17 +152,18 @@ let plugins = [
     }),
     new MiniCssExtractPlugin({
         filename: '[name].css',
-        chunkFilename: '[name]-[id].css',
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new TimeFixPlugin(),
+	new WriteFilePlugin(),
 ];
 
 if (!noProduction) plugins.splice(3, 1);
 if (vueJs) plugins = plugins.concat([new VueLoaderPlugin()]) 
 
-module.exports = {
+const configuration = {
     name: 'client',
     mode: noProduction ? 'development' : 'production',
     context: context,
@@ -184,3 +205,5 @@ module.exports = {
     }),
     plugins: plugins,
 };
+
+module.exports = configuration;
