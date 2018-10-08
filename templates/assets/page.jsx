@@ -31,7 +31,7 @@ if (module.hot) {
 				<Application />
 			</Provider>
         );
-        
+
 		ReactDOM.render(newApplication, dest);
 	});
 }
