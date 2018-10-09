@@ -3,7 +3,7 @@ html(lang="en")
     head
         include ../utils/meta.pug
         title 404: Page Not Found
-        if process.env.NODE_ENV === 'production'
+        if environment === 'production'
             link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/errors/404/404.css?id=${hashId}`)
     body
         h1(style='text-align: center;') 404 Error
