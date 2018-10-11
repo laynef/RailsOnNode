@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-
+const app = require('../../package.json');
 
 module.exports =  {
 
@@ -26,20 +26,21 @@ module.exports =  {
 		fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'sw.js'), `
 /* eslint-disable */
 // Version 0.6.2
-let version = '0.6.2';
+const version = '${app.version}_${app.name}';
 self.addEventListener('install', e => {
 	e.waitUntil(
-		caches.open('rhn').then((cache) => {
+		caches.open(version).then((cache) => {
             return cache.addAll([
                 '/',
-                '/assets/sw.js?timestamp=${now}',
-                '/assets/manifest.json?timestamp=${now}',
+                '/assets/dist/sw.js?timestamp=${now}',
+                '/assets/dist/manifest.json?timestamp=${now}',
                 ${allFiles.join(',\n\t\t\t\t')}
             ])
             .then(() => self.skipWaiting());
 		})
 	);
 });
+
 self.addEventListener('fetch', (event) => {
 	console.log('Fetch event for ', event.request.url);
 	event.respondWith(
@@ -50,9 +51,8 @@ self.addEventListener('fetch', (event) => {
 		})
 	);
 });
+
 self.addEventListener('activate',  (event) => {
-    console.log(self);
-    console.log(event);
     event.waitUntil(self.clients.claim());
 });
         `);

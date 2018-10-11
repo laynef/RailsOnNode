@@ -1,9 +1,8 @@
 const cluster = require('cluster');
-let numCPUs = require('os').cpus().length;
 const http = require('http');
 const { createServiceWorker } = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
-numCPUs = isProduction ? numCPUs : 1;
+const numCPUs = isProduction ? 8 : 1;
 createServiceWorker();
 
 // Master process
