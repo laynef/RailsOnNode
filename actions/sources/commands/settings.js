@@ -496,65 +496,69 @@ const command = (type, options) => {
         react: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-            "presets": [
-                "react",
-                "env",
-                "stage-0",
-            ],
+    "presets": [
+        "react",
+        "env",
+        "stage-0"
+    ],
 
-            "plugins": [
-                "transform-runtime",
-                "add-module-exports",
-                "transform-decorators-legacy",
-                "transform-react-display-name",
-                "transform-imports",
-            ]
+    "plugins": [
+        "transform-runtime",
+        "add-module-exports",
+        "transform-decorators-legacy",
+        "transform-react-display-name",
+        "transform-imports"
+    ]
 
-        }`)
+}
+        `)
         },
         angular: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-                "presets": [
-                    "react",
-                    "env",
-                    "stage-0",
-                ],
-    
-                "plugins": [
-                    "transform-runtime",
-                    "add-module-exports",
-                    "transform-decorators-legacy",
-                    "transform-react-display-name",
-                    "transform-imports",
-                ]
-    
-            }`)
+    "presets": [
+        "react",
+        "env",
+        "stage-0"
+    ],
+
+    "plugins": [
+        "transform-runtime",
+        "add-module-exports",
+        "transform-decorators-legacy",
+        "transform-react-display-name",
+        "transform-imports"
+    ]
+
+}
+            `)
         },
         vue: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
                 
-                "presets": [
-                    "vue",
-                    "env",
-                    "stage-3",
-                ],
+    "presets": [
+        "vue",
+        "env",
+        "stage-3"
+    ],
 
-                "plugins": [
-                    "transform-runtime",
-                ],
+    "plugins": [
+        "transform-runtime"
+    ],
 
-            }`)
+}
+            `)
         },
         js: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
 
-            "presets": [
-                "env",
-                "stage-0",
-            ]
+    "presets": [
+        "env",
+        "stage-0"
+    ]
 
-        }`)
+}
+        `)
         },
     };
 
@@ -571,7 +575,8 @@ module.exports = {
         const store = require(path.join(assets, 'redux', 'store'))();
         const componentArray = pageName.split('/');
         componentArray.pop();
-        const componentPath = componentArray.join('/') + \`/component.\${settings.jsType}\`;
+        const suffix = process.env.NODE_ENV === 'production' ? 'js' : settings.jsType;
+        const componentPath = componentArray.join('/') + \`/component.\${suffix}\`;
 
         const Application = require(path.join(assets, componentPath));
         req.session.redux = req.session.redux || store.getState();
