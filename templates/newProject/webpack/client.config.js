@@ -54,7 +54,7 @@ const jsPaths = Object.assign({}, reduce(recursiveFind({}, jsPath), (acc, val, k
 const jsLoader = settings.javascriptSettings[noProduction ? 'development': 'production'].map(e => {
     const includes = e.use.reduce((a, i) => {
         const include = i.loader === 'babel-loader' ? Object.keys(jsPaths)
-            .concat(path.join(context, 'assets', jsType, 'redux', `store.${jsType}`)) : false;
+            .concat(path.join(context, 'assets', jsType)) : false;
         if (include) a = { include };
         return a;
     }, {});
