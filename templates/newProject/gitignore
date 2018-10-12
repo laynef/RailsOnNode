@@ -10,3 +10,5 @@ assets/jsx/pages/docs
 assets/css/pages/docs
 assets/scss/pages/docs
 assets/less/pages/docs
+deploy-src
+build
