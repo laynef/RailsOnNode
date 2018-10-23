@@ -378,7 +378,7 @@ const command = (type, options) => {
             "development": [{
                 'test': '.jsx?$',
                 'exclude': 'node_modules',
-                'use': [{ 
+                'use': [{
                     'loader': 'babel-loader',
                     'options': {
                         "presets": ["react","env","stage-0","react-hmre"],
@@ -389,7 +389,7 @@ const command = (type, options) => {
             "production": [{
                 'test': '.jsx?$',
                 'exclude': 'node_modules',
-                'use': [{ 
+                'use': [{
                     'loader': 'babel-loader',
                     'options': {
                         'presets': ["react","env","stage-0"],
@@ -410,7 +410,7 @@ const command = (type, options) => {
                     "exclude": "node_modules",
                     "use": [{
                         "loader": "vue-loader",
-                        "options": { 
+                        "options": {
                             "presets": ["vue","env","stage-3"],
                             "plugins": ["transform-runtime"]
                         }
@@ -442,9 +442,9 @@ const command = (type, options) => {
                     "exclude": "node_modules",
                     "use": [{
                             "loader": "vue-loader",
-                            "options": { 
-                                "presets": ["vue", "env", "stage-3"], 
-                                "plugins": ["transform-runtime"] 
+                            "options": {
+                                "presets": ["vue", "env", "stage-3"],
+                                "plugins": ["transform-runtime"]
                             }
                         }]
                 },
@@ -472,7 +472,7 @@ const command = (type, options) => {
             "development": [{
                 'test': '.js$',
                 'exclude': 'node_modules',
-                'use': [{ 
+                'use': [{
                     'loader': 'babel-loader',
                     'options': {
                         "presets": ["env","stage-0"],
@@ -482,7 +482,7 @@ const command = (type, options) => {
             "production": [{
                 'test': '.js$',
                 'exclude': 'node_modules',
-                'use': [{ 
+                'use': [{
                     'loader': 'babel-loader',
                     'options': {
                         "presets": ["env","stage-0"],
@@ -535,7 +535,7 @@ const command = (type, options) => {
         },
         vue: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
-                
+
     "presets": [
         "vue",
         "env",
@@ -575,8 +575,7 @@ module.exports = {
         const store = require(path.join(assets, 'redux', 'store'))();
         const componentArray = pageName.split('/');
         componentArray.pop();
-        const suffix = process.env.NODE_ENV === 'production' ? 'js' : settings.jsType;
-        const componentPath = componentArray.join('/') + \`/component.\${suffix}\`;
+        const componentPath = componentArray.join('/') + '/component';
 
         const Application = require(path.join(assets, componentPath));
         req.session.redux = req.session.redux || store.getState();
@@ -589,19 +588,19 @@ module.exports = {
         };
     },
 
-};    
+};
             `);
         },
         angular: () => {
             fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `
-            
+
             `);
         },
         vue: () => {
             fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
 const settings = require('../../webpack/settings');
 
-            
+
 module.exports = {
 
     serverSide: (pageName, req) => {
@@ -633,8 +632,8 @@ module.exports = {
             };
         });
     },
-                        
-};                     
+
+};
             `);
         },
         js: () => {
@@ -670,7 +669,7 @@ module.exports = (Component, store) => {
             <Component />
         </Provider>
     );
-}       
+}
             `);
         },
         angular: () => {
@@ -689,7 +688,7 @@ module.exports = (filePath) => {
     return renderer.renderToString(vue, {})
         .then((html) => html)
         .catch(() => '');
-};        
+};
             `)
         },
         js: () => {
