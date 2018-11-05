@@ -115,7 +115,7 @@ module.exports = {
             }
         })
         .catch((err) => {
-            resultElement.innerText = JSON.stringify(err.data, null, 4);
+            resultElement.innerText = JSON.stringify(err.response.data, null, 4);
         });
 };
     `;
@@ -124,7 +124,7 @@ module.exports = {
         var ele = document.getElementById('${camelCased}BodyForm');
         ele.innerHTML += '<div class="d-flex f-row"><input class="w-100 m-1 form-control" type="text" placeholder="Enter key"><input class="w-100 m-1 form-control" type="text" placeholder="Enter value"></div>';
     };
-    
+
     `;
 
             javascriptString += `window.${camelCased}NewBodyFile = function() {
