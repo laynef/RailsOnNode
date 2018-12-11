@@ -572,7 +572,7 @@ module.exports = {
 
     serverSide: (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'redux', 'store'))();
+        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
         const componentArray = pageName.split('/');
         componentArray.pop();
         const componentPath = componentArray.join('/') + '/component';
