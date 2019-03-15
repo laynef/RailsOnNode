@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        include ../utils/meta.pug
+        if environment === 'production'
+            link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/errors404.css?id=${hashId}`)
+    body
+        include ../utils/noscript.pug
+        include ../utils/scripts.pug
+        script(src=`/assets/dist/pages/errors404.js?id=${hashId}`, async)
