@@ -7,10 +7,12 @@ Check out the API Documentation: https://railsonnode.com/
 Stable Version 1.3.2
 
 ## Requirements
+
 - Node.js >= 8
 - Redis >= 4
 
 ## Features
+
 - Create a new multithread Node.js server with Pug templating with 8 threads (Ruby on Rails has 5 for their server's scalibity)
 - Setup your own database (any SQL database or MongoDB)
 - Generate new api controllers
@@ -21,11 +23,13 @@ Stable Version 1.3.2
 - Use serverside React or Vanilla JS (JQuery, etc.)
 
 ## Coming Soon
+
 - Generate server side Angular 4 Application
 - Generate server side Vue Application
 
 ## Installation
-```
+
+```bash
 // brew install redis
 // Must have redis running on default port 6379: redis-server
 npm i -g rails-on-node
@@ -41,7 +45,8 @@ npm start
 ```
 
 ## CLI Documentation
-```
+
+```bash
 // For all commands
 node-rails
 
