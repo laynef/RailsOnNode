@@ -2,7 +2,6 @@
 html(lang="en")
     head
         include ../utils/meta.pug
-        title 403: Nice Try!
         if environment === 'production'
             link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/errors403.css?id=${hashId}`)
     body
