@@ -10,5 +10,5 @@ module.exports = () => {
     shell.exec(`node-rails settings js`);
     shell.exec(`npm run build:prod`);
     shell.exec(`npm test`);
-    
+
 };

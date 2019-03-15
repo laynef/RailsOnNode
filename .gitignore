@@ -3,3 +3,5 @@ CONTRIBUTORS.md
 temp
 *.rdb
 .DS_Store
+!tests/custom/*
+!tests/index.js

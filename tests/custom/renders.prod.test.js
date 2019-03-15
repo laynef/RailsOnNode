@@ -8,5 +8,5 @@ module.exports = () => {
     shell.exec(`npm run clean:assets`);
     shell.exec(`npm run build:prod`);
     shell.exec(`npm test`);
-    
+
 };

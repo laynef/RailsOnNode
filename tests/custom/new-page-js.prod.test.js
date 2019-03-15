@@ -9,5 +9,5 @@ module.exports = () => {
     shell.exec(`node-rails new-page blogs '/blogs'`);
     shell.exec(`npm run build:prod`);
     shell.exec(`npm test`);
-    
+
 };
