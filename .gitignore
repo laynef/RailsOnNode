@@ -5,4 +5,5 @@ temp
 .DS_Store
 tests
 !/tests/custom
+!/tests/custom/*
 !/tests/index.js
