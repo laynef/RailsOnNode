@@ -15,9 +15,10 @@ const redis = require('redis');
 const client = redis.createClient(process.env.REDIS_URL);
 const {
     render,
-    makeHash, 
-    documentation, 
-    updateDocs
+    makeHash,
+    documentation,
+    updateDocs,
+    renderError,
 } = require('./utils');
 const { docs } = require('./controllers');
 const routeVersions = require('./routes');
@@ -35,10 +36,6 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(compression({ level: 7 }));
-app.use(parser.urlencoded({ extended: false }));
-app.use(parser.json());
-app.use(parser.raw());
-app.use(favicon(path.join(__dirname, 'assets', 'img', 'nodejs.png')));
 app.use(session({
     secret: fs.readFileSync(path.join(__dirname, 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
     store: new RedisStore({ client: client, disableTTL: true }),
@@ -58,6 +55,11 @@ if (!process.env.TESTING) {
         next();
     });
 }
+
+app.use(parser.urlencoded({ extended: false }));
+app.use(parser.json());
+app.use(parser.raw());
+app.use(favicon(path.join(__dirname, 'assets', 'img', 'nodejs.png')));
 
 if (!process.env.TESTING && process.env.NODE_ENV !== 'production') {
     const webpackConfig = require('./webpack/client.config');
@@ -96,13 +98,13 @@ app.get('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
 
 app.use('*', (req, res) => {
-    res.status(404).render('errors/404', { hashId: makeHash(40), environment: process.env.NODE_ENV });
+    renderError(req, res, 'errors/404', { hashId: makeHash(40), statusCode: 404, environment: process.env.NODE_ENV, title: '404: Page Not Found' });
 });
 
 app.use((error, req, res, next) => {
     if (error) {
         console.error(error);
-        res.status(500).render('errors/500', { hashId: makeHash(40), environment: process.env.NODE_ENV });
+        renderError(req, res, 'errors/500', { hashId: makeHash(40), statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
     }
     next();
 });

@@ -11,5 +11,5 @@ module.exports = () => {
     shell.exec(`node-rails settings css`);
     shell.exec(`npm run build:prod`);
     shell.exec(`npm test`);
-    
+
 };
