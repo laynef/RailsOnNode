@@ -398,7 +398,7 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                const componentPath = path.join(root, 'assets', before, 'pages', 'errors', `${error}.js`);
+                const componentPath = path.join(root, 'assets', before, 'pages', 'errors', 'js', `${error}.js`);
                 const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.js`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
