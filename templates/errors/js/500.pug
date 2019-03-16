@@ -7,6 +7,6 @@ html(lang="en")
     body
         h1(style='text-align: center;') 500 Error
         h2(style='text-align: center;') Internal Server Error
-        include ../utils/noscript.pug
         include ../utils/scripts.pug
+        include ../utils/noscript.pug
         script(src=`/assets/dist/pages/errors500.js?id=${hashId}`, async)
