@@ -202,13 +202,13 @@ const command = (type, options) => {
 
             errorDirectories.forEach((error) => {
                 const componentPath = path.join(root, 'assets', settings.jsType, 'pages', 'errors', error, 'component.jsx');
-                const templatePath = path.join(__dirname, '..', '..', 'templates', 'reactErrors', 'react', `${error}.${settings.jsType}`);
+                const templatePath = path.join(__dirname, '..', '..', 'templates', 'reactErrors', settings.jsType, `${error}.${settings.jsType}`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentPath, templateString);
 
                 const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
-                const templateViewPath = path.join(__dirname, '..', '..', 'templates', 'reactErrors', 'views', `${error}.pug`);
+                const templateViewPath = path.join(__dirname, '..', '..', 'templates', 'reactErrors', settings.jsType, `${error}.pug`);
                 const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentViewPath, templateViewString);
