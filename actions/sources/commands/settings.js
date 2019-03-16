@@ -193,6 +193,20 @@ const command = (type, options) => {
             const regexReduxString = reduxRecursive.join('/');
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, regexStylesString));
+
+            const errorDirectories = [
+                '403',
+                '404',
+                '500',
+            ];
+
+            errorDirectories.forEach((error) => {
+                const componentPath = path.join(root, 'assets', settings.jsType, 'pages', 'errors', error, 'component.jsx');
+                const templatePath = path.join(__dirname, '..', '..', 'templates', 'reactErrors', 'react', `${error}.${settings.jsType}`);
+                const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
+
+                fs.writeFileSync(componentPath, templateString);
+            });
         },
         angular: (pathNames) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
