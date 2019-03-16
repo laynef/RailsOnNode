@@ -206,6 +206,12 @@ const command = (type, options) => {
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentPath, templateString);
+
+                const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
+                const templateViewPath = path.join(__dirname, '..', '..', 'templates', 'reactErrors', 'views', `${error}.pug`);
+                const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
+
+                fs.writeFileSync(componentViewPath, templateViewString);
             });
         },
         angular: (pathNames) => {
