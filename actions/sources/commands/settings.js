@@ -202,13 +202,13 @@ const command = (type, options) => {
 
             errorDirectories.forEach((error) => {
                 const componentPath = path.join(root, 'assets', 'jsx', 'pages', 'errors', error, 'component.jsx');
-                const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', beforeType, `${error}.jsx`);
+                const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'react', `${error}.jsx`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentPath, templateString);
 
                 const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
-                const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', beforeType, `${error}.pug`);
+                const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'react', `${error}.pug`);
                 const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentViewPath, templateViewString);
@@ -399,13 +399,13 @@ const command = (type, options) => {
 
             errorDirectories.forEach((error) => {
                 const componentPath = path.join(root, 'assets', 'js', 'pages', 'errors', `${error}.js`);
-                const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', beforeType, `${error}.js`);
+                const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.js`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentPath, templateString);
 
                 const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
-                const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', beforeType, `${error}.pug`);
+                const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.pug`);
                 const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentViewPath, templateViewString);
