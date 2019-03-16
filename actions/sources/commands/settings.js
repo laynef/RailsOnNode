@@ -134,7 +134,7 @@ const command = (type, options) => {
     }
 
     const jsStrings = {
-        react: (pathNames) => {
+        react: (pathNames, beforeType) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.jsx');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
@@ -201,20 +201,20 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                const componentPath = path.join(root, 'assets', settings.jsType, 'pages', 'errors', error, 'component.jsx');
-                const templatePath = path.join(__dirname, '..', '..', 'templates', 'reactErrors', settings.jsType, `${error}.${settings.jsType}`);
+                const componentPath = path.join(root, 'assets', 'jsx', 'pages', 'errors', error, 'component.jsx');
+                const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', beforeType, `${error}.jsx`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentPath, templateString);
 
                 const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
-                const templateViewPath = path.join(__dirname, '..', '..', 'templates', 'reactErrors', settings.jsType, `${error}.pug`);
+                const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', beforeType, `${error}.pug`);
                 const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentViewPath, templateViewString);
             });
         },
-        angular: (pathNames) => {
+        angular: (pathNames, beforeType) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.ts');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
@@ -273,7 +273,7 @@ const command = (type, options) => {
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `'${regexStylesString}',`));
         },
-        vue: (pathNames) => {
+        vue: (pathNames, beforeType) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'vue.js');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
@@ -332,7 +332,7 @@ const command = (type, options) => {
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
         },
-        js: (pathNames) => {
+        js: (pathNames, beforeType) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.js');
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
@@ -390,6 +390,26 @@ const command = (type, options) => {
             const regexReduxString = reduxRecursive.join('/');
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
+
+            const errorDirectories = [
+                '403',
+                '404',
+                '500',
+            ];
+
+            errorDirectories.forEach((error) => {
+                const componentPath = path.join(root, 'assets', 'js', 'pages', 'errors', `${error}.js`);
+                const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', beforeType, `${error}.js`);
+                const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
+
+                fs.writeFileSync(componentPath, templateString);
+
+                const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
+                const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', beforeType, `${error}.pug`);
+                const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
+
+                fs.writeFileSync(componentViewPath, templateViewString);
+            });
         },
     };
 
@@ -750,7 +770,7 @@ module.exports = (filePath) => {
                 shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', assetsReplacements[type]), newFile);
                 if (after !== 'js') shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'assets', `component.${after}`), newComponentFile);
                 shell.mv(dir, newFile);
-                jsStrings[type](newFile);
+                jsStrings[type](newFile, before);
             } else if (TYPING.stylesheets[type] === after) {
                 const jsPaths = dir.replace(RegExp(CURR_CSS, 'ig'), CURR_JS);
                 const fileArray = jsPaths.split('/');
