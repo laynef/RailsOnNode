@@ -201,7 +201,7 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                const componentPath = path.join(root, 'assets', 'jsx', 'pages', 'errors', error, 'component.jsx');
+                const componentPath = path.join(root, 'assets', before, 'pages', 'errors', error, 'component.jsx');
                 const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'react', `${error}.jsx`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
@@ -398,7 +398,7 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                const componentPath = path.join(root, 'assets', 'js', 'pages', 'errors', `${error}.js`);
+                const componentPath = path.join(root, 'assets', before, 'pages', 'errors', `${error}.js`);
                 const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.js`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
