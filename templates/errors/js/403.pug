@@ -7,5 +7,6 @@ html(lang="en")
     body
         h1(style='text-align: center;') 403 Error
         h2(style='text-align: center;') Forbidden Page
+        include ../utils/scripts.pug
         include ../utils/noscript.pug
         script(src=`/assets/dist/pages/errors403.js?id=${hashId}`, async)

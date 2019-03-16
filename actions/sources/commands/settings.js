@@ -19,7 +19,7 @@ const command = (type, options) => {
         'sass': 'scss',
         'css': 'css',
         'bootstrap': 'bootstrap',
-    }
+    };
 
     const TYPING = {
         'javascripts': {
@@ -70,7 +70,7 @@ const command = (type, options) => {
     const notSupported = {
         'angular': 'angular',
         'vue': 'vue',
-    }
+    };
 
     if (notSupported[type]) {
         console.red(`Not supported yet.`);
@@ -398,11 +398,11 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                const componentPath = path.join(root, 'assets', beforeType, 'pages', 'errors', error, `${error}.js`);
-                const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.js`);
-                const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
+                // const componentPath = path.join(root, 'assets', beforeType, 'pages', 'errors', error, `${error}.js`);
+                // const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.js`);
+                // const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
-                fs.writeFileSync(componentPath, templateString);
+                // fs.writeFileSync(componentPath, templateString);
 
                 const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
                 const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.pug`);
