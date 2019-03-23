@@ -8,6 +8,7 @@ cp -R $CURR_DIR ./deploy-src
 mv ./deploy-src $CURR_DIR/deploy-src
 cd $CURR_DIR
 npm install
+npm run clean:assets
 npm run build:prod
 npm run babel:build
 rm -rf ./deploy-src
