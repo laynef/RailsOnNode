@@ -6,16 +6,20 @@ import Application from './component';
 
 import '// Route Path';
 
-const dest = document.getElementById('app');
-const store = createStore(window.STORAGE || {});
+const render = (Component, create) => {
+	const dest = document.getElementById('app');
+	const store = create(window.STORAGE || {});
 
-const application = (
-    <Provider store={store}>
-		<Application />
-    </Provider>
-);
+	const application = (
+        <Provider store={store} key={Math.random()}>
+            <Component />
+        </Provider>
+	);
 
-ReactDOM.render(application, dest);
+	ReactDOM.render(application, dest);
+};
+
+render(Application, createStore);
 
 /* eslint-disable */
 if (module.hot) {
@@ -24,14 +28,8 @@ if (module.hot) {
 		'// Redux here',
 		'// Route Path',
 	], () => {
-		const newStore = createStore(window.STORAGE || {});
-
-		const newApplication = (
-			<Provider store={newStore}>
-				<Application />
-			</Provider>
-        );
-
-		ReactDOM.render(newApplication, dest);
+		const newCreateStore = require('../../../redux/store');
+		const NewComponent = require('./component');
+		render(NewComponent, newCreateStore);
 	});
 }
