@@ -72,8 +72,7 @@ module.exports = {
 
     renderError: (req, res, pageName, customObject = {}) => {
         const errorCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
-        const statusCode = process.env.NODE_ENV === 'production' ? errorCode : 202;
-        res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(`pages/${pageName}/${errorCode}`, req))));
+        res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(`pages/${pageName}/${errorCode}`, req))));
     },
 
 };

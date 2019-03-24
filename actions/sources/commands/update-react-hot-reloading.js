@@ -74,6 +74,11 @@ const command = (options) => {
 
     fs.writeFileSync(root_redux_path, template_redux_file);
 
+    const template_js_path = path.join(__dirname, '..', '..', '..', 'templates', 'newProject', 'utils', 'methods', 'renders.js');
+    const template_js_string = fs.readFileSync(template_js_path, { encoding: 'utf8' });
+    const root_util = path.join(root, 'utils', 'methods', 'renders.js');
+    fs.writeFileSync(root_util, template_js_string);
+
     console.green(`Updated legacy code`);
 };
 
