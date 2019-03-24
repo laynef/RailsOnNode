@@ -150,6 +150,6 @@ module.exports = {
         const js = fs.readFileSync(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages', 'docs', apiVersion, `${apiVersion}.js`), { encoding: 'utf8' });
         const complete = bundle + js;
         fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'pages', `docsV1.js`), complete);
-    }
+    },
 
 };
