@@ -3,6 +3,7 @@ const { serverSide } = require('./serverside');
 const { camelCase } = require('lodash');
 
 const webpackHotReloads = (res, application) => {
+
     const normalizeAssets = (assets) => {
         return Array.isArray(assets) ? assets : [assets];
     };
@@ -36,6 +37,7 @@ const globalRenders = (name, req, res, customs) => {
 
     let files = null;
     if (pageName === 'index') files = 'index';
+    else if (customs && customs.statusCode >= 400) files = `errors${customs.statusCode}`;
     else files = camelCase(filenameArray.map(e => e.replace(RegExp(':', 'ig'), '')).join(' '));
 
     return Object.assign({}, meta, {
@@ -69,8 +71,9 @@ module.exports = {
     },
 
     renderError: (req, res, pageName, customObject = {}) => {
-        const statusCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
-        res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(`pages/${pageName}/${statusCode}`, req))));
+        const errorCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
+        const statusCode = process.env.NODE_ENV === 'production' ? statusCode : 202;
+        res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(`pages/${pageName}/${errorCode}`, req))));
     },
 
 };

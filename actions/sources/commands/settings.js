@@ -398,12 +398,6 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                // const componentPath = path.join(root, 'assets', beforeType, 'pages', 'errors', error, `${error}.js`);
-                // const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.js`);
-                // const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
-
-                // fs.writeFileSync(componentPath, templateString);
-
                 const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
                 const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.pug`);
                 const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
@@ -628,6 +622,12 @@ module.exports = {
         };
     },
 
+    getFreshReduxStore: (req) => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
+        return store.getState();
+    }
+
 };
             `);
         },
@@ -673,6 +673,12 @@ module.exports = {
         });
     },
 
+    getFreshReduxStore: (req) => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
+        return store.getState();
+    }
+
 };
             `);
         },
@@ -691,6 +697,12 @@ module.exports = {
             serversideStorage: JSON.stringify(req.session.redux),
         };
     },
+
+    getFreshReduxStore: (req) => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
+        return store.getState();
+    }
 
 };
             `);

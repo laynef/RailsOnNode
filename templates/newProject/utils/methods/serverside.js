@@ -13,4 +13,10 @@ module.exports = {
         };
     },
 
+    getFreshReduxStore: (req) => {
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
+        return store.getState();
+    },
+
 };
