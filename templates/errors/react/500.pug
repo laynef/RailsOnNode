@@ -3,10 +3,10 @@ html(lang="en")
     head
         include ../utils/meta.pug
         if environment === 'production'
-            link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/errors500.css?id=${hashId}`)
+            link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/${filePath}.css?id=${hashId}`)
         else
             each file in cssFiles
-                link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/${filePath}.css?id=${hashId}`)
+                link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/${file}.css?id=${hashId}`)
     body
         include ../utils/new-page.pug
         include ../utils/noscript.pug
