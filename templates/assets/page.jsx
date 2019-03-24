@@ -28,7 +28,7 @@ if (module.hot) {
 		'// Redux here',
 		'// Route Path',
 	], () => {
-		const newCreateStore = require('../../../redux/store');
+		const newCreateStore = require('// Redux here');
 		const NewComponent = require('./component');
 		render(NewComponent, newCreateStore);
 	});
