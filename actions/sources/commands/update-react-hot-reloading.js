@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const description = '<ENTER YOUR DESCRIPTION>';
+
+
+const description = 'Update old versions for legacy support on react setting only';
 
 const command = (options) => {
     const root = process.cwd();
@@ -77,7 +79,10 @@ const command = (options) => {
 
 const documentation = () => {
     console.yellow(`
+Update for legacy versions for react with command:
 
+Commands:
+node-rails update-react-hot-reloading
     `);
 };
 
