@@ -34,13 +34,10 @@ const command = (options) => {
                     const assets_dot_path = assets_path.split('/').length;
                     const redux_dot_path = file_dot_path - assets_dot_path;
                     const route_dot_path = file_dot_path - assets_dot_path + 1;
+                    const between_route_path = file_path.split('/').slice(assets_dot_path, file_dot_path - 1).join('/');
                     const redux_regex = new RegExp(`// Redux here`, 'g');
                     const route_regex = new RegExp(`// Route Path`, 'g');
-                    const route_string = `${get_dot_path(route_dot_path)}${settings.styleType}/pages/${
-                        basename === '404' ||
-                        basename === '403' ||
-                        basename === '500' ? 'errors/' : ''
-                    }${basename}${basename !== 'index' ? '/' + basename : ''}`;
+                    const route_string = `${get_dot_path(route_dot_path)}${settings.styleType}/pages/${between_route_path}${basename !== 'index' ? '/' + basename : '/index'}`;
                     const redux_string = `${get_dot_path(redux_dot_path)}redux/store`;
                     const root_file_path = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.jsx');
                     let template_string = fs.readFileSync(root_file_path, { encoding: 'utf8' });
