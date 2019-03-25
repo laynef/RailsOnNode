@@ -22,6 +22,7 @@ const command = () => {
     const commandName = Object.keys(packager.bin).pop();
 
     console.cyan(`\n${packager.title}`);
+    console.cyan(`\nVersion: ${packager.version}`);
 
     console.cyan(`\n${packager.title}: Command Line Interface to make your life easier.`);
     console.info(`=> The ${packager.title} command is '${kebabCase(commandName)}'. To blast this project into the fifth dimension.`);

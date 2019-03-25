@@ -83,6 +83,30 @@ const documentation = () => {
     console.yellow(`
 Update for legacy versions for react with command:
 
+There some updates needed after this command.
+
+Import 'renderError' from utils fropm the top of app.js
+
+\`\`\`
+const { renderError } = require('./utils');
+\`\`\`
+
+At the bottom of app.js add this for error handling:
+
+\`\`\`
+app.use('*', (req, res) => {
+    renderError(req, res, 'errors/404', { hashId: makeHash(40), statusCode: 404, environment: process.env.NODE_ENV, title: '404: Page Not Found' });
+});
+
+app.use((error, req, res, next) => {
+    if (error) {
+        console.error(error);
+        renderError(req, res, 'errors/500', { hashId: makeHash(40), statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
+    }
+    next();
+});
+\`\`\`
+
 Commands:
 node-rails update-react-hot-reloading
     `);
