@@ -6,7 +6,7 @@ html(lang="en")
             link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/${filePath}.css?id=${hashId}`)
         else
             each file in cssFiles
-                link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/${filePath}.css?id=${hashId}`)
+                link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/${file}.css?id=${hashId}`)
     body
         include ./utils/new-page.pug
         include ./utils/scripts.pug
