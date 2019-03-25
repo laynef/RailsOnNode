@@ -1,5 +1,8 @@
 const cluster = require('cluster');
 const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
 const { createServiceWorker } = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
 const numCPUs = isProduction ? 8 : 1;
@@ -48,9 +51,19 @@ if (cluster.isMaster) {
     // isMaster will be false
     // isWorker will be true: set the children's work
 
-    const server = http.createServer(require('./app'));
-    const httpPort = process.env.PORT || 8080;
-    server.listen(httpPort, () => {
-        console.log(`Running on port ${httpPort}`);
-    });
+    if (process.env.LOCAL_HTTPS) {
+        const server = https.createServer({
+            key: fs.readFileSync(path.join(__dirname, 'openssl', 'example-key.pem'), { encoding: 'utf8' }),
+            cert: fs.readFileSync(path.join(__dirname, 'openssl', 'example-cert.pem'), { encoding: 'utf8' }),
+        }, require('./app'));
+        server.listen(443, () => {
+            console.log(`Running on your custom DNS`);
+        });
+    } else {
+        const server = http.createServer(require('./app'));
+        const httpPort = process.env.PORT || 8080;
+        server.listen(httpPort, () => {
+            console.log(`Running on port ${httpPort}`);
+        });
+    }
 }
