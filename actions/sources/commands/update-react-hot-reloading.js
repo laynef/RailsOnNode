@@ -7,7 +7,7 @@ const description = 'Update old versions for legacy support on react setting onl
 
 const command = (options) => {
 
-    if (!root_directory) {
+    if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
     }

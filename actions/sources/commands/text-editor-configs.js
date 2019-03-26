@@ -4,11 +4,11 @@ const { root_directory } = require('../utils');
 const description = 'Setup text editor configurations';
 
 const command = (type, options) => {
-    if (!root_directory) {
+    if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
     }
-    
+
     const textEditor = {
         'vscode': () => {
             exec(`code --list-extensions | xargs -L 1 echo code --install-extension`);

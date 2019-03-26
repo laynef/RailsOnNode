@@ -9,7 +9,7 @@ const command = (controllerName, options) => {
     if (!controllerName || !options) {
         console.red('Must enter a controller name');
         return;
-    } else if (!root_directory) {
+    } else if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
     }

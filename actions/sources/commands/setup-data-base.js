@@ -20,7 +20,7 @@ const command = (databaseType, options) => {
             console.yellow(`=> ${i}`);
         }
         return;
-    } else if (!root_directory) {
+    } else if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
     }

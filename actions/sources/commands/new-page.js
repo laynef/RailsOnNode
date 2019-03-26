@@ -9,7 +9,7 @@ const command = (pageName, routePath, options) => {
     if (!pageName || !routePath || !options) {
         console.red('Must enter a page name and it\'s route path');
         return;
-    } else if (!root_directory) {
+    } else if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
     }

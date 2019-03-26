@@ -25,7 +25,7 @@ const command = (type) => {
     if (!type) {
         console.red('Enter a database type');
         return;
-    } else if (!root_directory) {
+    } else if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
     }

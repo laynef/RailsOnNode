@@ -13,7 +13,7 @@ const command = (versionNumber, options) => {
     } else if (isNumber(versionNumber)) {
         console.red('API Version number must be a number');
         return;
-    } else if (!root_directory) {
+    } else if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
     }
