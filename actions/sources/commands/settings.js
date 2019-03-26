@@ -1,12 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
+const { root_directory } = require('../utils');
 
 const description = 'Change javascript frameworks or style types';
 
 const command = (type, options) => {
     if (!type || !options) {
         console.red(`Please select a type of asset to change.`);
+        return;
+    } else if (!root_directory) {
+        console.red('Must run this command in the root directory of your project.');
         return;
     }
 

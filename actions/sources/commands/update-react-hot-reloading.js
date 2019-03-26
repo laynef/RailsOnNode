@@ -1,10 +1,17 @@
 const fs = require('fs');
 const path = require('path');
+const { root_directory } = require('../utils');
 
 
 const description = 'Update old versions for legacy support on react setting only';
 
 const command = (options) => {
+
+    if (!root_directory) {
+        console.red('Must run this command in the root directory of your project.');
+        return;
+    }
+
     const root = process.cwd();
     const jsx_path = path.join(root, 'assets', 'jsx');
     const error_pug_path = path.join(root, 'views', 'errors');

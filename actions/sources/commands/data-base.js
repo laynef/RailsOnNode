@@ -1,4 +1,5 @@
 const shell = require('shelljs');
+const { root_directory } = require('../utils');
 
 const description = 'Use wrapper for the CLIs used for databases';
 
@@ -23,6 +24,9 @@ node-rails data-base <data-type> <native commands>
 const command = (type) => {
     if (!type) {
         console.red('Enter a database type');
+        return;
+    } else if (!root_directory) {
+        console.red('Must run this command in the root directory of your project.');
         return;
     }
 

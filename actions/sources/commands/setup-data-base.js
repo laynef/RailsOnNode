@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
+const { root_directory } = require('../utils');
 
 const description = 'Setup a SQL database for yourself';
 
@@ -18,6 +19,9 @@ const command = (databaseType, options) => {
         for (let i in database) {
             console.yellow(`=> ${i}`);
         }
+        return;
+    } else if (!root_directory) {
+        console.red('Must run this command in the root directory of your project.');
         return;
     }
 

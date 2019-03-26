@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { root_directory } = require('../utils');
 const shell = require('shelljs');
 const { isNumber } = require('lodash');
 
@@ -12,6 +13,9 @@ const command = (versionNumber, options) => {
     } else if (isNumber(versionNumber)) {
         console.red('API Version number must be a number');
         return;
+    } else if (!root_directory) {
+        console.red('Must run this command in the root directory of your project.');
+        return;
     }
 
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
@@ -22,16 +26,20 @@ const command = (versionNumber, options) => {
     const root = process.cwd();
     const settings = require(path.join(root, 'webpack', 'settings.js'));
 
-    shell.cp('-R', controllerPath, path.join(root, 'controllers', `v${versionNumber}`));
-    shell.cp('-R', routePath, path.join(root, 'routes', `v${versionNumber}`));
-    shell.mkdir(path.join(root, 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`));
-    shell.mkdir(path.join(root, 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`));
+    if (!fs.existsSync(path.join(root, 'controllers', `v${versionNumber}`))) {
+        shell.cp('-R', controllerPath, path.join(root, 'controllers', `v${versionNumber}`));
+        shell.cp('-R', routePath, path.join(root, 'routes', `v${versionNumber}`));
+        shell.mkdir(path.join(root, 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`));
+        shell.mkdir(path.join(root, 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`));
 
-    const cssString = fs.readFileSync(path.join(docPath, 'page.css'), { encoding: 'utf8' });
-    fs.writeFileSync(path.join(root, 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.styleType}`), cssString);
-    shell.cp(path.join(docPath, 'page.js'), path.join(root, 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.jsType}`))
+        const cssString = fs.readFileSync(path.join(docPath, 'page.css'), { encoding: 'utf8' });
+        fs.writeFileSync(path.join(root, 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.styleType}`), cssString);
+        shell.cp(path.join(docPath, 'page.js'), path.join(root, 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.jsType}`));
 
-    console.green('Your new api version has been created.');
+        console.green('Your new api version has been created.');
+    } else {
+        console.red('Your api version already exists.');
+    }
 };
 
 const documentation = () => {
