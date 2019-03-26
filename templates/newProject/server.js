@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { createServiceWorker } = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
+const isHttps = !!process.env.SUDO_USER;
 const numCPUs = isProduction ? 8 : 1;
 createServiceWorker();
 
@@ -51,13 +52,13 @@ if (cluster.isMaster) {
     // isMaster will be false
     // isWorker will be true: set the children's work
 
-    if (process.env.LOCAL_HTTPS) {
+    if (isHttps) {
         const server = https.createServer({
             key: fs.readFileSync(path.join(__dirname, 'openssl', 'example-key.pem'), { encoding: 'utf8' }),
             cert: fs.readFileSync(path.join(__dirname, 'openssl', 'example-cert.pem'), { encoding: 'utf8' }),
         }, require('./app'));
         server.listen(443, () => {
-            console.log(`Running on your custom DNS`);
+            console.log(`Running on your custom DNS: Default is https://www.example.com`);
         });
     } else {
         const server = http.createServer(require('./app'));
