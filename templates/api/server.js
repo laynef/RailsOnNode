@@ -1,3 +1,4 @@
+require('dotenv').config();
 const cluster = require('cluster');
 const http = require('http');
 const https = require('https');
@@ -53,6 +54,7 @@ if (cluster.isMaster) {
     // isWorker will be true: set the children's work
 
     if (isHttps) {
+        process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
         const server = https.createServer({
             key: fs.readFileSync(path.join(__dirname, 'openssl', 'example-key.pem'), { encoding: 'utf8' }),
             cert: fs.readFileSync(path.join(__dirname, 'openssl', 'example-cert.pem'), { encoding: 'utf8' }),
