@@ -69,7 +69,9 @@ each(routeVersions, (versionDetails, apiVersion) => {
 app.get('/', (req, res) => { res.status(200).json({ hello: 'world' }); });
 // Leave Here For Static Routes
 
-app.use('*', (req, res) => { res.status(404).json({ error: 'Not Found' }); });
+app.use('*', (req, res) => {
+    res.status(404).json({ error: 'Not Found' });
+});
 
 app.use((error, req, res, next) => {
     if (error) {

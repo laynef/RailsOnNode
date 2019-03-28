@@ -17,17 +17,23 @@ const command = (directoryName, options) => {
     shell.exec('git init');
     shell.cd(path.join(root, directoryName, 'openssl'));
     shell.exec('bash generateSecretKeys.sh web-secret');
-    shell.cd(path.join(root, directoryName));
+    shell.cd(path.join(root));
 
     if (options.api) {
         const template_path = path.join(__dirname, '..', '..', '..', 'templates');
         const api_template_path = path.join(template_path, 'api');
 
-        fs.writeFileSync(path.join(api_template_path, 'app.js'), fs.readFileSync(path.join(root, 'app.js')));
-        fs.writeFileSync(path.join(api_template_path, 'server.js'), fs.readFileSync(path.join(root, 'server.js')));
-        fs.writeFileSync(path.join(api_template_path, 'package.json'), fs.readFileSync(path.join(root, 'package.json')));
-        shell.cp(path.join(api_template_path, 'nodemon.json'), path.join(root, 'nodemon.json'));
+        shell.rm(path.join(root, directoryName, 'app.js'));
+        shell.rm(path.join(root, directoryName, 'package.json'));
+        shell.rm(path.join(root, directoryName, 'server.js'));
+
+        shell.cp(path.join(api_template_path, 'app.js'), path.join(root, directoryName, 'app.js'));
+        shell.cp(path.join(api_template_path, 'server.js'), path.join(root, directoryName, 'server.js'));
+        shell.cp(path.join(api_template_path, 'package.json'), path.join(root, directoryName, 'package.json'));
+        shell.cp(path.join(api_template_path, 'nodemon.json'), path.join(root, directoryName, 'nodemon.json'));
     }
+
+    shell.cd(path.join(root, directoryName));
 
     console.green('Your project is ready.');
 };
