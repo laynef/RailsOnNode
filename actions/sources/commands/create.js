@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
 
@@ -19,7 +20,13 @@ const command = (directoryName, options) => {
     shell.cd(path.join(root, directoryName));
 
     if (options.api) {
+        const template_path = path.join(__dirname, '..', '..', '..', 'templates');
+        const api_template_path = path.join(template_path, 'api');
 
+        fs.writeFileSync(path.join(api_template_path, 'app.js'), fs.readFileSync(path.join(root, 'app.js')));
+        fs.writeFileSync(path.join(api_template_path, 'server.js'), fs.readFileSync(path.join(root, 'server.js')));
+        fs.writeFileSync(path.join(api_template_path, 'package.json'), fs.readFileSync(path.join(root, 'package.json')));
+        shell.cp(path.join(api_template_path, 'nodemon.json'), path.join(root, 'nodemon.json'));
     }
 
     console.green('Your project is ready.');
