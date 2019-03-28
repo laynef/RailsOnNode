@@ -48,6 +48,8 @@ Options:
 For a server meant only for an API, webpack is still required to run initally
 however only API documentation assets are used by default.
 
+By default all web server features are available
+
 node-rails create <directory-name>
     `);
 };
