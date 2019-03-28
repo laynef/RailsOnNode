@@ -13,6 +13,7 @@ const command = (directoryName, options) => {
     shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'newProject'), path.join(root, directoryName));
     shell.cd(path.join(root, directoryName));
     shell.mv(path.join(root, directoryName, 'gitignore'), path.join(root, directoryName, '.gitignore'));
+    shell.exec('git init');
     shell.cd(path.join(root, directoryName, 'openssl'));
     shell.exec('bash generateSecretKeys.sh web-secret');
     shell.cd(path.join(root, directoryName));

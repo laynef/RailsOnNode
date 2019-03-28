@@ -57,6 +57,7 @@
         "redux-thunk": "^2.3.0",
         "sequelize": "^4.38.0",
         "serve-favicon": "^2.5.0",
+        "sqlite3": "^4.0.2",
         "tedious": "^1.14.0",
         "vue": "^2.5.17",
         "vue-server-renderer": "^2.5.17"
