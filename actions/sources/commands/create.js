@@ -18,6 +18,10 @@ const command = (directoryName, options) => {
     shell.exec('bash generateSecretKeys.sh web-secret');
     shell.cd(path.join(root, directoryName));
 
+    if (options.api) {
+
+    }
+
     console.green('Your project is ready.');
 };
 
