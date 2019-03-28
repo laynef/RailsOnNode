@@ -12,6 +12,13 @@ npm i -g rails-on-node
 npm install
 ```
 
+### Generate Web Secret
+
+```bash
+cd openssl
+bash generateSecretKeys.sh web-secret
+```
+
 ### Setup Serverside React
 
 ```bash
@@ -53,7 +60,20 @@ your DNS name which is your host: www.example.com
 
 The two files to update for your DNS are https.conf and genereateHttps.sh
 
-Go ahead and delete the example-*.pem files
+### Generate Keys
+
+You must generate your own keys to setup keychain access with a Mac
+For other computers lookup ways to assign self-signed certifications to your computer
+
+```bash
+cd openssl
+bash generateHttps.sh (name)
+```
+
+Update your server.js file with the name you provided in this command for HTTPS
+By default the name is `example`
+
+### Update your host file
 
 Then add the host in your local for Macs:
 
@@ -61,19 +81,8 @@ Then add the host in your local for Macs:
 sudo vim /etc/hosts
 ```
 
-Vim commands:
-`Go`
-
 ```plain-text
 127.0.0.1 www.example.com
-```
-
-Vim commands
-
-```vim
-<ESCAPE>
-:wq
-<ENTER>
 ```
 
 This will add the DNS to your local host file and you can now run your server with HTTPS
