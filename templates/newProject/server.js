@@ -59,12 +59,14 @@ if (cluster.isMaster) {
         }, require('./app'));
         server.listen(443, () => {
             console.log(`Running on your custom DNS: Default is https://www.example.com`);
+            if (!isProduction) console.log('Wait for the webpack bundle');
         });
     } else {
         const server = http.createServer(require('./app'));
         const httpPort = process.env.PORT || 8080;
         server.listen(httpPort, () => {
             console.log(`Running on port ${httpPort}`);
+            if (!isProduction) console.log('Wait for the webpack bundle');
         });
     }
 }
