@@ -1,6 +1,6 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import Application from './component';
-import redux from '// Redux here';
+import redux from '../../redux/store';
 
 new Vue({
   el: '#app',

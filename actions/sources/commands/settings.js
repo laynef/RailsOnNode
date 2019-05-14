@@ -73,7 +73,6 @@ const command = (type, options) => {
 
     const notSupported = {
         'angular': 'angular',
-        'vue': 'vue',
     };
 
     if (notSupported[type]) {

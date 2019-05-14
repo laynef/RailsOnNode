@@ -31,9 +31,9 @@ const command = (pageName, routePath, options) => {
     shell.exec(`mkdir -p ${path.join(root, 'views', 'pages', routePath)} ${path.join(root, 'assets', settings.styleType, 'pages', routePath)} ${path.join(root, 'assets', settings.jsType, 'pages', routePath)}`);
     fs.writeFileSync(path.join(root, 'views', 'pages', routePath, `${pageName}.pug`), newTemplate);
     shell.cp(path.join(templatePath, 'assets', `page.${settings.styleType}`), path.join(root, 'assets', settings.styleType, 'pages', routePath, `${pageName}.${settings.styleType}`));
-    shell.cp(path.join(templatePath, 'assets', `page.${settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType}`));
+    shell.cp(path.join(templatePath, 'assets', `${settings.jsType === 'vue' ? 'vue' : 'page'}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`));
     if (fs.existsSync(path.join(templatePath, 'assets', `component.${settings.jsType}`))) shell.cp(path.join(templatePath, 'assets', `component.${settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `component.${settings.jsType}`));
-    const reduxPath = path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType}`);
+    const reduxPath = path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`);
     const reduxFs = fs.readFileSync(reduxPath, { encoding: 'utf8' });
     fs.writeFileSync(reduxPath, reduxFs.replace(reduxRegex, `${routePathDepth}redux/store`).replace(styleRegex, `${routePathDepth}../${settings.styleType}/pages${routePath}/${pageName}`));
     if (routePath) fs.writeFileSync(path.join(root, 'app.js'), application.replace(/\/\/ Leave Here For Static Routes/g, `// Leave Here For Static Routes\napp.get('${routePath}', render('pages${routePath}/${pageName}', { hashId: makeHash(40) }));`));
