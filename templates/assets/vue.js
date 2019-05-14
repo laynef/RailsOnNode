@@ -5,5 +5,8 @@ import redux from '// Redux here';
 new Vue({
   el: '#app',
   render: h => h(Application),
-  state: redux(window.STORAGE || {}),
+  data: {
+    sharedState: redux(window.STORAGE || {}),
+    privateState: {},
+  },
 })
