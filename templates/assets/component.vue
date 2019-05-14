@@ -5,5 +5,10 @@
 <script>
 export default {
     name: 'Root',
+    data() {
+        return {
+
+        }
+    }
 }
 </script>
