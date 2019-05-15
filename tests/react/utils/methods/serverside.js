@@ -6,27 +6,32 @@ module.exports = {
 
     serverSide: (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
-        const componentArray = pageName.split('/');
-        componentArray.pop();
-        const componentPath = componentArray.join('/') + '/component';
-
-        const Application = require(path.join(assets, componentPath));
-        req.session.redux = req.session.redux || store.getState();
-
+        const store = require(path.join(assets, 'redux', 'store'));
+        req.session.state = req.session.state || store();
         const getServersideString = require('../../webpack/serverside');
 
-        return {
-            serversideStorage: JSON.stringify(req.session.redux),
-            serversideString: getServersideString(Application, store),
-        };
+        const assetPath = path.join(assets, pageName);
+        const fileArray = assetPath.split('/');
+        fileArray.pop();
+        const filePath = fileArray.join('/') + '/component.vue';
+
+        return Promise.all([
+            getServersideString(filePath, req.session.state),
+        ])
+            .then((htmls) => ({
+                serversideStorage: JSON.stringify(req.session.state || {}),
+                serversideString: htmls[0],
+            }))
+            .catch(() => ({
+                serversideStorage: JSON.stringify({}),
+                serversideString: '',
+            }));
     },
 
-    getFreshReduxStore: (req) => {
+    getFreshStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
+        const store = require(path.join(assets, 'redux', 'store'))(req.session.state || {});
         return store.getState();
-    }
+    },
 
 };
-            

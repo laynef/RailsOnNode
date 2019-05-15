@@ -67,24 +67,12 @@ module.exports = {
 
     render: (pageName, customObject = {}) => (req, res) => {
         const statusCode = customObject && customObject.statusCode ? customObject.statusCode : 200;
-        serverSide(pageName, req)
-            .then((serverSideString) => {
-                res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSideString)));
-            })
-            .catch(() => {
-                res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject)));
-            })
+        res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(pageName, req))));
     },
 
     renderError: (req, res, pageName, customObject = {}) => {
         const errorCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
-        serverSide(`pages/${pageName}/${errorCode}`, req)
-            .then((serverSideString) => {
-                res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSideString)));
-            })
-            .catch(() => {
-                res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject)));
-            });
+        res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(`pages/${pageName}/${errorCode}`, req))));
     },
 
 };

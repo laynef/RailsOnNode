@@ -52,12 +52,12 @@ const jsPaths = Object.assign({}, reduce(recursiveFind({}, jsPath), (acc, val, k
 }, {}));
 
 const jsLoader = settings.javascriptSettings[noProduction ? 'development': 'production'].map(e => {
-    const includes = e && e.use ? e.use.reduce((a, i) => {
+    const includes = e.use.reduce((a, i) => {
         const include = i.loader === 'babel-loader' ? Object.keys(jsPaths)
             .concat(path.join(context, 'assets', jsType)) : false;
         if (include) a = { include };
         return a;
-    }, {}) : {};
+    }, {});
     const test = e.test;
     const exclude = e.exclude;
     delete e.test;
@@ -161,7 +161,7 @@ let plugins = [
 ];
 
 if (!noProduction) plugins.splice(3, 1);
-if (vueJs) plugins = plugins.concat([new VueLoaderPlugin()])
+if (vueJs) plugins = plugins.concat([new VueLoaderPlugin()]) 
 
 const configuration = {
     name: 'client',

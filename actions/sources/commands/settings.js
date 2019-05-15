@@ -719,7 +719,8 @@ module.exports = (Component, store) => {
         </Provider>
     );
 }
-            `);
+
+`);
         },
         angular: () => {
             fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
@@ -729,16 +730,21 @@ module.exports = (Component, store) => {
         },
         vue: () => {
             fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `const Vue = require('vue');
+const fs = require('fs');
 const { createRenderer } = require('vue-server-renderer');
 
-module.exports = (filePath) => {
+module.exports = (filePath, sharedState, cb) => {
+    const component = fs.readFileSync(filePath, { encoding: 'utf8' });
+    const template = component.replace(/(?<=\<template)(.*)(?=\>)/g, '').split('<template>')[1].split('</template>')[0];
     const renderer = createRenderer();
-    const vue = new Vue({ render: h => h(require(filePath)) });
-    return renderer.renderToString(vue, {})
-        .then((html) => html)
-        .catch(() => '');
-};
-            `)
+    const vue = new Vue({
+        data: { sharedState, privateState: {} },
+        template,
+    });
+    return renderer.renderToString(vue, {}, cb);
+}
+
+`)
         },
         js: () => {
             fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
@@ -807,6 +813,8 @@ module.exports = (filePath) => {
     if (TYPING.javascripts[type]) {
         shell.rm('-rf', path.join(root, 'assets', before, 'redux') + '/*');
         shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type) + '/*', path.join(root, 'assets', before, 'redux'));
+        shell.rm(path.join(root, 'utils', 'methods', 'renders.js'));
+        shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'utils', type, 'renders.js'), path.join(root, 'utils', 'methods', 'renders.js'));
     }
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 

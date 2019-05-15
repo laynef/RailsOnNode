@@ -1,6 +1,6 @@
 module.exports = {
     "styleType": "css",
-    "jsType": "jsx",
+    "jsType": "vue",
     "useBootstrapToggle": false,
     "bootstrap": {
         "scripts": {
@@ -20,66 +20,118 @@ module.exports = {
     "javascriptSettings": {
         "development": [
             {
-                "test": ".jsx?$",
+                "test": ".vue$",
                 "exclude": "node_modules",
                 "use": [
                     {
-                        "loader": "babel-loader",
+                        "loader": "vue-loader",
                         "options": {
                             "presets": [
-                                "react",
+                                "vue",
                                 "env",
-                                "stage-0",
-                                "react-hmre"
+                                "stage-3"
                             ],
                             "plugins": [
-                                "transform-runtime",
-                                "add-module-exports",
-                                "transform-decorators-legacy",
-                                "transform-react-display-name",
-                                "transform-imports",
-                                [
-                                    "react-transform",
-                                    {
-                                        "transforms": [
-                                            {
-                                                "transform": "react-transform-hmr",
-                                                "imports": [
-                                                    "react"
-                                                ],
-                                                "locals": [
-                                                    "module"
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
+                                "transform-runtime"
                             ]
                         }
+                    }
+                ]
+            },
+            {
+                "test": ".js$",
+                "loader": "babel-loader",
+                "exclude": "node_modules"
+            },
+            {
+                "test": ".pug$",
+                "oneOf": [
+                    {
+                        "resourceQuery": "^\\?vue",
+                        "use": [
+                            "pug-plain-loader"
+                        ]
+                    },
+                    {
+                        "use": [
+                            "raw-loader",
+                            "pug-plain-loader"
+                        ]
+                    }
+                ]
+            },
+            {
+                "test": ".html$",
+                "oneOf": [
+                    {
+                        "resourceQuery": "^\\?vue",
+                        "use": [
+                            "html-loader"
+                        ]
+                    },
+                    {
+                        "use": [
+                            "html-loader"
+                        ]
                     }
                 ]
             }
         ],
         "production": [
             {
-                "test": ".jsx?$",
+                "test": ".vue$",
                 "exclude": "node_modules",
                 "use": [
                     {
-                        "loader": "babel-loader",
+                        "loader": "vue-loader",
                         "options": {
                             "presets": [
-                                "react",
+                                "vue",
                                 "env",
-                                "stage-0"
+                                "stage-3"
                             ],
                             "plugins": [
-                                "transform-runtime",
-                                "add-module-exports",
-                                "transform-decorators-legacy",
-                                "transform-react-display-name"
+                                "transform-runtime"
                             ]
                         }
+                    }
+                ]
+            },
+            {
+                "test": ".js$",
+                "loader": "babel-loader",
+                "exclude": "node_modules"
+            },
+            {
+                "test": ".pug$",
+                "oneOf": [
+                    {
+                        "resourceQuery": "^\\?vue",
+                        "use": [
+                            "pug-plain-loader"
+                        ]
+                    },
+                    {
+                        "use": [
+                            "raw-loader",
+                            "pug-plain-loader"
+                        ]
+                    }
+                ]
+            },
+            {
+                "test": ".html$",
+                "oneOf": [
+                    {
+                        "resourceQuery": "^\\?vue",
+                        "use": [
+                            "html-loader"
+                        ]
+                    },
+                    {
+                        "use": [
+                            "html-loader"
+                        ]
                     }
                 ]
             }
