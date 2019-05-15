@@ -28,6 +28,11 @@ const command = (routePath, options) => {
         return acc;
     }, false);
 
+    if (fs.existsSync(path.join(root, 'views', 'pages', routePath, `${pageName}.pug`))) {
+        console.red('Page already exists.');
+        return;
+    }
+
     const storageTypes = {
         js: 'storage',
         ts: 'redux',
