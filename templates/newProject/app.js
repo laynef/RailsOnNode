@@ -1,5 +1,6 @@
 require('dotenv').config();
 const Express = require('express');
+const { decorateApp } = require('@awaitjs/express');
 const fs = require('fs');
 const path = require('path');
 const helmet = require('helmet');
@@ -26,7 +27,7 @@ const { each } = require('lodash');
 const meta = require('./app.json');
 
 const protection = csrf();
-const app = new Express();
+const app = decorateApp(new Express());
 
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
