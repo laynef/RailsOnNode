@@ -97,8 +97,10 @@ each(routeVersions, (versionDetails, apiVersion) => {
 
 app.get('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
-app.get('blogs', render('pagesblogs/blogs', { hashId: makeHash(40) }));
-app.get('blogs', render('pagesblogs/blogs', { hashId: makeHash(40) }));
+app.get('/contact', render('pages/contact/contact', { hashId: makeHash(40) }));
+app.get('/about', render('pages/about/about', { hashId: makeHash(40) }));
+app.get('/blogs/:id', render('pages/blogs/:id/blogs', { hashId: makeHash(40) }));
+app.get('/blogs', render('pages/blogs/blogs', { hashId: makeHash(40) }));
 
 app.use('*', (req, res) => {
     renderError(req, res, 'errors/404', { hashId: makeHash(40), statusCode: 404, environment: process.env.NODE_ENV, title: '404: Page Not Found' });

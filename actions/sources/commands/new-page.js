@@ -13,6 +13,9 @@ const command = (routePath, options) => {
     } else if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
+    } else if (!routePath.match(/\//g) && routePath[0] !== '/') {
+        console.red('Must a string argument of the url route for this page.');
+        return;
     }
 
     const root = process.cwd();
