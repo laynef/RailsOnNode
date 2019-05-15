@@ -10,15 +10,15 @@ const command = (type, options) => {
     }
 
     const textEditor = {
-        'vscode': () => {
-            exec(`code --list-extensions | xargs -L 1 echo code --install-extension`);
-        },
-        'atom': () => {
-            exec(``);
-        },
-        'sublime': () => {
-            exec(``);
-        },
+        // 'vscode': () => {
+        //     exec(`code --list-extensions | xargs -L 1 echo code --install-extension`);
+        // },
+        // 'atom': () => {
+        //     exec(``);
+        // },
+        // 'sublime': () => {
+        //     exec(``);
+        // },
     };
     textEditor[type]();
 
