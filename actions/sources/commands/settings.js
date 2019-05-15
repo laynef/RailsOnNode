@@ -688,7 +688,7 @@ module.exports = {
 
     serverSide: (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'redux', 'store'));
+        const store = require(path.join(assets, 'state', 'store'));
         req.session.state = req.session.state || store();
         const getServersideString = require('../../webpack/serverside');
 
@@ -712,7 +712,7 @@ module.exports = {
 
     getFreshStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'redux', 'store'))(req.session.state || {});
+        const store = require(path.join(assets, 'state', 'store'))(req.session.state || {});
         return store.getState();
     },
 
