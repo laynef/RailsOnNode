@@ -25,17 +25,6 @@ const command = (type, options) => {
         'bootstrap': 'bootstrap',
     };
 
-    const reverseAllTypes = {
-        'jsx': 'react',
-        'ts': 'angular',
-        'vue': 'vue',
-        'js': 'js',
-        'less': 'less',
-        'sass': 'scss',
-        'css': 'css',
-        'bootstrap': 'bootstrap',
-    };
-
     const TYPING = {
         'javascripts': {
             'react': 'jsx',
