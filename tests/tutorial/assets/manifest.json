@@ -1,0 +1,16 @@
+{
+    "short_name": "Ex",
+    "name": "Example",
+    "icons": [
+      {
+        "src": "/assets/img/nodejs.png",
+        "type": "image/png",
+        "sizes": "500x500"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#007bff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#007bff"
+}

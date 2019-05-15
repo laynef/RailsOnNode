@@ -107,8 +107,10 @@ const command = (type, options) => {
     if (type === 'bootstrap') {
         if (options.switch == 'true') {
             settings.useBootstrapToggle = true;
-        } else {
+        } else if (options.switch == 'false') {
             settings.useBootstrapToggle = false;
+        } else {
+            settings.useBootstrapToggle = !settings.useBootstrapToggle;
         }
         fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
 
