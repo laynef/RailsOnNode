@@ -105,7 +105,7 @@ const command = (type, options) => {
     let settings = require(pathn);
 
     if (type === 'bootstrap') {
-        if (options.switch) {
+        if (options.switch == 'true') {
             settings.useBootstrapToggle = true;
         } else {
             settings.useBootstrapToggle = false;
@@ -878,6 +878,11 @@ const documentation = () => {
     console.yellow(`
 Commands:
     bootstrap [options: --switch=(true || false)]
+
+    javascripts
+    -> js
+    -> react
+    -> vue
 
     stylesheets
     -> css
