@@ -51,6 +51,13 @@ const command = (type, options) => {
         js: 'page.js',
     };
 
+    const storageTypes = {
+        'js': 'storage',
+        'jsx': 'redux',
+        'vue': 'state',
+        'ts': 'redux',
+    }
+
     const componentReplacements = {
         react: 'jsx',
         angular: 'ts',
@@ -314,7 +321,7 @@ const command = (type, options) => {
             const recursiveStrings = rescurveStr.map(() => {
                 return '..';
             });
-            const reduxRecursive = recursiveStrings.slice(2).concat(['redux', 'store']);
+            const reduxRecursive = recursiveStrings.slice(2).concat(['state', 'store']);
             const rescurveNames = rescurveStr.map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
@@ -393,7 +400,7 @@ const command = (type, options) => {
             const recursiveStrings = rescurveStr.map(() => {
                 return '..';
             });
-            const reduxRecursive = recursiveStrings.slice(2).concat(['redux', 'store']);
+            const reduxRecursive = recursiveStrings.slice(2).concat(['storage', 'store']);
             const rescurveNames = rescurveStr.map((e, i, a) => {
                 if (i === a.length - 1) {
                     const filen = e.split('.');
@@ -706,7 +713,7 @@ const settings = require('../../webpack/settings');
 module.exports = {
 
     serverSide: (pageName, req) => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'redux', 'store');
+        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'storage', 'store');
         const store = require(assets);
         req.session.redux = req.session.redux || store();
 
@@ -717,7 +724,7 @@ module.exports = {
 
     getFreshReduxStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
+        const store = require(path.join(assets, 'storage', 'store'))(req.session.redux || {});
         return store.getState();
     }
 
@@ -770,7 +777,7 @@ module.exports = (filePath, sharedState, cb) => {
             fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
 
 };
-            `);
+`);
         }
     }
 
@@ -831,8 +838,8 @@ module.exports = (filePath, sharedState, cb) => {
     }
 
     if (TYPING.javascripts[type]) {
-        shell.rm('-rf', path.join(root, 'assets', before, 'redux') + '/*');
-        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type) + '/*', path.join(root, 'assets', before, 'redux'));
+        shell.rm('-rf', path.join(root, 'assets', before, storageTypes[before]));
+        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type, storageTypes[after]), path.join(root, 'assets', after, storageTypes[after]));
         shell.rm(path.join(root, 'utils', 'methods', 'renders.js'));
         shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'utils', type, 'renders.js'), path.join(root, 'utils', 'methods', 'renders.js'));
     }
