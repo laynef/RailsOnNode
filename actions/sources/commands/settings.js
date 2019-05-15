@@ -858,6 +858,14 @@ module.exports = (filePath, sharedState, cb) => {
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
     shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type, storageTypes[after]), path.join(root, 'assets', after, storageTypes[after]));
 
+    if (TYPING.javascripts[type]) {
+        fs.readdirSync(path.join(root, 'assets', after, 'pages', 'docs')).forEach((item) => {
+            fs.readdirSync(path.join(root, 'assets', after, 'pages', 'docs', item)).forEach((file) => {
+                fs.writeFileSync(path.join(root, 'assets', after, 'pages', 'docs', item, file), '');
+            })
+        })
+    }
+
     if (serverSideRendering[type]) serverSideRendering[type]();
     if (webpackServersideFunction[type]) webpackServersideFunction[type]();
     if (babelRc[type]) babelRc[type]();
