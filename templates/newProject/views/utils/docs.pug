@@ -4,7 +4,7 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
         title=`API ${apiVersion} Documentation`
         include ./meta.pug
         style.
-            .flex-respond-row {display: flex !important;flex-direction: column !important;}@media (min-width: 992px) {.flex-respond-row {display: flex !important;flex-direction: row !important;}}.card-shadow {box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);}.cursor-pointer{ cursor: pointer !important; }
+            .flex-respond-row {display: flex !important;flex-direction: column !important;}@media (min-width: 992px) {.flex-respond-row {display: flex !important;flex-direction: row !important;}}.card-shadow {box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);}.cursor-pointer{ cursor: pointer !important; }.card-shadow {box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);}
     body(style={'width': '100%', 'overflow-x': 'hidden'})
         .header.p-3.bg-dark.card-shadow.d-flex.flex-row.justify-content-between
             .d-flex.flex-row
@@ -30,9 +30,14 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
                                 ul
                                     li.h6=data.description
                             .d-flex.f-row.w-100
-                                h2.w-100.h6='Authorization Header'
+                                h2.w-100.h6='Headers: '
+                                button(class=`${data.submitButtonColor} rounded-circle`, onclick=`${data.camelCased}NewHeader()`)='+'
                             .d-flex.f-row.w-100
-                                input(id=`${data.camelCased}AuthorizationToken`, type='text', class='w-100 m-1 form-control', placeholder='Enter token')
+                                    form(id=`${data.camelCased}HeadersForm`, class='w-100')
+                                        each param in data.params
+                                            .d-flex.f-row
+                                                input(type='text', class='w-100 m-1 d-flex f-row form-control', value='Enter key')
+                                                input(type='text', class='w-100 m-1 form-control', placeholder='Enter value')
                             if data.allowParams
                                 .d-flex.f-row.w-100
                                     h2.w-100.h6='Params: '
@@ -54,7 +59,7 @@ html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
                                         div(class='d-flex f-row')
                                             input(type='text', class='w-100 m-1 form-control', placeholder='Enter key')
                                             input(type='text', class='w-100 m-1 form-control', placeholder='Enter value')
-                            else 
+                            else
                                 span
                             .d-flex.f-row.w-100
                                 h2.w-100.h6='Querystrings: '

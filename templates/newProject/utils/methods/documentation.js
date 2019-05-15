@@ -13,12 +13,22 @@ module.exports = {
     var allData = ${JSON.stringify(route)};
     var formData = new FormData();
     var paramList = document.getElementById('${camelCased}ParamsForm') && document.getElementById('${camelCased}ParamsForm').elements ? document.getElementById('${camelCased}ParamsForm').elements : [];
+    var headerList = document.getElementById('${camelCased}HeadersForm') && document.getElementById('${camelCased}HeadersForm').elements ? document.getElementById('${camelCased}HeadersForm').elements : [];
 
-    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    var csrfHeader = { headers: { 'X-CSRF-Token': null } };
-    csrfHeader.headers['X-CSRF-Token'] = csrfToken;
-    var jsonWebToken = document.getElementById('${camelCased}AuthorizationToken');
-    if (jsonWebToken && jsonWebToken.value) csrfHeader.headers['Authorization'] = jsonWebToken.value;
+    var headerObject = {};
+    var tempHeaderKey = null;
+    for (var i = 0; i < headerList.length; i++) {
+        var eleHeader = headerList[i].value;
+        if (i % 2 !== 0 && tempHeaderKey) {
+            headerObject[tempHeaderKey] = eleHeader;
+            tempHeaderKey = null;
+        } else {
+            tempHeaderKey = eleHeader;
+        }
+    }
+
+    var hasHeaders = Object.keys(headerObject).length > 0;
+    var headers = { headers: headerObject };
 
     var paramObject = {};
     var tempParamKey = null;
@@ -103,7 +113,7 @@ module.exports = {
         }
     }
 
-    var args = allData.method === 'GET' || allData.method === 'DELETE' ? [routeName + querystring, csrfHeader] : [routeName + querystring, bodyObject, csrfHeader];
+    var args = allData.method === 'GET' || allData.method === 'DELETE' ? [routeName + querystring, headers] : [routeName + querystring, bodyObject, headers];
     var resultElement = document.getElementById('${camelCased}-results');
 
     axios[allData.method.toLowerCase()](...args)
@@ -120,13 +130,19 @@ module.exports = {
 };
     `;
 
+        javascriptString += `window.${camelCased}NewHeader = function() {
+        var ele = document.getElementById('${camelCased}HeaderForm');
+        ele.innerHTML += '<div class="d-flex f-row"><input class="w-100 m-1 form-control" type="text" placeholder="Enter key"><input class="w-100 m-1 form-control" type="text" placeholder="Enter value"></div>';
+    };
+
+    `;
+
             javascriptString += `window.${camelCased}NewBody = function() {
         var ele = document.getElementById('${camelCased}BodyForm');
         ele.innerHTML += '<div class="d-flex f-row"><input class="w-100 m-1 form-control" type="text" placeholder="Enter key"><input class="w-100 m-1 form-control" type="text" placeholder="Enter value"></div>';
     };
 
     `;
-
             javascriptString += `window.${camelCased}NewBodyFile = function() {
         var ele = document.getElementById('${camelCased}BodyForm');
         ele.innerHTML += '<div class="d-flex f-row"><input class="w-100 m-1 form-control" type="text" placeholder="Enter key"><input class="w-100 m-1 form-control" type="file" placeholder="Enter value"></div>';

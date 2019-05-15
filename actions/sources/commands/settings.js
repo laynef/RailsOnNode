@@ -665,7 +665,7 @@ module.exports = {
         };
     },
 
-    getFreshReduxStore: (req) => {
+    getFreshStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
         return store.getState();
@@ -728,16 +728,16 @@ module.exports = {
     serverSide: (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'storage', 'store');
         const store = require(assets);
-        req.session.redux = req.session.redux || store();
+        req.session.redux = req.session.storage || store();
 
         return {
-            serversideStorage: JSON.stringify(req.session.redux),
+            serversideStorage: JSON.stringify(req.session.storage),
         };
     },
 
-    getFreshReduxStore: (req) => {
+    getFreshStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'storage', 'store'))(req.session.redux || {});
+        const store = require(path.join(assets, 'storage', 'store'))(req.session.storage || {});
         return store.getState();
     }
 
