@@ -20,7 +20,8 @@ const command = (type, options) => {
         //     exec(``);
         // },
     };
-    textEditor[type]();
+    const func = textEditor[type] || () => {};
+    func();
 
     console.green('Save text editor config for teams');
 };
