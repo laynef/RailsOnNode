@@ -131,7 +131,7 @@ module.exports = {
     `;
 
         javascriptString += `window.${camelCased}NewHeader = function() {
-        var ele = document.getElementById('${camelCased}HeaderForm');
+        var ele = document.getElementById('${camelCased}HeadersForm');
         ele.innerHTML += '<div class="d-flex f-row"><input class="w-100 m-1 form-control" type="text" placeholder="Enter key"><input class="w-100 m-1 form-control" type="text" placeholder="Enter value"></div>';
     };
 
