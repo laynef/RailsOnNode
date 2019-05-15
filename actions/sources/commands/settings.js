@@ -25,6 +25,17 @@ const command = (type, options) => {
         'bootstrap': 'bootstrap',
     };
 
+    const reverseAllTypes = {
+        'jsx': 'react',
+        'ts': 'angular',
+        'vue': 'vue',
+        'js': 'js',
+        'less': 'less',
+        'sass': 'scss',
+        'css': 'css',
+        'bootstrap': 'bootstrap',
+    };
+
     const TYPING = {
         'javascripts': {
             'react': 'jsx',
@@ -54,8 +65,10 @@ const command = (type, options) => {
     const storageTypes = {
         'js': 'storage',
         'jsx': 'redux',
+        'react': 'redux',
         'vue': 'state',
         'ts': 'redux',
+        'angular': 'redux',
     }
 
     const componentReplacements = {
@@ -839,11 +852,11 @@ module.exports = (filePath, sharedState, cb) => {
 
     if (TYPING.javascripts[type]) {
         shell.rm('-rf', path.join(root, 'assets', before, storageTypes[before]));
-        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type, storageTypes[after]), path.join(root, 'assets', after, storageTypes[after]));
         shell.rm(path.join(root, 'utils', 'methods', 'renders.js'));
         shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'utils', type, 'renders.js'), path.join(root, 'utils', 'methods', 'renders.js'));
     }
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
+    shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type, storageTypes[after]), path.join(root, 'assets', after, storageTypes[after]));
 
     if (serverSideRendering[type]) serverSideRendering[type]();
     if (webpackServersideFunction[type]) webpackServersideFunction[type]();
