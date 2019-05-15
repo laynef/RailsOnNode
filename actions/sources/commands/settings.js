@@ -334,6 +334,26 @@ const command = (type, options) => {
             const regexReduxString = reduxRecursive.join('/');
 
             fs.writeFileSync(pathNames, str.replace(regexRedux, regexReduxString).replace(regexStyles, `import '${regexStylesString}';`));
+
+            const errorDirectories = [
+                '403',
+                '404',
+                '500',
+            ];
+
+            errorDirectories.forEach((error) => {
+                const componentPath = path.join(root, 'assets', beforeType, 'pages', 'errors', error, 'component.vue');
+                const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'vue', `${error}.vue`);
+                const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
+
+                fs.writeFileSync(componentPath, templateString);
+
+                const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
+                const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'vue', `${error}.pug`);
+                const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
+
+                fs.writeFileSync(componentViewPath, templateViewString);
+            });
         },
         js: (pathNames, beforeType) => {
             const pathn = path.join(__dirname, '..', '..', '..', 'templates', 'assets', 'page.js');
