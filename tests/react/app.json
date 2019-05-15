@@ -1,0 +1,10 @@
+{
+    "title": "Example",
+    "description": "My Cool Example",
+    "themeColor": "#007bff",
+    "detailImage": "/assets/img/nodejs.png",
+    "twitterCreator": "@example-twitter",
+    "keywords": [
+        "example keyword or keypharse"
+    ]
+}
