@@ -1,12 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
+const { reduceRight } = require('lodash');
 const { root_directory } = require('../utils');
 
 const description = 'Generate a new page with it\'s assets';
 
-const command = (pageName, routePath, options) => {
-    if (!pageName || !routePath || !options) {
+const command = (routePath, options) => {
+    if (!routePath || !options) {
         console.red('Must enter a page name and it\'s route path');
         return;
     } else if (!root_directory()) {
@@ -16,6 +17,13 @@ const command = (pageName, routePath, options) => {
 
     const root = process.cwd();
     const settings = require(path.join(root, 'webpack', 'settings.js'));
+    const pathRoute = routePath.split('/');
+    const pageName = reduceRight(pathRoute, (acc, item) => {
+        if (!acc && !item.match(/\:/g)) {
+            acc = item;
+        }
+        return acc;
+    }, false);
 
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
     const templates = fs.readFileSync(path.join(templatePath, 'assets', 'page.pug'), { encoding: 'utf8' });
