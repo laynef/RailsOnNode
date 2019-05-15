@@ -17,13 +17,20 @@ const command = (routePath, options) => {
 
     const root = process.cwd();
     const settings = require(path.join(root, 'webpack', 'settings.js'));
-    const pathRoute = routePath.split('/');
+    const pathRoute = routePath.slice().split('/');
     const pageName = reduceRight(pathRoute, (acc, item) => {
         if (!acc && !item.match(/\:/g)) {
             acc = item;
         }
         return acc;
     }, false);
+
+    const storageTypes = {
+        js: 'storage',
+        ts: 'redux',
+        jsx: 'redux',
+        vue: 'state',
+    }
 
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
     const templates = fs.readFileSync(path.join(templatePath, 'assets', 'page.pug'), { encoding: 'utf8' });
@@ -43,7 +50,7 @@ const command = (routePath, options) => {
     if (fs.existsSync(path.join(templatePath, 'assets', `component.${settings.jsType}`))) shell.cp(path.join(templatePath, 'assets', `component.${settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `component.${settings.jsType}`));
     const reduxPath = path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`);
     const reduxFs = fs.readFileSync(reduxPath, { encoding: 'utf8' });
-    fs.writeFileSync(reduxPath, reduxFs.replace(reduxRegex, `${routePathDepth}redux/store`).replace(styleRegex, `${routePathDepth}../${settings.styleType}/pages${routePath}/${pageName}`));
+    fs.writeFileSync(reduxPath, reduxFs.replace(reduxRegex, `${routePathDepth}${storageTypes[settings.jsType]}/store`).replace(styleRegex, `${routePathDepth}../${settings.styleType}/pages${routePath}/${pageName}`));
     if (routePath) fs.writeFileSync(path.join(root, 'app.js'), application.replace(/\/\/ Leave Here For Static Routes/g, `// Leave Here For Static Routes\napp.get('${routePath}', render('pages${routePath}/${pageName}', { hashId: makeHash(40) }));`));
     console.green('Your new page assets have be created.');
 };

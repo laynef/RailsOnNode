@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        include ../utils/meta.pug
+        if environment === 'production'
+            link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/${filePath}.css?id=${hashId}`)
+        else
+            each file in cssFiles
+                link(rel='stylesheet', type='text/css', href=`/assets/dist/pages/${file}.css?id=${hashId}`)
+    body
+        h1(style='text-align: center;') 404 Error
+        h2(style='text-align: center;') Page Not Found
+        include ../utils/scripts.pug
+        include ../utils/noscript.pug
+        if environment === 'production'
+            script(src=`/assets/dist/pages/${filePath}.js?id=${hashId}`, async)
+        else
+            each file in jsFiles
+                script(src=`/assets/dist/pages/${file}?id=${hashId}`, async)
