@@ -548,7 +548,7 @@ const command = (type, options) => {
     ]
 
 }
-        `)
+`)
         },
         angular: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
@@ -568,7 +568,7 @@ const command = (type, options) => {
     ]
 
 }
-            `)
+`)
         },
         vue: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
@@ -584,7 +584,7 @@ const command = (type, options) => {
     ],
 
 }
-            `)
+`)
         },
         js: () => {
             fs.writeFileSync(path.join(root, '.babelrc'), `{
@@ -595,7 +595,7 @@ const command = (type, options) => {
     ]
 
 }
-        `)
+`)
         },
     };
 
@@ -632,12 +632,12 @@ module.exports = {
     }
 
 };
-            `);
+`);
         },
         angular: () => {
             fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `
 
-            `);
+`);
         },
         vue: () => {
             fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
@@ -648,7 +648,8 @@ module.exports = {
 
     serverSide: (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        req.session.state = req.session.state || require(path.join(assets, 'redux', 'store'))();
+        const store = require(path.join(assets, 'redux', 'store'));
+        req.session.state = req.session.state || store();
         const getServersideString = require('../../webpack/serverside');
 
         const assetPath = path.join(assets, pageName);
@@ -656,34 +657,27 @@ module.exports = {
         fileArray.pop();
         const filePath = fileArray.join('/') + '/component.vue';
 
-        console.log(getServersideString(filePath))
-
         return Promise.all([
-            getServersideString(filePath),
-            req.session.state,
+            getServersideString(filePath, req.session.state),
         ])
-        .then((htmls) => {
-            return {
-                serversideStorage: JSON.stringify(htmls[1]),
+            .then((htmls) => ({
+                serversideStorage: JSON.stringify(req.session.state || {}),
                 serversideString: htmls[0],
-            };
-        })
-        .catch(() => {
-            return {
+            }))
+            .catch(() => ({
                 serversideStorage: JSON.stringify({}),
                 serversideString: '',
-            };
-        });
+            }));
     },
 
-    getFreshReduxStore: (req) => {
+    getFreshStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'redux', 'store'))(req.session.redux || {});
+        const store = require(path.join(assets, 'redux', 'store'))(req.session.state || {});
         return store.getState();
-    }
+    },
 
 };
-            `);
+`);
         },
         js: () => {
             fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
@@ -708,7 +702,7 @@ module.exports = {
     }
 
 };
-            `);
+`);
         },
     };
 
