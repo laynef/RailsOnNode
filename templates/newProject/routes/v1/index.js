@@ -1,6 +1,6 @@
 const express = require('express');
-const { decorateApp } = require('@awaitjs/express');
-const router = decorateApp(express.Router());
+const { decorateRouter } = require('@awaitjs/express');
+const router = decorateRouter(express.Router());
 const allGets = require('./get');
 const allDeletes = require('./delete');
 const allPosts = require('./post');
