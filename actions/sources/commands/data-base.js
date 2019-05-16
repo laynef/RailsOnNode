@@ -17,7 +17,7 @@ Helps:
     -> sql --help
     -> mongodb help
 
-node-rails data-base <data-type> <native commands>
+node-rails data-base (database-type) (native commands)
     `);
 };
 

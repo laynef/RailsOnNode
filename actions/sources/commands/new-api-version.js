@@ -46,7 +46,7 @@ const documentation = () => {
     console.yellow(`
 Command:
 
-node-rails new-api-version <version-number>
+node-rails new-api-version (version-number)
     `);
 };
 

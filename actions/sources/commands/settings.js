@@ -881,7 +881,7 @@ Commands:
     -> sass
 
 Command:
-node-rails settings <command-name> [Options]
+node-rails settings (command-name) [Options]
     `);
 };
 

@@ -31,7 +31,7 @@ const documentation = () => {
     console.yellow(`
 Command:
 
-node-rails new-api-controller <controller-name>
+node-rails new-api-controller (controller-name)
     `);
 };
 

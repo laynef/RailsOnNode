@@ -69,7 +69,7 @@ Database Types:
 => sql: Using sequelize for any SQL database
 => mongodb: Using mongoose for your MongoDB database
 
-node-rails setup-data-base <database-type>
+node-rails setup-data-base (database-type)
     `);
 };
 
