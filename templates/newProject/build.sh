@@ -10,6 +10,7 @@ cd $CURR_DIR
 npm install
 npm run clean:assets
 npm run build:prod
+cp -R ./assets/dist ./tempDist
 npm run babel:build
 rm -rf ./deploy-src
 cp -R ./package.json ./build/package.json
@@ -19,11 +20,11 @@ cp -R ./openssl ./build/openssl
 cp -R ./bootstrap ./build/bootstrap
 cp -R ./assets/img ./build/assets/img
 rm -rf ./build/assets/dist
-cp -R ./assets/dist ./build/assets/dist
+cp -R ./tempDist ./build/assets/dist
 cp -R ./assets/manifest.json ./build/assets/manifest.json
 cd $CURR_DIR/build
 rm -rf *.zip
 zip -r build-$DATE.zip .
 mv build-$DATE.zip ..
 cd $CURR_DIR
-rm -rf ./build
+rm -rf ./build ./tempDist
