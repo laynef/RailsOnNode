@@ -847,9 +847,9 @@ module.exports = (filePath, sharedState, cb) => {
         shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'utils', type, 'renders.js'), path.join(root, 'utils', 'methods', 'renders.js'));
     }
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
-    shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type, storageTypes[after]), path.join(root, 'assets', after, storageTypes[after]));
 
     if (TYPING.javascripts[type]) {
+        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type, storageTypes[after]), path.join(root, 'assets', after, storageTypes[after]));
         fs.readdirSync(path.join(root, 'assets', after, 'pages', 'docs')).forEach((item) => {
             fs.readdirSync(path.join(root, 'assets', after, 'pages', 'docs', item)).forEach((file) => {
                 fs.writeFileSync(path.join(root, 'assets', after, 'pages', 'docs', item, file), '');
