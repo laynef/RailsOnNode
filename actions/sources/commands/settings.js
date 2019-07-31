@@ -866,7 +866,7 @@ module.exports = (filePath, sharedState, cb) => {
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Commands:
     bootstrap [options: --switch=(true || false)]
 

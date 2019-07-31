@@ -28,7 +28,7 @@ const command = (controllerName, options) => {
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Command:
 
 node-rails new-api-controller (controller-name)

@@ -43,7 +43,7 @@ const command = (versionNumber, options) => {
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Command:
 
 node-rails new-api-version (version-number)
