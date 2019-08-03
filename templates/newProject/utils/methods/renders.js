@@ -40,10 +40,12 @@ const globalRenders = (name, req, res, customs) => {
     else if (customs && customs.statusCode >= 400) files = `errors${customs.statusCode}`;
     else files = camelCase(filenameArray.map(e => e.replace(RegExp(':', 'ig'), '')).join(' '));
 
+    const hostPortMeta = process.env.PORT == 80 || process.env.PORT == 443 ? '' : `:${process.env.PORT}`;
+
     return Object.assign({}, meta, {
         name: pageName.split('').map((e, i) => i === 0 ? e.toUpperCase() : e.toLowerCase()).join(''),
         csrf: req.session.cookie.token,
-        host: `${req.protocol}://${req.hostname}${req.port && navtivePorts[req.port] ? '' : `:${req.port || 8080}`}${req.url}`,
+        host: `${req.protocol}://${req.hostname}${hostPortMeta}${req.url}`,
         jsFiles: webpackHotReloads(res, files).js,
         cssFiles: webpackHotReloads(res, files).css,
         filePath: files,
