@@ -6,40 +6,36 @@ module.exports = {
 
     serverSide: async (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const createStore = require(path.join(assets, 'redux', 'store'));
-        const componentArray = pageName.split('/');
-        componentArray.pop();
-        const componentPath = componentArray.join('/') + '/component';
+        const store = require(path.join(assets, 'state', 'store'));
+        const getServersideString = require('../../webpack/serverside');
 
-        const Application = require(path.join(assets, componentPath));
+        const assetPath = path.join(assets, pageName);
+        const fileArray = assetPath.split('/');
+        fileArray.pop();
+        const filePath = fileArray.join('/') + '/component.vue';
 
         try {
-            let redux = await global.client.getAsync(req.session.id);
-            redux = !!redux ? JSON.parse(redux) : null;
-            const store = createStore(redux);
-            redux = redux || store.getState();
-
-            const getServersideString = require('../../webpack/serverside');
-
+            let state = await global.redis.getAsync(req.session.id);
+            state = !!state ? JSON.parse(state) : store();
+            const serversideString = await getServersideString(filePath, state);
             return {
-                serversideStorage: JSON.stringify(redux),
-                serversideString: getServersideString(Application, store),
-            };
-        } catch (e) {
+                serversideStorage: JSON.stringify(state),
+                serversideString: serversideString,
+            }
+        } catch(e) {
             return {
                 serversideStorage: JSON.stringify({}),
-                serversideString: getServersideString(Application, store),
-            };
+                serversideString: '',
+            }
         }
     },
 
     getFreshStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const createStore = require(path.join(assets, 'redux', 'store'));
+        const createStore = require(path.join(assets, 'state', 'store'));
         const store = createStore({});
-        const storage = store.getState();
-        global.client.set(req.session.id, JSON.stringify(storage));
-        return storage;
-    }
+        global.redis.set(req.session.id, store);
+        return store;
+    },
 
 };

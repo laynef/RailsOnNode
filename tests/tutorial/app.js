@@ -32,7 +32,7 @@ bluebird.promisifyAll(redis.Multi.prototype);
 const protection = csrf();
 const app = decorateApp(new Express());
 
-global.client = client;
+global.redis = client;
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

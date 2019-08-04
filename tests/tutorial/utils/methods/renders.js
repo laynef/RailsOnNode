@@ -65,14 +65,16 @@ module.exports = {
     globalRenders,
     makeHash,
 
-    render: (pageName, customObject = {}) => (req, res) => {
+    render: (pageName, customObject = {}) => async (req, res) => {
         const statusCode = customObject && customObject.statusCode ? customObject.statusCode : 200;
-        res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(pageName, req))));
+        const serverSideString = await serverSide(pageName, req);
+        res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSideString)));
     },
 
-    renderError: (req, res, pageName, customObject = {}) => {
+    renderError: async (req, res, pageName, customObject = {}) => {
         const errorCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
-        res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(`pages/${pageName}/${errorCode}`, req))));
+        const serverSideString = await serverSide(`pages/${pageName}/${errorCode}`, req);
+        res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSideString)));
     },
 
 };

@@ -7,7 +7,7 @@ module.exports = {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'storage', 'store');
         const store = require(assets);
         try {
-            let storage = await global.client.getAsync(req.session.id);
+            let storage = await global.redis.getAsync(req.session.id);
             storage = JSON.parse(storage);
             return { serversideStorage: JSON.stringify(store(storage)) };
         } catch (e) {
@@ -19,7 +19,7 @@ module.exports = {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         const store = require(path.join(assets, 'storage', 'store'))({});
         const storage = store.getState();
-        global.client.set(req.session.id, JSON.stringify(storage));
+        global.redis.set(req.session.id, JSON.stringify(storage));
         return storage;
     },
 

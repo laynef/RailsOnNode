@@ -648,7 +648,7 @@ module.exports = {
         const Application = require(path.join(assets, componentPath));
 
         try {
-            let redux = await global.client.getAsync(req.session.id);
+            let redux = await global.redis.getAsync(req.session.id);
             redux = !!redux ? JSON.parse(redux) : null;
             const store = createStore(redux);
             redux = redux || store.getState();
@@ -672,7 +672,7 @@ module.exports = {
         const createStore = require(path.join(assets, 'redux', 'store'));
         const store = createStore({});
         const storage = store.getState();
-        global.client.set(req.session.id, JSON.stringify(storage));
+        global.redis.set(req.session.id, JSON.stringify(storage));
         return storage;
     }
 
@@ -691,10 +691,9 @@ const settings = require('../../webpack/settings');
 
 module.exports = {
 
-    serverSide: (pageName, req) => {
+    serverSide: async (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         const store = require(path.join(assets, 'state', 'store'));
-        req.session.state = req.session.state || store();
         const getServersideString = require('../../webpack/serverside');
 
         const assetPath = path.join(assets, pageName);
@@ -702,23 +701,28 @@ module.exports = {
         fileArray.pop();
         const filePath = fileArray.join('/') + '/component.vue';
 
-        return Promise.all([
-            getServersideString(filePath, req.session.state),
-        ])
-            .then((htmls) => ({
-                serversideStorage: JSON.stringify(req.session.state || {}),
-                serversideString: htmls[0],
-            }))
-            .catch(() => ({
+        try {
+            let state = await global.redis.getAsync(req.session.id);
+            state = !!state ? JSON.parse(state) : store();
+            const serversideString = await getServersideString(filePath, state);
+            return {
+                serversideStorage: JSON.stringify(state),
+                serversideString: serversideString,
+            }
+        } catch(e) {
+            return {
                 serversideStorage: JSON.stringify({}),
                 serversideString: '',
-            }));
+            }
+        }
     },
 
     getFreshStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'state', 'store'))(req.session.state || {});
-        return store.getState();
+        const createStore = require(path.join(assets, 'state', 'store'));
+        const store = createStore({});
+        global.redis.set(req.session.id, store);
+        return store;
     },
 
 };
@@ -734,7 +738,7 @@ module.exports = {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'storage', 'store');
         const store = require(assets);
         try {
-            let storage = await global.client.getAsync(req.session.id);
+            let storage = await global.redis.getAsync(req.session.id);
             storage = JSON.parse(storage);
             return { serversideStorage: JSON.stringify(store(storage)) };
         } catch (e) {
@@ -746,7 +750,7 @@ module.exports = {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
         const store = require(path.join(assets, 'storage', 'store'))({});
         const storage = store.getState();
-        global.client.set(req.session.id, JSON.stringify(storage));
+        global.redis.set(req.session.id, JSON.stringify(storage));
         return storage;
     },
 

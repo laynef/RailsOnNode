@@ -75,7 +75,7 @@ module.exports = {
         res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, storage)));
     },
 
-    renderError: (req, res, pageName, customObject = {}) => {
+    renderError: async (req, res, pageName, customObject = {}) => {
         const errorCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
         const storage = await serverSide(`pages/${pageName}/${errorCode}`, req);
         res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, storage)));
