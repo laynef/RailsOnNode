@@ -25,10 +25,14 @@ const { docs } = require('./controllers');
 const routeVersions = require('./routes');
 const { each } = require('lodash');
 const meta = require('./app.json');
+const bluebird = require('bluebird');
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
 
 const protection = csrf();
 const app = decorateApp(new Express());
 
+global.client = client;
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -95,7 +99,7 @@ each(routeVersions, (versionDetails, apiVersion) => {
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
-app.get('/', render('pages/index', { hashId: makeHash(40) }));
+app.getAsync('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
 
 app.use('*', (req, res) => {

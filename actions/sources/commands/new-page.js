@@ -59,7 +59,7 @@ const command = (routePath, options) => {
     const reduxPath = path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`);
     const reduxFs = fs.readFileSync(reduxPath, { encoding: 'utf8' });
     fs.writeFileSync(reduxPath, reduxFs.replace(reduxRegex, `${routePathDepth}${storageTypes[settings.jsType]}/store`).replace(styleRegex, `${routePathDepth}../${settings.styleType}/pages${routePath}/${pageName}`));
-    if (routePath) fs.writeFileSync(path.join(root, 'app.js'), application.replace(/\/\/ Leave Here For Static Routes/g, `// Leave Here For Static Routes\napp.get('${routePath}', render('pages${routePath}/${pageName}', { hashId: makeHash(40) }));`));
+    if (routePath) fs.writeFileSync(path.join(root, 'app.js'), application.replace(/\/\/ Leave Here For Static Routes/g, `// Leave Here For Static Routes\napp.getAsync('${routePath}', render('pages${routePath}/${pageName}', { hashId: makeHash(40) }));`));
     console.green('Your new page assets have be created.');
 };
 

@@ -6,17 +6,21 @@ module.exports = {
     serverSide: (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'storage', 'store');
         const store = require(assets);
-        req.session.redux = store(req.session.storage || {});
-
-        return {
-            serversideStorage: JSON.stringify(req.session.storage),
-        };
+        try {
+            let storage = await global.client.getAsync(req.session.id);
+            storage = JSON.parse(storage);
+            return { serversideStorage: JSON.stringify(store(storage)) };
+        } catch (e) {
+            return { serversideStorage: JSON.stringify(store({})) };
+        }
     },
 
     getFreshStore: (req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'storage', 'store'))(req.session.storage || {});
-        return store.getState();
+        const store = require(path.join(assets, 'storage', 'store'))({});
+        const storage = store.getState();
+        global.client.set(req.session.id, JSON.stringify(storage));
+        return storage;
     },
 
 };
