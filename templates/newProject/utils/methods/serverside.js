@@ -3,7 +3,7 @@ const settings = require('../../webpack/settings');
 
 module.exports = {
 
-    serverSide: (pageName, req) => {
+    serverSide: async (pageName, req) => {
         const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'storage', 'store');
         const store = require(assets);
         try {
