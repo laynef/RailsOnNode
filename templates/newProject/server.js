@@ -65,7 +65,8 @@ if (cluster.isMaster) {
         });
     } else {
         const server = http.createServer(require('./app'));
-        const httpPort = process.env.PORT || 8080;
+        process.env.PORT = process.env.PORT || 8080;
+        const httpPort = process.env.PORT;
         server.listen(httpPort, () => {
             console.log(`Running on port ${httpPort}`);
             if (!isProduction) console.log('Wait for the webpack bundle');
