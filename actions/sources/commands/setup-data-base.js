@@ -15,9 +15,9 @@ const command = (databaseType, options) => {
         console.red('You must enter a database type');
         return;
     } else if (!database[databaseType]) {
-        console.yellow('Database options are:');
+        console.cyan('Database options are:');
         for (let i in database) {
-            console.yellow(`=> ${i}`);
+            console.cyan(`=> ${i}`);
         }
         return;
     } else if (!root_directory()) {
@@ -63,7 +63,7 @@ const command = (databaseType, options) => {
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Command:
 Database Types:
 => sql: Using sequelize for any SQL database

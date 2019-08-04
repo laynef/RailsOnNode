@@ -39,7 +39,7 @@ const command = (directoryName, options) => {
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Command:
 
 Options:

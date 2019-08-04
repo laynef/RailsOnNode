@@ -64,7 +64,7 @@ const command = (routePath, options) => {
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Command:
 Route Path: '/route-path'
 => Adding a route path will autogenerate a route with all it's assets

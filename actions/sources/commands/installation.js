@@ -7,7 +7,7 @@ const command = () => {
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 npm i -g ${packager.name}
 
 ${Object.keys(packager.bin).pop()} <command-name> --help
