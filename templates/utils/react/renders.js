@@ -40,8 +40,7 @@ const globalRenders = (name, req, res, customs) => {
     else if (customs && customs.statusCode >= 400) files = `errors${customs.statusCode}`;
     else files = camelCase(filenameArray.map(e => e.replace(RegExp(':', 'ig'), '')).join(' '));
 
-    const hostPortMeta = !!navtivePorts[process.env.PORT] || process.env.NODE_ENV === 'production' ? '' : `:${process.env.PORT}`;
-    const hostName = `${req.protocol}://${req.hostname}${hostPortMeta}`;
+    const hostName = `${req.protocol}://${req.get('host')}`;
 
     return Object.assign({}, meta, {
         name: pageName.split('').map((e, i) => i === 0 ? e.toUpperCase() : e.toLowerCase()).join(''),
