@@ -1,0 +1,90 @@
+doctype html
+html(lang='en', style={'width': '100%', 'overflow-x': 'hidden'})
+    head
+        title=`API ${apiVersion} Documentation`
+        include ./meta.pug
+        style.
+            .flex-respond-row {display: flex !important;flex-direction: column !important;}@media (min-width: 992px) {.flex-respond-row {display: flex !important;flex-direction: row !important;}}.card-shadow {box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);}.cursor-pointer{ cursor: pointer !important; }
+    body(style={'width': '100%', 'overflow-x': 'hidden'})
+        .header.p-3.bg-dark.card-shadow.d-flex.flex-row.justify-content-between
+            .d-flex.flex-row
+                a(href='/')
+                    img(src=`/assets/img/nodejs.png?id=${hashId}`, alt='', height='50', width='50')
+                h1.h-100.align-items-center.text-white=`API ${apiVersion} Documentation`
+            a(class='d-flex align-items-center cursor-pointer')
+                h2(class='h5 text-white', onclick='goBack()')='Go Back'
+        .card-body.p-3.w-100.p-1
+            each data in allRoutes
+                .card.card-outline-secondary.w-100.flex-respond-row.card-shadow
+                    .col-xs-12.col-sm-12-col-md-12.col-lg-6.col-xl-6.p-1.card-shadow.p-1
+                        div(class=`card-header ${data.routeHeader}`)
+                            span.mr-1=data.method + ':'
+                            span=data.route
+                        div(class='card-body p-2 w-100', style='max-height: 550px; overflow: auto;')
+                            if data.middleware.length > 0
+                                h2.h5='Middleware Used: '
+                                    ul
+                                        each ware in data.middleware
+                                            li.h6=ware
+                            h2.h5='Description: '
+                                ul
+                                    li.h6=data.description
+                            if data.allowParams
+                                .d-flex.f-row.w-100
+                                    h2.w-100.h6='Params: '
+                                .d-flex.f-row.w-100
+                                    form(id=`${data.camelCased}ParamsForm`, class='w-100')
+                                        each param in data.params
+                                            .d-flex.f-row
+                                                input(id=`${data.camelCased}-${param}`, type='text', class='w-100 m-1 d-flex f-row form-control', value=`${param}`)
+                                                input(id=`${data.camelCased}-${param}-value`, type='text', class='w-100 m-1 form-control', placeholder='Enter value')
+                            else
+                                span
+                            .d-flex.f-row.w-100
+                                h2.w-100.h6='Headers: '
+                                button(class=`${data.submitButtonColor} rounded-circle`, onclick=`${data.camelCased}NewHeader()`)='+'
+                            .d-flex.f-row.w-100
+                                form(id=`${data.camelCased}HeadersForm`, class='w-100')
+                                    div(class='d-flex f-row')
+                                        input(type='text', class='w-100 m-1 form-control', placeholder='Enter key')
+                                        input(type='text', class='w-100 m-1 form-control', placeholder='Enter value')
+                            if data.allowBody
+                                .d-flex.f-row.w-100
+                                    h2.w-100.h6='Body: '
+                                    button(class=`${data.submitButtonColor} rounded mr-2`, onclick=`${data.camelCased}NewBodyFile()`)='Add File'
+                                    button(class=`${data.submitButtonColor} rounded-circle`, onclick=`${data.camelCased}NewBody()`)='+'
+                                .d-flex.f-row.w-100
+                                    form(id=`${data.camelCased}BodyForm`, class='w-100')
+                                        div(class='d-flex f-row')
+                                            input(type='text', class='w-100 m-1 form-control', placeholder='Enter key')
+                                            input(type='text', class='w-100 m-1 form-control', placeholder='Enter value')
+                            else
+                                span
+                            .d-flex.f-row.w-100
+                                h2.w-100.h6='Querystrings: '
+                                button(class=`${data.submitButtonColor} rounded-circle`, onclick=`${data.camelCased}NewQS()`)='+'
+                            .d-flex.f-row.w-100
+                                form(id=`${data.camelCased}QSForm`, class='w-100')
+                                    div(class='d-flex f-row')
+                                        input(type='text', class='w-100 m-1 form-control', placeholder='Enter key')
+                                        input(type='text', class='w-100 m-1 form-control', placeholder='Enter value')
+                            if data.allowBody
+                                h2.h6='Body Data Type: '
+                                select(id=`${data.camelCased}DataType`, class='form-control')
+                                    option(value='')=''
+                                    option(value='Raw Body')='Raw Body'
+                                    option(value='Form Data')='Form Data'
+                            else
+                                span
+                            .w-100.mt-2
+                                button(class=`${data.submitButtonColor} w-100`, onclick=`${data.camelCased}()`)='Submit'
+                    .col-xs-12.col-sm-12-col-md-12.col-lg-6.col-xl-6.p-1.card-shadow.p-1
+                        .card-header
+                            h2.h5='Sample Data'
+                        div(class='card-body', style='max-height: 550px; overflow: auto;')
+                            code(style={'white-space': 'pre', 'overflow': 'auto', 'display': 'block'})
+                                span(id=`${data.camelCased}-results`)
+        script.
+            function goBack() { window.history.back(); }
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js')
+        script(src=`/assets/dist/pages/docs${apiVersion}.js?id=${hashId}`, async)

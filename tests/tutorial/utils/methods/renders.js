@@ -26,6 +26,11 @@ const webpackHotReloads = (res, application) => {
 const globalRenders = (name, req, res, customs) => {
     meta.keywords = Array.isArray(meta.keywords) ? meta.keywords.join(',') : meta.keywords;
 
+    const navtivePorts = {
+        '443': true,
+        '80': true,
+    };
+
     const nameArray = name.split('/');
     const filenameArray = nameArray.slice(1);
     const pageName = filenameArray.pop();

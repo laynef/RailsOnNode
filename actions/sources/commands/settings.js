@@ -646,20 +646,20 @@ module.exports = {
         const componentPath = componentArray.join('/') + '/component';
 
         const Application = require(path.join(assets, componentPath));
+        const getServersideString = require('../../webpack/serverside');
 
         try {
             let redux = await global.redis.getAsync(req.session.id);
-            redux = !!redux ? JSON.parse(redux) : null;
+            redux = !!redux ? JSON.parse(redux) : {};
             const store = createStore(redux);
             redux = redux || store.getState();
-
-            const getServersideString = require('../../webpack/serverside');
 
             return {
                 serversideStorage: JSON.stringify(redux),
                 serversideString: getServersideString(Application, store),
             };
         } catch (e) {
+            const store = createStore({});
             return {
                 serversideStorage: JSON.stringify({}),
                 serversideString: getServersideString(Application, store),
