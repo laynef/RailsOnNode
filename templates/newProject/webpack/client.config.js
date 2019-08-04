@@ -145,6 +145,7 @@ for (let k in entrances) {
 }
 
 let plugins = [
+    vueJs ? new VueLoaderPlugin() : null,
     new webpack.LoaderOptionsPlugin({
         options: {
             devtools: 'eval-source-map',
@@ -154,14 +155,11 @@ let plugins = [
         filename: '[name].css',
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    !noProduction ? new webpack.HotModuleReplacementPlugin() : null,
     new webpack.NoEmitOnErrorsPlugin(),
     new TimeFixPlugin(),
 	new WriteFilePlugin(),
-];
-
-if (!noProduction) plugins.splice(3, 1);
-if (vueJs) plugins = plugins.concat([new VueLoaderPlugin()])
+].filter(e => !!e);
 
 const configuration = {
     name: 'client',
