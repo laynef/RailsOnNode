@@ -8,6 +8,7 @@ module.exports = {
         let javascriptString = '';
         for (let i = 0; i < allRoutes.length; i++) {
             const route = allRoutes[i];
+            console.log(route)
             const camelCased = `${route.method.toLowerCase()}${apiVersion.toUpperCase()}${route.route.split('/').slice(1).map(e => e[0].toUpperCase() + e.slice(1)).join('').split(':').map((e, i, a) => i === 0 && a.length > 1 ? e + 'Param' : a.length === 1 ? e : e[0].toUpperCase() + e.slice(1)).join('')}`;
             javascriptString += `window.${camelCased} = function() {
     var allData = ${JSON.stringify(route)};

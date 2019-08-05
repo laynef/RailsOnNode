@@ -3,7 +3,7 @@ const { globalRenders, makeHash } = require('../../utils');
 module.exports = ({ apiVersion, allRoutes }) => (req, res) => {
     const data = allRoutes.map(e => ({
         ...e,
-        camelCased: `${e.method.toLowerCase()}${apiVersion.toUpperCase()}${e.route.split('/').slice(1).map(e => e[0].toUpperCase() + e.slice(1)).join('').split(':').map((e, i, a) => i === 0 && a.length > 1 ? e + 'Param' : a.length === 1 ? e : e[0].toUpperCase() + e.slice(1)).join('')}`,
+        camelCased: `${e.method.toLowerCase()}${apiVersion.toUpperCase()}${e.route.split('/').slice(1).map(el => el[0].toUpperCase() + el.slice(1)).join('').split(':').map((el, id, ar) => id === 0 && ar.length > 1 ? el + 'Param' : ar.length === 1 ? el : el[0].toUpperCase() + el.slice(1)).join('')}`,
         allowParams: e.route.split(':').length > 1,
         params: e.route.split('/').filter(e => e[0] === ':').map(e => e.slice(1)),
         allowBody: e.method === 'GET' ? false : e.method !== 'DELETE',
