@@ -35,11 +35,11 @@ const command = (type) => {
         mongodb: './node_modules/mongoose-model-cli/bin/mongoose-model-cli',
     };
 
-    // const strs = [...arguments];
-    // const str = strs.slice(1).join(' ');
+    const strs = [...arguments];
+    const str = strs.slice(1).join(' ');
 
     if (dbTypes[type]) {
-        shell.exec(`${dbTypes[type]} init`);
+        shell.exec(`${dbTypes[type]} ${str}`);
         console.green('Wrapper for database type used.');
     } else {
         documentation();
