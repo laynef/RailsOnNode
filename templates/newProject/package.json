@@ -57,7 +57,6 @@
         "redux-thunk": "^2.3.0",
         "sequelize": "^6.0.0",
         "serve-favicon": "^2.5.0",
-        "sqlite3": "^4.0.2",
         "tedious": "^1.14.0",
         "vue": "^2.5.17",
         "vue-server-renderer": "^2.5.17"
@@ -108,7 +107,7 @@
         "resolve-url-loader": "^2.3.0",
         "sass-loader": "^6.0.7",
         "sequelize-cli": "^5.5.0",
-        "sqlite3": "^4.0.2",
+        "sqlite3": "^4.0.9",
         "style-loader": "^0.19.1",
         "sugarss": "^2.0.0",
         "supertest": "^3.1.0",
@@ -124,4 +123,3 @@
         "write-file-webpack-plugin": "^4.3.2"
     }
 }
-
