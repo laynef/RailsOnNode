@@ -82,32 +82,19 @@ const setByRoute = (data, object, assetType) => {
             obj[routePath] = obj[routePath] || [];
             obj[routePath].push('webpack-hot-middleware/client');
             obj[routePath].push('babel-polyfill');
-            if (object[route].docs && !useBootstrapToggle) {
+            if (object[route].docs || useBootstrapToggle) {
                 for (let setting in settings.bootstrap.scripts) {
                     obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
                 }
             }
-            if (useBootstrapToggle) {
-                for (let setting in settings.bootstrap.scripts) {
-                    obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
-                }
-                obj[routePath].push(object[route].fullPath);
-            } else {
-                obj[routePath].push(object[route].fullPath);
-            }
+            obj[routePath].push(object[route].fullPath);
         } else if (assetType === 'stylesheet') {
             obj[routePath] = obj[routePath] || [];
-            if (object[route].docs && !useBootstrapToggle) {
+            if (object[route].docs || useBootstrapToggle) {
                 obj[routePath].push(`${context}/bootstrap/index.scss`);
                 obj[routePath].push(`font-awesome-loader`);
             }
-            if (useBootstrapToggle) {
-                obj[routePath].push(`${context}/bootstrap/index.scss`);
-                obj[routePath].push(`font-awesome-loader`);
-                obj[routePath].push(object[route].fullPath);
-            } else {
-                obj[routePath].push(object[route].fullPath);
-            }
+            obj[routePath].push(object[route].fullPath);
         }
     }
     return obj;
@@ -138,7 +125,7 @@ const entry = {};
 for (let k in entrances) {
     let key = null;
     let array = k.split('/').map(e => e.replace(RegExp(':', 'ig'), ''));
-    array.pop()
+    array.pop();
     if (k === '/index') key = camelCase('index')
     else key = camelCase(array.join(' '));
     entry[key] = entrances[k];
@@ -155,7 +142,7 @@ let plugins = [
         filename: '[name].css',
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    !noProduction ? new webpack.HotModuleReplacementPlugin() : null,
+    noProduction ? new webpack.HotModuleReplacementPlugin() : null,
     new webpack.NoEmitOnErrorsPlugin(),
     new TimeFixPlugin(),
 	new WriteFilePlugin(),
