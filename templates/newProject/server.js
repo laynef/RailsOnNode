@@ -1,7 +1,6 @@
 require('dotenv').config();
 const cluster = require('cluster');
-const http = require('http');
-const https = require('https');
+const spdy = require('spdy');
 const fs = require('fs');
 const path = require('path');
 const { createServiceWorker } = require('./utils');
@@ -53,23 +52,15 @@ if (cluster.isMaster) {
     // isMaster will be false
     // isWorker will be true: set the children's work
 
-    if (isHttps) {
-        process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-        const server = https.createServer({
-            key: fs.readFileSync(path.join(__dirname, 'openssl', 'example-key.pem'), { encoding: 'utf8' }),
-            cert: fs.readFileSync(path.join(__dirname, 'openssl', 'example-cert.pem'), { encoding: 'utf8' }),
-        }, require('./app'));
-        server.listen(443, () => {
-            console.log(`Running on your custom DNS: Default is https://www.example.com`);
-            if (!isProduction) console.log('Wait for the webpack bundle');
-        });
-    } else {
-        const server = http.createServer(require('./app'));
-        process.env.PORT = process.env.PORT || 8080;
-        const httpPort = process.env.PORT;
-        server.listen(httpPort, () => {
-            console.log(`Running on port ${httpPort}`);
-            if (!isProduction) console.log('Wait for the webpack bundle');
-        });
-    }
+    const hostname = process.env.HOSTNAME || 'localhost';
+    const server = spdy.createServer({
+        key: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-key.pem'), { encoding: 'utf8' }),
+        cert: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-cert.pem'), { encoding: 'utf8' }),
+    }, require('./app'));
+    process.env.PORT = process.env.PORT || 8080;
+    const httpPort = process.env.PORT;
+    server.listen(httpPort, () => {
+        console.log(`Running on port ${httpPort}`);
+        if (!isProduction) console.log('Wait for the webpack bundle');
+    });
 }
