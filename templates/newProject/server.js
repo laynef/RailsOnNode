@@ -5,7 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const { createServiceWorker } = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
-const isHttps = !!process.env.LOCAL_HTTPS;
 const numCPUs = isProduction ? 8 : 1;
 createServiceWorker();
 
