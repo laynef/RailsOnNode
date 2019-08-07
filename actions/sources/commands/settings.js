@@ -23,6 +23,8 @@ const command = (type, options) => {
         'sass': 'scss',
         'css': 'css',
         'bootstrap': 'bootstrap',
+        'fa': 'font-awesome',
+        'font-awesome': 'font-awesome',
     };
 
     const TYPING = {
@@ -104,6 +106,20 @@ const command = (type, options) => {
         fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
 
         console.green(`Toggled bootstrap ${settings.useBootstrapToggle ? 'on' : 'off'}`);
+        return null;
+    }
+
+    if (allTypes[type] === 'font-awesome') {
+        if (options.switch == 'true') {
+            settings.useFontAwesomeToggle = true;
+        } else if (options.switch == 'false') {
+            settings.useFontAwesomeToggle = false;
+        } else {
+            settings.useFontAwesomeToggle = !settings.useFontAwesomeToggle;
+        }
+        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
+
+        console.green(`Toggled bootstrap ${settings.useFontAwesomeToggle ? 'on' : 'off'}`);
         return null;
     }
 

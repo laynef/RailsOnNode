@@ -92,8 +92,9 @@ const setByRoute = (data, object, assetType) => {
             obj[routePath] = obj[routePath] || [];
             if (object[route].docs || useBootstrapToggle) {
                 obj[routePath].push(`${context}/bootstrap/index.scss`);
-                obj[routePath].push(`font-awesome-loader`);
             }
+            if (settings.useFontAwesomeToggle) obj[routePath].push(`${context}/bootstrap/font-awesome.scss`);
+            if (settings.useFontAwesomeToggle) obj[routePath].push(`font-awesome-loader`);
             obj[routePath].push(object[route].fullPath);
         }
     }

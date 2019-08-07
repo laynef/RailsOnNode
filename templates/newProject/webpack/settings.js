@@ -2,6 +2,7 @@ module.exports = {
     styleType: 'css',
     jsType: 'js',
     useBootstrapToggle: false,
+    useFontAwesomeToggle: false,
     bootstrap: {
         scripts: {
             alert: true,
@@ -21,7 +22,7 @@ module.exports = {
         development: [{
             test: '.js$',
             exclude: 'node_modules',
-            use: [{ 
+            use: [{
                 loader: 'babel-loader',
                 options: {
                     "presets": ["env","stage-0"],
@@ -31,7 +32,7 @@ module.exports = {
         production: [{
             test: '.js$',
             exclude: 'node_modules',
-            use: [{ 
+            use: [{
                 loader: 'babel-loader',
                 options: {
                     "presets": ["env","stage-0"],
