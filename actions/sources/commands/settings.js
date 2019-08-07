@@ -119,7 +119,7 @@ const command = (type, options) => {
         }
         fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
 
-        console.green(`Toggled bootstrap ${settings.useFontAwesomeToggle ? 'on' : 'off'}`);
+        console.green(`Toggled font awesome 4 ${settings.useFontAwesomeToggle ? 'on' : 'off'}`);
         return null;
     }
 
