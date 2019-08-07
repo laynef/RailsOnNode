@@ -164,15 +164,15 @@ const configuration = {
             ...jsLoader,
             {
                 test: /\.css$/,
-                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : noProduction && vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : noProduction && vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
                 test: /\.less$/,
-                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : noProduction && vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
             },
             {
                 test: /\.json$/,
