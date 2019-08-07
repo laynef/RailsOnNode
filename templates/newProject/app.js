@@ -36,7 +36,6 @@ global.redis = client;
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
-app.use('/assets', Express.static(path.join(__dirname, 'assets')));
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
@@ -51,6 +50,7 @@ app.use(session({
         token: null,
     },
 }));
+app.use('/assets', Express.static(path.join(__dirname, 'assets')));
 
 if (!process.env.TESTING) {
     app.use(protection);
