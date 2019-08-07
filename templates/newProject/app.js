@@ -8,6 +8,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const compression = require('compression');
 const favicon = require('serve-favicon');
+const sqlinjection = require('sql-injection');
 const csrf = require('csurf');
 const parser = require('body-parser');
 const session = require('express-session');
@@ -38,6 +39,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(cors());
 app.use(helmet());
+app.use(sqlinjection);
 app.use(morgan('dev'));
 app.use(compression({ level: 7 }));
 app.use(session({
