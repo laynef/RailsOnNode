@@ -26,11 +26,6 @@ const webpackHotReloads = (res, application) => {
 const globalRenders = (name, req, res, customs) => {
     meta.keywords = Array.isArray(meta.keywords) ? meta.keywords.join(',') : meta.keywords;
 
-    const navtivePorts = {
-        '443': true,
-        '80': true,
-    };
-
     const nameArray = name.split('/');
     const filenameArray = nameArray.slice(1);
     const pageName = filenameArray.pop();
@@ -40,16 +35,17 @@ const globalRenders = (name, req, res, customs) => {
     else if (customs && customs.statusCode >= 400) files = `errors${customs.statusCode}`;
     else files = camelCase(filenameArray.map(e => e.replace(RegExp(':', 'ig'), '')).join(' '));
 
-    const hostPortMeta = process.env.PORT == 80 || process.env.PORT == 443 ? '' : `:${process.env.PORT}`;
+    const hostName = `${req.protocol}://${req.get('host')}`;
 
     return Object.assign({}, meta, {
         name: pageName.split('').map((e, i) => i === 0 ? e.toUpperCase() : e.toLowerCase()).join(''),
         csrf: req.session.cookie.token,
-        host: `${req.protocol}://${req.hostname}${hostPortMeta}${req.url}`,
+        host: `${hostName}${req.url}`,
         jsFiles: webpackHotReloads(res, files).js,
         cssFiles: webpackHotReloads(res, files).css,
         filePath: files,
         environment: process.env.NODE_ENV,
+        hostName,
     }, customs);
 };
 
@@ -67,14 +63,16 @@ module.exports = {
     globalRenders,
     makeHash,
 
-    render: (pageName, customObject = {}) => (req, res) => {
+    render: (pageName, customObject = {}) => async (req, res) => {
         const statusCode = customObject && customObject.statusCode ? customObject.statusCode : 200;
-        res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(pageName, req))));
+        const storage = await serverSide(pageName, req);
+        res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, storage)));
     },
 
-    renderError: (req, res, pageName, customObject = {}) => {
+    renderError: async (req, res, pageName, customObject = {}) => {
         const errorCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
-        res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, serverSide(`pages/${pageName}/${errorCode}`, req))));
+        const storage = await serverSide(`pages/${pageName}/${errorCode}`, req);
+        res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, storage)));
     },
 
 };

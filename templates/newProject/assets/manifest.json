@@ -5,10 +5,10 @@
       {
         "src": "/assets/img/nodejs.png",
         "type": "image/png",
-        "sizes": "500x500"
+        "sizes": "512x512"
       }
     ],
-    "start_url": "./dist/index.js",
+    "start_url": "./dist/pages/index.js",
     "background_color": "#007bff",
     "display": "standalone",
     "theme_color": "#007bff"

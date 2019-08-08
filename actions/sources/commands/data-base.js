@@ -4,7 +4,7 @@ const { root_directory } = require('../utils');
 const description = 'Use wrapper for the CLIs used for databases';
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Command:
 
 Types:

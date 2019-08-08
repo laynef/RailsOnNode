@@ -1,14 +1,10 @@
 require('dotenv').config();
 const cluster = require('cluster');
-const http = require('http');
-const https = require('https');
+const spdy = require('spdy');
 const fs = require('fs');
 const path = require('path');
-const { createServiceWorker } = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
-const isHttps = !!process.env.LOCAL_HTTPS;
 const numCPUs = isProduction ? 8 : 1;
-createServiceWorker();
 
 // Master process
 // This is the node that runs and controls where to distribute traffic it is slave processors
@@ -53,20 +49,15 @@ if (cluster.isMaster) {
     // isMaster will be false
     // isWorker will be true: set the children's work
 
-    if (isHttps) {
-        process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-        const server = https.createServer({
-            key: fs.readFileSync(path.join(__dirname, 'openssl', 'example-key.pem'), { encoding: 'utf8' }),
-            cert: fs.readFileSync(path.join(__dirname, 'openssl', 'example-cert.pem'), { encoding: 'utf8' }),
-        }, require('./app'));
-        server.listen(443, () => {
-            console.log(`Running on your custom DNS: Default is https://www.example.com`);
-        });
-    } else {
-        const server = http.createServer(require('./app'));
-        const httpPort = process.env.PORT || 8080;
-        server.listen(httpPort, () => {
-            console.log(`Running on port ${httpPort}`);
-        });
-    }
+    const hostname = process.env.HOSTNAME || 'localhost';
+    const server = spdy.createServer({
+        key: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-key.pem'), { encoding: 'utf8' }),
+        cert: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-cert.pem'), { encoding: 'utf8' }),
+    }, require('./app'));
+    process.env.PORT = process.env.PORT || 8080;
+    const httpPort = process.env.PORT;
+    server.listen(httpPort, () => {
+        console.log(`Running on port ${httpPort}`);
+        if (!isProduction) console.log('Wait for the webpack bundle');
+    });
 }

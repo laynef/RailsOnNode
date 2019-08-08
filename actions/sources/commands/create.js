@@ -17,6 +17,7 @@ const command = (directoryName, options) => {
     shell.exec('git init');
     shell.cd(path.join(root, directoryName, 'openssl'));
     shell.exec('bash generateSecretKeys.sh web-secret');
+    shell.exec('bash generateHttps.sh localhost');
     shell.cd(path.join(root));
 
     if (options.api) {
@@ -39,7 +40,7 @@ const command = (directoryName, options) => {
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Command:
 
 Options:

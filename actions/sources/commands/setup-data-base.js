@@ -15,9 +15,9 @@ const command = (databaseType, options) => {
         console.red('You must enter a database type');
         return;
     } else if (!database[databaseType]) {
-        console.yellow('Database options are:');
+        console.cyan('Database options are:');
         for (let i in database) {
-            console.yellow(`=> ${i}`);
+            console.cyan(`=> ${i}`);
         }
         return;
     } else if (!root_directory()) {
@@ -26,44 +26,47 @@ const command = (databaseType, options) => {
     }
 
     const packageJson = {
-        mongodb: {
-            'mongoose': '^5.2.9',
-        },
-        sql: {
-            'sequelize': '^4.38.0',
-            'pg': '^6.1.0',
-            'pg-hstore': '^2.3.2',
-            'sqlite3': '^3.1.8',
-            'mysql': '^2.16.0',
-            'tedious': '^1.14.0',
-        },
+        mongodb: [
+            'mongoose',
+        ],
+        sql: [
+            'sequelize',
+            'pg',
+            'pg-hstore',
+            'mysql',
+            'tedious',
+        ],
+    };
+
+    const dbTypes = {
+        sql: './node_modules/sequelize-cli/src/sequelize',
+        mongodb: './node_modules/mongoose-model-cli/bin/mongoose-model-cli',
     };
 
     const packageJsonDev = {
-        mongodb: {
-            'mongoose-model-cli': '^1.4.0',
-        },
-        sql: {
-            'sequelize-cli': '^4.0.0',
-        },
+        mongodb: [
+            'mongoose-model-cli',
+        ],
+        sql: [
+            'sequelize-cli',
+            'sqlite3',
+        ],
     };
 
-    const root = process.cwd();
-    const packages = require(path.join(root, 'package.json'));
-    packages.dependencies = Object.assign({}, packages.dependencies, packageJson[databaseType]);
-    packages.devDependencies = Object.assign({}, packages.devDependencies, packageJsonDev[databaseType]);
-    fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify(packages, null, 4));
+    const initializeCommand = {
+        mongodb: 'init',
+        sql: 'init',
+    };
 
-    const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
-    shell.cp('-R', path.join(templatePath, database[databaseType]), path.join(root, 'temp'));
-    shell.mv(`${path.join(root, 'temp')}/*`, '.');
-    shell.rm('-rf', path.join(root, 'temp'));
+    shell.exec(`npm i --save-dev ${packageJsonDev[databaseType].join(' ')}`);
+    shell.exec(`npm i --save ${packageJson[databaseType].join(' ')}`);
+    shell.exec(`${dbTypes[databaseType]} ${initializeCommand[databaseType]}`);
 
     console.green('Your database has been setup');
 };
 
 const documentation = () => {
-    console.yellow(`
+    console.cyan(`
 Command:
 Database Types:
 => sql: Using sequelize for any SQL database

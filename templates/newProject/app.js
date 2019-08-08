@@ -8,6 +8,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const compression = require('compression');
 const favicon = require('serve-favicon');
+const sqlinjection = require('sql-injection');
 const csrf = require('csurf');
 const parser = require('body-parser');
 const session = require('express-session');
@@ -25,16 +26,20 @@ const { docs } = require('./controllers');
 const routeVersions = require('./routes');
 const { each } = require('lodash');
 const meta = require('./app.json');
+const bluebird = require('bluebird');
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
 
 const protection = csrf();
 const app = decorateApp(new Express());
 
+global.redis = client;
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
-app.use('/assets', Express.static(path.join(__dirname, 'assets')));
 app.use(cors());
 app.use(helmet());
+app.use(sqlinjection);
 app.use(morgan('dev'));
 app.use(compression({ level: 7 }));
 app.use(session({
@@ -47,6 +52,7 @@ app.use(session({
         token: null,
     },
 }));
+app.use('/assets', Express.static(path.join(__dirname, 'assets')));
 
 if (!process.env.TESTING) {
     app.use(protection);
@@ -95,7 +101,7 @@ each(routeVersions, (versionDetails, apiVersion) => {
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
-app.get('/', render('pages/index', { hashId: makeHash(40) }));
+app.getAsync('/', render('pages/index', { hashId: makeHash(40) }));
 // Leave Here For Static Routes
 
 app.use('*', (req, res) => {

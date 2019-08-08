@@ -82,32 +82,20 @@ const setByRoute = (data, object, assetType) => {
             obj[routePath] = obj[routePath] || [];
             obj[routePath].push('webpack-hot-middleware/client');
             obj[routePath].push('babel-polyfill');
-            if (object[route].docs && !useBootstrapToggle) {
+            if (object[route].docs || useBootstrapToggle) {
                 for (let setting in settings.bootstrap.scripts) {
-                    obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
+                    if (settings.bootstrap.scripts[setting]) obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
                 }
             }
-            if (useBootstrapToggle) {
-                for (let setting in settings.bootstrap.scripts) {
-                    obj[routePath].push(`${context}/node_modules/bootstrap/js/src/${setting}.js`);
-                }
-                obj[routePath].push(object[route].fullPath);
-            } else {
-                obj[routePath].push(object[route].fullPath);
-            }
+            obj[routePath].push(object[route].fullPath);
         } else if (assetType === 'stylesheet') {
             obj[routePath] = obj[routePath] || [];
-            if (object[route].docs && !useBootstrapToggle) {
+            if (object[route].docs || useBootstrapToggle) {
                 obj[routePath].push(`${context}/bootstrap/index.scss`);
-                obj[routePath].push(`font-awesome-loader`);
             }
-            if (useBootstrapToggle) {
-                obj[routePath].push(`${context}/bootstrap/index.scss`);
-                obj[routePath].push(`font-awesome-loader`);
-                obj[routePath].push(object[route].fullPath);
-            } else {
-                obj[routePath].push(object[route].fullPath);
-            }
+            if (settings.useFontAwesomeToggle) obj[routePath].push(`${context}/bootstrap/font-awesome.scss`);
+            if (settings.useFontAwesomeToggle) obj[routePath].push(`font-awesome-loader`);
+            obj[routePath].push(object[route].fullPath);
         }
     }
     return obj;
@@ -138,13 +126,14 @@ const entry = {};
 for (let k in entrances) {
     let key = null;
     let array = k.split('/').map(e => e.replace(RegExp(':', 'ig'), ''));
-    array.pop()
+    array.pop();
     if (k === '/index') key = camelCase('index')
     else key = camelCase(array.join(' '));
     entry[key] = entrances[k];
 }
 
 let plugins = [
+    vueJs ? new VueLoaderPlugin() : null,
     new webpack.LoaderOptionsPlugin({
         options: {
             devtools: 'eval-source-map',
@@ -154,14 +143,11 @@ let plugins = [
         filename: '[name].css',
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    noProduction ? new webpack.HotModuleReplacementPlugin() : null,
     new webpack.NoEmitOnErrorsPlugin(),
     new TimeFixPlugin(),
 	new WriteFilePlugin(),
-];
-
-if (!noProduction) plugins.splice(3, 1);
-if (vueJs) plugins = plugins.concat([new VueLoaderPlugin()])
+].filter(e => !!e);
 
 const configuration = {
     name: 'client',
@@ -179,15 +165,15 @@ const configuration = {
             ...jsLoader,
             {
                 test: /\.css$/,
-                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : noProduction && vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : noProduction && vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
                 test: /\.less$/,
-                use: [noProduction && !vueJs ? 'style-loader' : vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
+                use: [noProduction && !vueJs ? 'style-loader' : noProduction && vueJs ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
             },
             {
                 test: /\.json$/,
