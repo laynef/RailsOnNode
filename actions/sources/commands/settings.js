@@ -881,8 +881,6 @@ module.exports = (filePath, sharedState, cb) => {
 
     if (TYPING.javascripts[type]) {
         shell.rm('-rf', path.join(root, 'assets', before, storageTypes[before]));
-        shell.rm(path.join(root, 'utils', 'methods', 'renders.js'));
-        shell.cp(path.join(__dirname, '..', '..', '..', 'templates', 'utils', type, 'renders.js'), path.join(root, 'utils', 'methods', 'renders.js'));
     }
     shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
 
@@ -891,8 +889,8 @@ module.exports = (filePath, sharedState, cb) => {
         fs.readdirSync(path.join(root, 'assets', after, 'pages', 'docs')).forEach((item) => {
             fs.readdirSync(path.join(root, 'assets', after, 'pages', 'docs', item)).forEach((file) => {
                 fs.writeFileSync(path.join(root, 'assets', after, 'pages', 'docs', item, file), '');
-            })
-        })
+            });
+        });
     }
 
     if (serverSideRendering[type]) serverSideRendering[type]();
