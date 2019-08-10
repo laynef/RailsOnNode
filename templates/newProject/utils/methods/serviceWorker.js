@@ -27,8 +27,7 @@ module.exports = {
                     routesDir(pathn, data);
                 } else {
                     const pathArray = pathn.replace(RegExp(root, 'g'), '').replace(RegExp(`/assets/${settings.jsType}/pages`, 'g'), '').split('/');
-                    if (pathArray[1] !== 'docs' && pathArray[1] !== 'errors') {
-                        pathArray.pop();
+                    if (pathArray[1] !== 'docs' && pathArray[1] !== 'errors' && pathArray.pop().match(!/component/g)) {
                         data.push(`'${pathArray.length > 1 ? pathArray.join('/') : '/'}'`);
                     }
                 }
@@ -50,8 +49,13 @@ self.addEventListener('install', function(event) {
             return cache.addAll([
                 ${allFiles.join(',\n\t\t\t\t')}
             ])
-            .then(function() { self.skipWaiting() });
-		})
+            .then(function() { self.skipWaiting() })
+            .catch(function (e) {
+                console.log(e);
+            })
+		}).catch(function (e) {
+            console.log(e);
+        })
     );
 });
 
@@ -59,11 +63,15 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
     caches.match(event.request)
         .then(function (response) {
-                return fetch(event.request).catch(function () {
-                    return response;
-                })
+            return fetch(event.request).catch(function (e) {
+                console.log(e);
+                return response;
             })
-        )
+        })
+        .catch(function (e) {
+            console.log(e);
+        })
+    )
 });
 
 self.addEventListener('activate', function(event) {
@@ -77,7 +85,10 @@ self.addEventListener('activate', function(event) {
                 })
             ).then(function () {
                 return self.clients.claim();
-            });
+            })
+            .catch(function (e) {
+                console.log(e);
+            })
         })
     );
 });
