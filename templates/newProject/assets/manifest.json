@@ -1,15 +1,15 @@
 {
-    "short_name": "Ex",
-    "name": "Example",
-    "icons": [
-      {
-        "src": "/assets/img/nodejs.png",
-        "type": "image/png",
-        "sizes": "512x512"
-      }
-    ],
-    "start_url": "./dist/pages/index.js",
-    "background_color": "#007bff",
-    "display": "standalone",
-    "theme_color": "#007bff"
+  "short_name": "Ex",
+  "name": "Example",
+  "icons": [
+    {
+      "src": "/assets/img/nodejs.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#007bff",
+  "display": "standalone",
+  "theme_color": "#007bff"
 }

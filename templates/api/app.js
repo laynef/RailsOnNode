@@ -44,6 +44,7 @@ app.use(session({
     },
 }));
 app.use('/assets', Express.static(path.join(__dirname, 'assets')));
+app.use('/', Express.static(path.join(__dirname, 'assets', 'dist')));
 
 if (!process.env.TESTING) {
     app.use(protection);

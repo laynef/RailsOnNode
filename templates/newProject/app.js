@@ -17,7 +17,6 @@ const redis = require('redis');
 const client = redis.createClient(process.env.REDIS_URL);
 const {
     render,
-    makeHash,
     documentation,
     updateDocs,
     renderError,
@@ -53,6 +52,7 @@ app.use(session({
     },
 }));
 app.use('/assets', Express.static(path.join(__dirname, 'assets')));
+app.use('/', Express.static(path.join(__dirname, 'assets', 'dist')));
 
 if (!process.env.TESTING) {
     app.use(protection);
@@ -101,17 +101,17 @@ each(routeVersions, (versionDetails, apiVersion) => {
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
-app.getAsync('/', render('pages/index', { hashId: makeHash(40) }));
+app.getAsync('/', render('pages/index', { hashId: global.hashId }));
 // Leave Here For Static Routes
 
 app.use('*', (req, res) => {
-    renderError(req, res, 'errors/404', { hashId: makeHash(40), statusCode: 404, environment: process.env.NODE_ENV, title: '404: Page Not Found' });
+    renderError(req, res, 'errors/404', { hashId: global.hashId, statusCode: 404, environment: process.env.NODE_ENV, title: '404: Page Not Found' });
 });
 
 app.use((error, req, res, next) => {
     if (error) {
         console.error(error);
-        renderError(req, res, 'errors/500', { hashId: makeHash(40), statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
+        renderError(req, res, 'errors/500', { hashId: global.hashId, statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
     }
     next();
 });
