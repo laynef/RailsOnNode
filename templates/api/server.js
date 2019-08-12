@@ -7,7 +7,7 @@ const { createServiceWorker, makeHash } = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
 const numCPUs = isProduction ? 8 : 1;
 global.hashId = makeHash(40);
-createServiceWorker();
+if (isProduction) createServiceWorker();
 
 // Master process
 // This is the node that runs and controls where to distribute traffic it is slave processors
