@@ -3,6 +3,7 @@ const cluster = require('cluster');
 const spdy = require('spdy');
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
 const { createServiceWorker, makeHash } = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
 const numCPUs = isProduction ? 8 : 1;
@@ -51,12 +52,18 @@ if (cluster.isMaster) {
 } else {
     // isMaster will be false
     // isWorker will be true: set the children's work
+    let server = null;
 
-    const hostname = process.env.HOSTNAME || 'localhost';
-    const server = spdy.createServer({
-        key: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-key.pem'), { encoding: 'utf8' }),
-        cert: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-cert.pem'), { encoding: 'utf8' }),
-    }, require('./app'));
+    if (process.env.PROTOCOL === 'http') {
+        server = http.createServer(require('./app'));
+    } else {
+        const hostname = process.env.HOSTNAME || 'localhost';
+        server = spdy.createServer({
+            key: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-key.pem'), { encoding: 'utf8' }),
+            cert: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-cert.pem'), { encoding: 'utf8' }),
+        }, require('./app'));
+    }
+
     process.env.PORT = process.env.PORT || 8080;
     const httpPort = process.env.PORT;
     server.listen(httpPort, () => {

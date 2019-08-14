@@ -52,11 +52,18 @@ if (cluster.isMaster) {
     // isMaster will be false
     // isWorker will be true: set the children's work
 
-    const hostname = process.env.HOSTNAME || 'localhost';
-    const server = spdy.createServer({
-        key: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-key.pem'), { encoding: 'utf8' }),
-        cert: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-cert.pem'), { encoding: 'utf8' }),
-    }, require('./app'));
+    let server = null;
+
+    if (process.env.PROTOCOL === 'http') {
+        server = http.createServer(require('./app'));
+    } else {
+        const hostname = process.env.HOSTNAME || 'localhost';
+        server = spdy.createServer({
+            key: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-key.pem'), { encoding: 'utf8' }),
+            cert: fs.readFileSync(path.join(__dirname, 'openssl', hostname + '-cert.pem'), { encoding: 'utf8' }),
+        }, require('./app'));
+    }
+
     process.env.PORT = process.env.PORT || 8080;
     const httpPort = process.env.PORT;
     server.listen(httpPort, () => {
