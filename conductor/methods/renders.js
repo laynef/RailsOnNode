@@ -1,4 +1,3 @@
-const meta = require('../../app.json');
 const { renderServerSide } = require('./serverside');
 const { camelCase } = require('lodash');
 
@@ -24,6 +23,7 @@ const webpackHotReloads = (res, application) => {
 };
 
 const globalRenders = (name, req, res, customs) => {
+    const meta = global.meta;
     meta.keywords = Array.isArray(meta.keywords) ? meta.keywords.join(',') : meta.keywords;
 
     const nameArray = name.split('/');

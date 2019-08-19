@@ -1,10 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const settings = require('../../webpack/settings');
 
 module.exports = {
 
-    createServiceWorker: () => {
+    createServiceWorker: (settings) => {
         let now = Date();
         now = now.replace(/\s/g, '');
         const root = process.cwd();
@@ -92,7 +91,7 @@ self.addEventListener('activate', function(event) {
         })
     );
 });
-  
+
         `);
         fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'manifest.json'), fs.readFileSync(path.join(__dirname, '..', '..', 'assets', 'manifest.json'), { encoding: 'utf8' }))
     }

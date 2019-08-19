@@ -4,12 +4,14 @@ const spdy = require('spdy');
 const fs = require('fs');
 const path = require('path');
 const settings = require('./webpack/settings');
+const meta = require('./app.json');
 const { createServiceWorker, makeHash } = require('rails-on-node-conductor');
 const isProduction = process.env.NODE_ENV === 'production';
 const numCPUs = isProduction ? 8 : 1;
 global.hashId = makeHash(40);
 global.settings = settings;
-if (isProduction) createServiceWorker();
+global.meta = meta;
+if (isProduction) createServiceWorker(global.settings);
 
 // Master process
 // This is the node that runs and controls where to distribute traffic it is slave processors
