@@ -695,12 +695,11 @@ const command = (type, options) => {
     });
 
     // Handle webpack here
+    settings.context = `path.join(__dirname, '..')`;
     if (TYPING.javascripts[type]) {
-        settings.context = `path.join(__dirname, '..')`;
         settings.jsType = after;
         settings.javascriptRules = jsWebpack[type];
     } else if (TYPING.stylesheets[type]) {
-        settings.context = `path.join(__dirname, '..')`;
         settings.styleType = after;
     }
 
