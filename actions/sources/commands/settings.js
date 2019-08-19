@@ -628,7 +628,7 @@ const command = (type, options) => {
 
     "plugins": [
         "transform-runtime"
-    ],
+    ]
 
 }
 `)
@@ -696,9 +696,11 @@ const command = (type, options) => {
 
     // Handle webpack here
     if (TYPING.javascripts[type]) {
+        settings.context = `path.join(__dirname, '..')`;
         settings.jsType = after;
         settings.javascriptRules = jsWebpack[type];
     } else if (TYPING.stylesheets[type]) {
+        settings.context = `path.join(__dirname, '..')`;
         settings.styleType = after;
     }
 
@@ -717,7 +719,10 @@ const command = (type, options) => {
     }
 
     if (babelRc[type]) babelRc[type]();
-    fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
+    fs.writeFileSync(pathn, `const path = require('path');
+
+
+module.exports = ${JSON.stringify(settings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
 };
