@@ -10,6 +10,6 @@ module.exports = (settings) => () => {
     const { renderToStaticMarkup } = require('react-dom/server');
 
     return (Component, store) => renderToStaticMarkup(
-        Provider({ store, children: Component() })
+        Provider({ store, children: Component(store) })
     );
 };
