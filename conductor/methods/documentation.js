@@ -1,10 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const settings = require('../../webpack/settings');
 
 module.exports = {
 
-    documentation: ({ allRoutes, apiVersion }) => {
+    documentation: (settings) => ({ allRoutes, apiVersion }) => {
         let javascriptString = '';
         for (let i = 0; i < allRoutes.length; i++) {
             const route = allRoutes[i];

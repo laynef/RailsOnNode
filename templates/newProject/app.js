@@ -95,7 +95,8 @@ if (!process.env.TESTING && process.env.NODE_ENV !== 'production') {
 
 each(routeVersions, (versionDetails, apiVersion) => {
     const allRoutes = versionDetails[apiVersion];
-    if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
+    const generateDocumentationJS = documentation(global.settings);
+    if (process.env.NODE_ENV !== 'production') generateDocumentationJS({ allRoutes, apiVersion });
     if (process.env.NODE_ENV !== 'production') updateDocs(apiVersion);
     if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, documentationRoutes({ apiVersion, allRoutes }));
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
