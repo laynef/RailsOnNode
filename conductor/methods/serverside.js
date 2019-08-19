@@ -47,7 +47,7 @@ const serverSideOptions = {
                 const componentPath = componentArray.join('/') + '/component';
 
                 const Application = require(path.join(assets, componentPath));
-                const getServersideString = handleServerSide(settings);
+                const getServersideString = handleServerSide(settings)();
 
                 try {
                     let redux = await global.redis.getAsync(req.session.id);
