@@ -3,10 +3,9 @@ const path = require('path');
 
 
 const handleServerSide = (settings) => {
-    const options = require('../babel')(settings);
     const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
     require('babel-register')(babelrc);
-    return options[settings.jsType](settings);
+    return require('../babel')(settings)(settings);
 }
 
 const serverSideOptions = {
