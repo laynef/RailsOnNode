@@ -3,7 +3,7 @@ const cluster = require('cluster');
 const spdy = require('spdy');
 const fs = require('fs');
 const path = require('path');
-const { createServiceWorker, makeHash } = require('./utils');
+const { createServiceWorker, makeHash } = require('rails-on-node-conductor');
 const isProduction = process.env.NODE_ENV === 'production';
 const numCPUs = isProduction ? 8 : 1;
 global.hashId = makeHash(40);

@@ -646,183 +646,6 @@ const command = (type, options) => {
         },
     };
 
-    const serverSideRendering = {
-        react: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
-const settings = require('../../webpack/settings');
-
-
-module.exports = {
-
-    serverSide: async (pageName, req) => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const createStore = require(path.join(assets, 'redux', 'store'));
-        const componentArray = pageName.split('/');
-        componentArray.pop();
-        const componentPath = componentArray.join('/') + '/component';
-
-        const Application = require(path.join(assets, componentPath));
-        const getServersideString = require('../../webpack/serverside');
-
-        try {
-            let redux = await global.redis.getAsync(req.session.id);
-            redux = !!redux ? JSON.parse(redux) : {};
-            const store = createStore(redux);
-            redux = redux || store.getState();
-
-            return {
-                serversideStorage: JSON.stringify(redux),
-                serversideString: getServersideString(Application, store),
-            };
-        } catch (e) {
-            const store = createStore({});
-            return {
-                serversideStorage: JSON.stringify({}),
-                serversideString: getServersideString(Application, store),
-            };
-        }
-    },
-
-    getFreshStore: (req) => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const createStore = require(path.join(assets, 'redux', 'store'));
-        const store = createStore({});
-        const storage = store.getState();
-        global.redis.set(req.session.id, JSON.stringify(storage));
-        return storage;
-    }
-
-};
-`);
-        },
-        angular: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `
-
-`);
-        },
-        vue: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
-const settings = require('../../webpack/settings');
-
-
-module.exports = {
-
-    serverSide: async (pageName, req) => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'state', 'store'));
-        const getServersideString = require('../../webpack/serverside');
-
-        const assetPath = path.join(assets, pageName);
-        const fileArray = assetPath.split('/');
-        fileArray.pop();
-        const filePath = fileArray.join('/') + '/component.vue';
-
-        try {
-            let state = await global.redis.getAsync(req.session.id);
-            state = !!state ? JSON.parse(state) : store();
-            const serversideString = await getServersideString(filePath, state);
-            return {
-                serversideStorage: JSON.stringify(state),
-                serversideString: serversideString,
-            }
-        } catch(e) {
-            return {
-                serversideStorage: JSON.stringify({}),
-                serversideString: '',
-            }
-        }
-    },
-
-    getFreshStore: (req) => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const createStore = require(path.join(assets, 'state', 'store'));
-        const store = createStore({});
-        global.redis.set(req.session.id, store);
-        return store;
-    },
-
-};
-`);
-        },
-        js: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'utils', 'methods', 'serverside.js'), `const path = require('path');
-const settings = require('../../webpack/settings');
-
-module.exports = {
-
-    serverSide: async (pageName, req) => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'storage', 'store');
-        const store = require(assets);
-        try {
-            let storage = await global.redis.getAsync(req.session.id);
-            storage = JSON.parse(storage);
-            return { serversideStorage: JSON.stringify(store(storage)) };
-        } catch (e) {
-            return { serversideStorage: JSON.stringify(store({})) };
-        }
-    },
-
-    getFreshStore: (req) => {
-        const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
-        const store = require(path.join(assets, 'storage', 'store'))({});
-        const storage = store.getState();
-        global.redis.set(req.session.id, JSON.stringify(storage));
-        return storage;
-    },
-
-};
-`);
-        },
-    };
-
-    const webpackServersideFunction = {
-        react: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `const React = require('react');
-const { Provider } = require('react-redux');
-const { renderToStaticMarkup } = require('react-dom/server');
-
-module.exports = (Component, store) => {
-    return renderToStaticMarkup(
-        <Provider store={store}>
-            <Component />
-        </Provider>
-    );
-}
-
-`);
-        },
-        angular: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
-
-};
-            `)
-        },
-        vue: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `const Vue = require('vue');
-const fs = require('fs');
-const { createRenderer } = require('vue-server-renderer');
-
-module.exports = (filePath, sharedState, cb) => {
-    const component = fs.readFileSync(filePath, { encoding: 'utf8' });
-    const template = component.replace(/(?<=\<template)(.*)(?=\>)/g, '').split('<template>')[1].split('</template>')[0];
-    const renderer = createRenderer();
-    const vue = new Vue({
-        data: { sharedState, privateState: {} },
-        template,
-    });
-    return renderer.renderToString(vue, {}, cb);
-}
-
-`)
-        },
-        js: () => {
-            fs.writeFileSync(path.join(process.cwd(), 'webpack', 'serverside.js'), `module.exports = () => {
-
-};
-`);
-        }
-    }
-
     // styles change file path types
     // javascript change full root files
     const arrayOfPaths = (data, pathn) => {
@@ -874,7 +697,7 @@ module.exports = (filePath, sharedState, cb) => {
     // Handle webpack here
     if (TYPING.javascripts[type]) {
         settings.jsType = after;
-        settings.javascriptSettings = jsWebpack[type];
+        settings.javascriptRules = jsWebpack[type];
     } else if (TYPING.stylesheets[type]) {
         settings.styleType = after;
     }
@@ -893,8 +716,6 @@ module.exports = (filePath, sharedState, cb) => {
         });
     }
 
-    if (serverSideRendering[type]) serverSideRendering[type]();
-    if (webpackServersideFunction[type]) webpackServersideFunction[type]();
     if (babelRc[type]) babelRc[type]();
     fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 

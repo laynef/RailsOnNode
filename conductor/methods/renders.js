@@ -1,5 +1,5 @@
 const meta = require('../../app.json');
-const { serverSide } = require('./serverside');
+const { renderServerSide } = require('./serverside');
 const { camelCase } = require('lodash');
 
 const webpackHotReloads = (res, application) => {
@@ -65,12 +65,14 @@ module.exports = {
 
     render: (pageName, customObject = {}) => async (req, res) => {
         const statusCode = customObject && customObject.statusCode ? customObject.statusCode : 200;
+        const { serverSide } = renderServerSide(global.settings);
         const storage = await serverSide(pageName, req);
         res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, storage)));
     },
 
     renderError: async (req, res, pageName, customObject = {}) => {
         const errorCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
+        const { serverSide } = renderServerSide(global.settings);
         const storage = await serverSide(`pages/${pageName}/${errorCode}`, req);
         res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, storage)));
     },

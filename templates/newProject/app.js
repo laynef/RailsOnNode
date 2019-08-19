@@ -20,8 +20,8 @@ const {
     documentation,
     updateDocs,
     renderError,
-} = require('./utils');
-const { docs } = require('./controllers');
+    documentationRoutes,
+} = require('rails-on-node-conductor');
 const routeVersions = require('./routes');
 const { each } = require('lodash');
 const meta = require('./app.json');
@@ -97,7 +97,7 @@ each(routeVersions, (versionDetails, apiVersion) => {
     const allRoutes = versionDetails[apiVersion];
     if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
     if (process.env.NODE_ENV !== 'production') updateDocs(apiVersion);
-    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
+    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, documentationRoutes({ apiVersion, allRoutes }));
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
@@ -110,7 +110,6 @@ app.use('*', (req, res) => {
 
 app.use((error, req, res, next) => {
     if (error) {
-        console.error(error);
         renderError(req, res, 'errors/500', { hashId: global.hashId, statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
     }
     next();

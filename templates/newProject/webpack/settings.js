@@ -3,6 +3,9 @@ module.exports = {
     jsType: 'js',
     useBootstrapToggle: false,
     useFontAwesomeToggle: false,
+    webpackPlugins: [
+
+    ],
     bootstrap: {
         scripts: {
             alert: true,
@@ -18,7 +21,7 @@ module.exports = {
             util: true,
         },
     },
-    javascriptSettings: {
+    javascriptRules: {
         development: [{
             test: '.js$',
             exclude: 'node_modules',
