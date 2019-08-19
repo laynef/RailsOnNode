@@ -12,14 +12,13 @@ module.exports = {
 
     webpackConfiguration: (settings) => {
         const noProduction = process.env.NODE_ENV !== 'production';
+        const { context, jsType, styleType, useBootstrapToggle } = settings;
 
-        const vueJs = settings.jsType === 'vue';
-
-        const context = settings.context;
+        const vueJs = jsType === 'vue';
 
         const recursiveFind = (data, pathnm) => {
             fs.readdirSync(pathnm).forEach(dir => {
-                if (dir !== `component.${settings.jsType}`) {
+                if (dir !== `component.${jsType}`) {
                     if (fs.lstatSync(path.join(pathnm, dir)).isDirectory()) {
                         recursiveFind(data, path.join(pathnm, dir));
                     } else {
@@ -39,19 +38,15 @@ module.exports = {
 
         const apiVersions = require(path.join(context, 'controllers'));
 
-        const styleType = settings.styleType;
-        const jsType = settings.jsType;
-        const useBootstrapToggle = settings.useBootstrapToggle;
-
         const cssPath = path.join(context, 'assets', styleType, 'pages');
         const jsPath = path.join(context, 'assets', jsType, 'pages');
 
         const cssPaths = Object.assign({}, reduce(recursiveFind({}, cssPath), (acc, val, key) => {
-            acc[key] = { ...val, docs: !!apiVersions[val.pageName] };
+            acc[key] = Object.assign({}, val, { docs: !!apiVersions[val.pageName] });
             return acc;
         }, {}));
         const jsPaths = Object.assign({}, reduce(recursiveFind({}, jsPath), (acc, val, key) => {
-            acc[key] = { ...val, docs: !!apiVersions[val.pageName] };
+            acc[key] = Object.assign({}, val, { docs: !!apiVersions[val.pageName] });
             return acc;
         }, {}));
 
@@ -67,12 +62,10 @@ module.exports = {
             delete e.test;
             delete e.exclude;
 
-            return {
-                ...e,
-                ...includes,
+            return Object.assign({}, e, includes, {
                 test: new RegExp(test),
                 exclude: new RegExp(exclude),
-            };
+            });
         });
 
         const setByRoute = (data, object, assetType) => {

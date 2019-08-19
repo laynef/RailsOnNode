@@ -156,15 +156,15 @@ module.exports = {
     `;
         }
 
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages', 'docs', apiVersion, apiVersion + '.js'), javascriptString);
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', settings.styleType, 'pages', 'docs', apiVersion, apiVersion + '.' + settings.styleType), ``);
+        fs.writeFileSync(path.join(settings.context, 'assets', settings.jsType, 'pages', 'docs', apiVersion, apiVersion + '.js'), javascriptString);
+        fs.writeFileSync(path.join(settings.context, 'assets', settings.styleType, 'pages', 'docs', apiVersion, apiVersion + '.' + settings.styleType), ``);
     },
 
     updateDocs: (apiVersion) => {
-        const bundle = fs.readFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'pages', `docsV1.js`), { encoding: 'utf8' });
-        const js = fs.readFileSync(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages', 'docs', apiVersion, `${apiVersion}.js`), { encoding: 'utf8' });
+        const bundle = fs.readFileSync(path.join(settings.context, 'assets', 'dist', 'pages', `docsV1.js`), { encoding: 'utf8' });
+        const js = fs.readFileSync(path.join(settings.context, 'assets', settings.jsType, 'pages', 'docs', apiVersion, `${apiVersion}.js`), { encoding: 'utf8' });
         const complete = bundle + js;
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'pages', `docsV1.js`), complete);
+        fs.writeFileSync(path.join(settings.context, 'assets', 'dist', 'pages', `docsV1.js`), complete);
     },
 
 };
