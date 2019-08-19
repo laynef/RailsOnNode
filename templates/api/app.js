@@ -17,8 +17,8 @@ const client = redis.createClient(process.env.REDIS_URL);
 const {
     documentation,
     updateDocs,
-} = require('./utils');
-const { docs } = require('./controllers');
+    documentationRoutes,
+} = require('rails-on-node-conductor');
 const routeVersions = require('./routes');
 const { each } = require('lodash');
 const meta = require('./app.json');
@@ -62,9 +62,10 @@ app.use(favicon(path.join(__dirname, 'assets', 'img', 'nodejs.png')));
 
 each(routeVersions, (versionDetails, apiVersion) => {
     const allRoutes = versionDetails[apiVersion];
-    if (process.env.NODE_ENV !== 'production') documentation({ allRoutes, apiVersion });
+    const generateDocumentationJS = documentation(global.settings);
+    if (process.env.NODE_ENV !== 'production') generateDocumentationJS({ allRoutes, apiVersion });
     if (process.env.NODE_ENV !== 'production') updateDocs(apiVersion);
-    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, docs({ apiVersion, allRoutes }));
+    if (process.env.NODE_ENV !== 'production') app.get(`/docs/${apiVersion}`, documentationRoutes({ apiVersion, allRoutes }));
     app.use(`/api/${apiVersion}`, versionDetails[`${apiVersion}Router`]);
 });
 
