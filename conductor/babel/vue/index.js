@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = (settings) => () => {
     const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
     require('babel-register')(babelrc);
+    const Vue= require('vue');
     const { createRenderer } = require('vue-server-renderer');
 
     return (filePath, sharedState) => {
