@@ -1,6 +1,10 @@
+const path = require('path');
+
+
 module.exports = {
     styleType: 'css',
     jsType: 'js',
+    context: path.join(__dirname, '..'),
     useBootstrapToggle: false,
     useFontAwesomeToggle: false,
     webpackPlugins: [

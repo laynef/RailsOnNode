@@ -1,21 +1,21 @@
 const fs = require('fs');
 const path = require('path');
+const webpack = require('webpack');
+const WriteFilePlugin = require('write-file-webpack-plugin');
+const TimeFixPlugin = require('time-fix-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { reduce, camelCase } = require('lodash');
 
 
 module.exports = {
 
     webpackConfiguration: (settings) => {
-        const webpack = require('webpack');
         const noProduction = process.env.NODE_ENV !== 'production';
-        const WriteFilePlugin = require('write-file-webpack-plugin');
-        const TimeFixPlugin = require('time-fix-plugin');
-        const VueLoaderPlugin = require('vue-loader/lib/plugin');
-        const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-        const { reduce, camelCase } = require('lodash');
 
         const vueJs = settings.jsType === 'vue';
 
-        const context = path.join(__dirname, '..');
+        const context = settings.context;
 
         const recursiveFind = (data, pathnm) => {
             fs.readdirSync(pathnm).forEach(dir => {
@@ -55,7 +55,7 @@ module.exports = {
             return acc;
         }, {}));
 
-        const jsLoader = settings.javascriptSettings[noProduction ? 'development' : 'production'].map(e => {
+        const jsLoader = settings.javascriptRules[noProduction ? 'development' : 'production'].map(e => {
             const includes = e && e.use ? e.use.reduce((a, i) => {
                 const include = i.loader === 'babel-loader' ? Object.keys(jsPaths)
                     .concat(path.join(context, 'assets', jsType)) : false;
