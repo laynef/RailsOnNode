@@ -1,11 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 
+
+const handleServerSide = (settings) => {
+    const options = require('../babel');
+    const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
+    require('babel-register')(babelrc);
+    return options[settings.jsType](settings);
+}
+
 const serverSideOptions = {
 
         js: {
             serverSide: async (pageName, req) => {
-                const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType, 'storage', 'store');
+                const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
+                require('babel-register')(babelrc);
+                const assets = path.join(settings.context, 'assets', settings.jsType, 'storage', 'store');
                 const store = require(assets);
                 try {
                     let storage = await global.redis.getAsync(req.session.id);
@@ -17,7 +27,9 @@ const serverSideOptions = {
             },
 
             getFreshStore: (req) => {
-                const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+                const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
+                require('babel-register')(babelrc);
+                const assets = path.join(settings.context, 'assets', settings.jsType);
                 const store = require(path.join(assets, 'storage', 'store'))({});
                 const storage = store.getState();
                 global.redis.set(req.session.id, JSON.stringify(storage));
@@ -25,16 +37,18 @@ const serverSideOptions = {
             },
         },
 
-        react: {
+        jsx: {
             serverSide: async (pageName, req) => {
-                const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+                const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
+                require('babel-register')(babelrc);
+                const assets = path.join(settings.context, 'assets', settings.jsType);
                 const createStore = require(path.join(assets, 'redux', 'store'));
                 const componentArray = pageName.split('/');
                 componentArray.pop();
                 const componentPath = componentArray.join('/') + '/component';
 
                 const Application = require(path.join(assets, componentPath));
-                const getServersideString = require('../../webpack/serverside');
+                const getServersideString = handleServerSide(settings);
 
                 try {
                     let redux = await global.redis.getAsync(req.session.id);
@@ -56,7 +70,9 @@ const serverSideOptions = {
             },
 
             getFreshStore: (req) => {
-                const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+                const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
+                require('babel-register')(babelrc);
+                const assets = path.join(settings.context, 'assets', settings.jsType);
                 const createStore = require(path.join(assets, 'redux', 'store'));
                 const store = createStore({});
                 const storage = store.getState();
@@ -68,14 +84,16 @@ const serverSideOptions = {
         vue: {
 
             serverSide: async (pageName, req) => {
-                const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+                const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
+                require('babel-register')(babelrc);
+                const assets = path.join(settings.context, 'assets', settings.jsType);
                 const createStore = require(path.join(assets, 'redux', 'store'));
                 const componentArray = pageName.split('/');
                 componentArray.pop();
                 const componentPath = componentArray.join('/') + '/component';
 
                 const Application = require(path.join(assets, componentPath));
-                const getServersideString = require('../../webpack/serverside');
+                const getServersideString = handleServerSide(settings);
 
                 try {
                     let redux = await global.redis.getAsync(req.session.id);
@@ -97,7 +115,9 @@ const serverSideOptions = {
             },
 
             getFreshStore: (req) => {
-                const assets = path.join(__dirname, '..', '..', 'assets', settings.jsType);
+                const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
+                require('babel-register')(babelrc);
+                const assets = path.join(settings.context, 'assets', settings.jsType);
                 const createStore = require(path.join(assets, 'redux', 'store'));
                 const store = createStore({});
                 const storage = store.getState();
@@ -110,11 +130,9 @@ const serverSideOptions = {
 
 module.exports = {
 
+    handleServerSide,
+
     renderServerSide: (settings) => serverSideOptions[settings.jsType],
 
-    handleServerSide: (settings) => {
-        const options = require('../utils/handleServerSideOptions');
-        return options[settings.jsType];
-    }
 };
 

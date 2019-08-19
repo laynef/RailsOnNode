@@ -6,7 +6,7 @@ module.exports = {
     createServiceWorker: (settings) => {
         let now = Date();
         now = now.replace(/\s/g, '');
-        const root = process.cwd();
+        const root = settings.context;
         const distDir = (pathname, data = []) => {
             return fs.readdirSync(pathname).reduce((acc, item) => {
                 const pathn = path.join(pathname, item);
@@ -34,11 +34,11 @@ module.exports = {
             }, data);
         };
 
-        const getImagePaths = fs.readdirSync(path.join(__dirname, '..', '..', 'assets', 'img')).map(e => `'/assets/img/${e}?id=${global.hashId}'`);
-        const routesPath = routesDir(path.join(__dirname, '..', '..', 'assets', settings.jsType, 'pages'));
-        const getDistPaths = distDir(path.join(__dirname, '..', '..', 'assets', 'dist'), routesPath);
+        const getImagePaths = fs.readdirSync(path.join(settings.context, 'assets', 'img')).map(e => `'/assets/img/${e}?id=${global.hashId}'`);
+        const routesPath = routesDir(path.join(settings.context, 'assets', settings.jsType, 'pages'));
+        const getDistPaths = distDir(path.join(settings.context, 'assets', 'dist'), routesPath);
         const allFiles = getDistPaths.concat(getImagePaths);
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'sw.js'), `
+        fs.writeFileSync(path.join(settings.context, 'assets', 'dist', 'sw.js'), `
 /* eslint-disable */
 // Version 0.6.2
 const version = '${global.hashId}';
@@ -93,6 +93,6 @@ self.addEventListener('activate', function(event) {
 });
 
         `);
-        fs.writeFileSync(path.join(__dirname, '..', '..', 'assets', 'dist', 'manifest.json'), fs.readFileSync(path.join(__dirname, '..', '..', 'assets', 'manifest.json'), { encoding: 'utf8' }))
+        fs.writeFileSync(path.join(settings.context, 'assets', 'dist', 'manifest.json'), fs.readFileSync(path.join(settings.context, 'assets', 'manifest.json'), { encoding: 'utf8' }))
     }
 };
