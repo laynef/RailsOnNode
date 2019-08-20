@@ -189,7 +189,7 @@ module.exports = {
             plugins: plugins,
         };
 
-        return configuration;
+        return Object.assign({}, configuration, settings.webpackOverrides);
     }
 
 };
