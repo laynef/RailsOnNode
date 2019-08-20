@@ -720,8 +720,7 @@ const command = (type, options) => {
 
     delete settings.context;
     if (babelRc[type]) babelRc[type]();
-    fs.writeFileSync(pathn, `
-module.exports = ${JSON.stringify(settings, null, 4)}`);
+    fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
 };
