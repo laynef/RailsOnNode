@@ -103,7 +103,9 @@ const command = (type, options) => {
         } else {
             settings.useBootstrapToggle = !settings.useBootstrapToggle;
         }
-        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
+        fs.writeFileSync(pathn, `const path = require('path');
+
+module.exports = ${JSON.stringify(settings, null, 4)};`);
 
         console.green(`Toggled bootstrap ${settings.useBootstrapToggle ? 'on' : 'off'}`);
         return null;
@@ -117,7 +119,9 @@ const command = (type, options) => {
         } else {
             settings.useFontAwesomeToggle = !settings.useFontAwesomeToggle;
         }
-        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
+        fs.writeFileSync(pathn, `const path = require('path');
+
+module.exports = ${JSON.stringify(settings, null, 4)};`);
 
         console.green(`Toggled font awesome 4 ${settings.useFontAwesomeToggle ? 'on' : 'off'}`);
         return null;
