@@ -42,7 +42,7 @@
         "morgan": "^1.9.0",
         "popper.js": "^1.14.4",
         "pug": "^2.0.3",
-        "rails-on-node-conductor": "^1.0.0-15",
+        "rails-on-node-conductor": "^1.0.0-16",
         "react": "^16.4.2",
         "react-dom": "^16.4.2",
         "react-redux": "^5.0.7",
