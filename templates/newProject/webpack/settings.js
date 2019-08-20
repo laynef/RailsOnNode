@@ -1,8 +1,4 @@
-const path = require('path');
-
-
 module.exports = {
-    "context": path.join(__dirname, '..'),
     "styleType": 'css',
     "jsType": 'js',
     "useBootstrapToggle": false,

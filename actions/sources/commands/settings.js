@@ -14,13 +14,6 @@ const command = (type, options) => {
         return;
     }
 
-    const settingsJSON = (string) => {
-        const array = string.split('\n');
-        const starting = array.shift();
-        const context = `\t"context": path.join(__dirname, '..'),`;
-        return starting + '\n' + context + '\n' + array.join('\n')
-    };
-
     const allTypes = {
         'react': 'jsx',
         'angular': 'ts',
@@ -111,9 +104,7 @@ const command = (type, options) => {
             settings.useBootstrapToggle = !settings.useBootstrapToggle;
         }
         delete settings.context;
-        fs.writeFileSync(pathn, `const path = require('path');
-
-module.exports = ${settingsJSON(JSON.stringify(settings, null, 4))};`);
+        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
 
         console.green(`Toggled bootstrap ${settings.useBootstrapToggle ? 'on' : 'off'}`);
         return null;
@@ -128,9 +119,7 @@ module.exports = ${settingsJSON(JSON.stringify(settings, null, 4))};`);
             settings.useFontAwesomeToggle = !settings.useFontAwesomeToggle;
         }
         delete settings.context;
-        fs.writeFileSync(pathn, `const path = require('path');
-
-module.exports = ${settingsJSON(JSON.stringify(settings, null, 4))};`);
+        fs.writeFileSync(pathn, `module.exports = ${JSON.stringify(settings, null, 4)};`);
 
         console.green(`Toggled font awesome 4 ${settings.useFontAwesomeToggle ? 'on' : 'off'}`);
         return null;
@@ -731,10 +720,8 @@ module.exports = ${settingsJSON(JSON.stringify(settings, null, 4))};`);
 
     delete settings.context;
     if (babelRc[type]) babelRc[type]();
-    fs.writeFileSync(pathn, `const path = require('path');
-
-
-module.exports = ${settingsJSON(JSON.stringify(settings, null, 4))}`);
+    fs.writeFileSync(pathn, `
+module.exports = ${JSON.stringify(settings, null, 4)}`);
 
     console.green(`Your settings have been changed from ${before} to ${after}`);
 };

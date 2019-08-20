@@ -1,6 +1,10 @@
 // This file returns your webpack configuriation object
+const path = require('path');
 const settings = require('./settings');
 const { webpackConfiguration } = require('rails-on-node-conductor');
 
 
-module.exports = webpackConfiguration(settings);
+const webpackConfig = webpackConfiguration(settings);
+webpackConfig.context = path.join(__dirname, '..');
+
+module.exports = webpackConfig;
