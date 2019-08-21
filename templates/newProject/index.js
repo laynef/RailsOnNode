@@ -63,8 +63,8 @@ if (cluster.isMaster) {
     } else {
         const hostname = process.env.HOSTNAME || 'localhost';
         server = spdy.createServer({
-            key: fs.readFileSync(path.join(__dirname, '..', 'config', 'openssl', hostname + '-key.pem'), { encoding: 'utf8' }),
-            cert: fs.readFileSync(path.join(__dirname, '..', 'config', 'openssl', hostname + '-cert.pem'), { encoding: 'utf8' }),
+            key: fs.readFileSync(path.join(__dirname, 'config', 'openssl', hostname + '-key.pem'), { encoding: 'utf8' }),
+            cert: fs.readFileSync(path.join(__dirname, 'config', 'openssl', hostname + '-cert.pem'), { encoding: 'utf8' }),
         }, require('./app'));
     }
 

@@ -36,10 +36,10 @@ module.exports = {
             return data;
         };
 
-        const apiVersions = require(path.join(context, 'controllers'));
+        const apiVersions = require(path.join(context, 'app', 'controllers'));
 
-        const cssPath = path.join(context, 'assets', styleType, 'pages');
-        const jsPath = path.join(context, 'assets', jsType, 'pages');
+        const cssPath = path.join(context, 'app', 'assets', styleType, 'pages');
+        const jsPath = path.join(context, 'app', 'assets', jsType, 'pages');
 
         const cssPaths = Object.assign({}, reduce(recursiveFind({}, cssPath), (acc, val, key) => {
             acc[key] = Object.assign({}, val, { docs: !!apiVersions[val.pageName] });
@@ -53,7 +53,7 @@ module.exports = {
         const jsLoader = settings.javascriptRules[noProduction ? 'development' : 'production'].map(e => {
             const includes = e && e.use ? e.use.reduce((a, i) => {
                 const include = i.loader === 'babel-loader' ? Object.keys(jsPaths)
-                    .concat(path.join(context, 'assets', jsType)) : false;
+                    .concat(path.join(context, 'app',  'assets', jsType)) : false;
                 if (include) a = { include };
                 return a;
             }, {}) : {};
@@ -152,7 +152,7 @@ module.exports = {
             context: context,
             entry: entry,
             output: {
-                path: path.resolve(context, 'assets', 'dist', 'pages'),
+                path: path.resolve(context, 'app',  'assets', 'dist', 'pages'),
                 filename: '[name].js',
                 publicPath: '/',
             },

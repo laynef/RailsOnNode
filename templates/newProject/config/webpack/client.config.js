@@ -4,7 +4,7 @@ const settings = require('./settings');
 const { webpackConfiguration } = require('rails-on-node-conductor');
 
 
-settings.context = path.join(__dirname, '..');
+settings.context = path.join(__dirname, '..', '..');
 const webpackConfig = webpackConfiguration(settings);
 
 module.exports = webpackConfig;

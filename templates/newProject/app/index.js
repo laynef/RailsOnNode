@@ -69,7 +69,7 @@ app.use(parser.raw());
 app.use(favicon(path.join(__dirname, 'assets', 'img', 'nodejs.png')));
 
 if (!process.env.TESTING && process.env.NODE_ENV !== 'production') {
-    const webpackConfig = require('./webpack/client.config');
+    const webpackConfig = require('../config/webpack/client.config');
     const compiler = require('webpack')(webpackConfig);
     app.use(require('webpack-dev-middleware')(compiler, {
         noInfo: true,
