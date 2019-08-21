@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const shell = require('shelljs');
+
+const binary = path.join(__dirname, '..', 'node_modules', '.bin', 'sequelize');
+const args =  process.argv.slice(2).join(' ');
+
+const model_path = path.join(__dirname, '..', 'app', 'models');
+const migration_path = path.join(__dirname, '..', 'app', 'migrations');
+const environment = process.env.NODE_ENV || 'development';
+const config_path = path.join(__dirname, '..', 'config', environment);
+
+const config_flag = '--config-path=' + config_path;
+const model_flag = '--model-path=' + model_path;
+const migration_flag = '--model-path=' + migration_path;
+
+const argums = [binary, args, config_flag, model_flag, migration_flag];
+shell.exec(argums.join(' '));

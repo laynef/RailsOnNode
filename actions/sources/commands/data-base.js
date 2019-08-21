@@ -1,3 +1,4 @@
+const path = require('path');
 const shell = require('shelljs');
 const { root_directory } = require('../utils');
 
@@ -7,17 +8,7 @@ const documentation = () => {
     console.cyan(`
 Command:
 
-Types:
-    Database-Types
-    -> sql
-    -> mongodb
-
-Helps:
-    Database-Types
-    -> sql --help
-    -> mongodb help
-
-node-rails data-base (database-type) (native commands)
+node-rails data-base (sequelize cli commands)
     `);
 };
 
@@ -30,23 +21,12 @@ const command = (type) => {
         return;
     }
 
-    const dbTypes = {
-        sql: './node_modules/sequelize-cli/src/sequelize',
-        mongodb: './node_modules/mongoose-model-cli/bin/mongoose-model-cli',
-    };
-
+    const root = process.cwd();
     const strs = [...arguments];
     const str = strs.slice(1).join(' ');
 
-    if (dbTypes[type]) {
-        const root = process.cwd();
-        shell.cd(path.join(root, 'db'));
-        shell.exec(`${dbTypes[type]} ${str}`);
-        shell.cd(root);
-        console.green('Wrapper for database type used.');
-    } else {
-        documentation();
-    }
+    shell.exec(`${path.join(root, 'bin', 'sequelize')} ${str}`);
+    console.green('Wrapper for database type used.');
 };
 
 module.exports = {
