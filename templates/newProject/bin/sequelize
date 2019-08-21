@@ -7,13 +7,13 @@ const binary = path.join(__dirname, '..', 'node_modules', '.bin', 'sequelize');
 const args =  process.argv.slice(2).join(' ');
 
 const model_path = path.join(__dirname, '..', 'app', 'models');
-const migration_path = path.join(__dirname, '..', 'app', 'migrations');
+const migration_path = path.join(__dirname, '..', 'db', 'migrations');
 const environment = process.env.NODE_ENV || 'development';
-const config_path = path.join(__dirname, '..', 'config', environment);
+const config_path = path.join(__dirname, '..', 'config', 'environments', environment + '.json');
 
-const config_flag = '--config-path=' + config_path;
-const model_flag = '--model-path=' + model_path;
-const migration_flag = '--model-path=' + migration_path;
+const config_flag = '--config=' + config_path;
+const model_flag = '--models-path=' + model_path;
+const migration_flag = '--migrations-path=' + migration_path;
 
 const argums = [binary, args, config_flag, model_flag, migration_flag];
 shell.exec(argums.join(' '));
