@@ -88,9 +88,9 @@ module.exports = {
                 } else if (assetType === 'stylesheet') {
                     obj[routePath] = obj[routePath] || [];
                     if (object[route].docs || useBootstrapToggle) {
-                        obj[routePath].push(`${context}/assets/bootstrap/index.scss`);
+                        obj[routePath].push(`${context}/app/assets/bootstrap/index.scss`);
                     }
-                    if (settings.useFontAwesomeToggle) obj[routePath].push(`${context}/assets/bootstrap/font-awesome.scss`);
+                    if (settings.useFontAwesomeToggle) obj[routePath].push(`${context}/app/assets/bootstrap/font-awesome.scss`);
                     if (settings.useFontAwesomeToggle) obj[routePath].push(`font-awesome-loader`);
                     obj[routePath].push(object[route].fullPath);
                 }

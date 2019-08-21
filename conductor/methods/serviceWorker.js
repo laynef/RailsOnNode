@@ -25,7 +25,7 @@ module.exports = {
                 if (fs.lstatSync(pathn).isDirectory()) {
                     routesDir(pathn, data);
                 } else {
-                    const pathArray = pathn.replace(RegExp(root, 'g'), '').replace(RegExp(`/assets/${settings.jsType}/pages`, 'g'), '').split('/');
+                    const pathArray = pathn.replace(RegExp(root, 'g'), '').replace(RegExp(`/app/assets/${settings.jsType}/pages`, 'g'), '').split('/');
                     if (pathArray[1] !== 'docs' && pathArray[1] !== 'errors' && pathArray.pop().match(!/component/g)) {
                         data.push(`'${pathArray.length > 1 ? pathArray.join('/') : '/'}'`);
                     }
@@ -34,11 +34,11 @@ module.exports = {
             }, data);
         };
 
-        const getImagePaths = fs.readdirSync(path.join(settings.context, 'assets', 'img')).map(e => `'/assets/img/${e}?id=${global.hashId}'`);
-        const routesPath = routesDir(path.join(settings.context, 'assets', settings.jsType, 'pages'));
-        const getDistPaths = distDir(path.join(settings.context, 'assets', 'dist'), routesPath);
+        const getImagePaths = fs.readdirSync(path.join(settings.context, 'app', 'assets', 'img')).map(e => `'/assets/img/${e}?id=${global.hashId}'`);
+        const routesPath = routesDir(path.join(settings.context, 'app', 'assets', settings.jsType, 'pages'));
+        const getDistPaths = distDir(path.join(settings.context, 'app', 'assets', 'dist'), routesPath);
         const allFiles = getDistPaths.concat(getImagePaths);
-        fs.writeFileSync(path.join(settings.context, 'assets', 'dist', 'sw.js'), `
+        fs.writeFileSync(path.join(settings.context, 'app', 'assets', 'dist', 'sw.js'), `
 /* eslint-disable */
 // Version 0.6.2
 const version = '${global.hashId}';
@@ -93,6 +93,6 @@ self.addEventListener('activate', function(event) {
 });
 
         `);
-        fs.writeFileSync(path.join(settings.context, 'assets', 'dist', 'manifest.json'), fs.readFileSync(path.join(settings.context, 'assets', 'manifest.json'), { encoding: 'utf8' }))
+        fs.writeFileSync(path.join(settings.context, 'app', 'assets', 'dist', 'manifest.json'), fs.readFileSync(path.join(settings.context, 'app', 'assets', 'manifest.json'), { encoding: 'utf8' }))
     }
 };

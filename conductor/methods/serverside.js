@@ -14,7 +14,7 @@ const serverSideOptions = {
             serverSide: async (pageName, req) => {
                 const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
                 require('babel-register')(babelrc);
-                const assets = path.join(settings.context, 'assets', settings.jsType, 'storage', 'store');
+                const assets = path.join(settings.context, 'app', 'assets', settings.jsType, 'storage', 'store');
                 const store = require(assets);
                 try {
                     let storage = await global.redis.getAsync(req.session.id);
@@ -28,7 +28,7 @@ const serverSideOptions = {
             getFreshStore: (req) => {
                 const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
                 require('babel-register')(babelrc);
-                const assets = path.join(settings.context, 'assets', settings.jsType);
+                const assets = path.join(settings.context, 'app', 'assets', settings.jsType);
                 const store = require(path.join(assets, 'storage', 'store'))({});
                 const storage = store.getState();
                 global.redis.set(req.session.id, JSON.stringify(storage));
@@ -40,7 +40,7 @@ const serverSideOptions = {
             serverSide: async (pageName, req) => {
                 const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
                 require('babel-register')(babelrc);
-                const assets = path.join(settings.context, 'assets', settings.jsType);
+                const assets = path.join(settings.context, 'app', 'assets', settings.jsType);
                 const createStore = require(path.join(assets, 'redux', 'store'));
                 const componentArray = pageName.split('/');
                 componentArray.pop();
@@ -71,7 +71,7 @@ const serverSideOptions = {
             getFreshStore: (req) => {
                 const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
                 require('babel-register')(babelrc);
-                const assets = path.join(settings.context, 'assets', settings.jsType);
+                const assets = path.join(settings.context, 'app', 'assets', settings.jsType);
                 const createStore = require(path.join(assets, 'redux', 'store'));
                 const store = createStore({});
                 const storage = store.getState();
@@ -85,7 +85,7 @@ const serverSideOptions = {
             serverSide: async (pageName, req) => {
                 const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')));
                 require('babel-register')(babelrc);
-                const assets = path.join(settings.context, 'assets', settings.jsType);
+                const assets = path.join(settings.context, 'app', 'assets', settings.jsType);
                 const store = require(path.join(assets, 'state', 'store'));
                 const getServersideString = handleServerSide(settings)();
 
@@ -114,7 +114,7 @@ const serverSideOptions = {
             getFreshStore: (req) => {
                 const babelrc = JSON.parse(fs.readFileSync(path.join(settings.context, '.babelrc')))
                 require('babel-register')(babelrc);
-                const assets = path.join(settings.context, 'assets', settings.jsType);
+                const assets = path.join(settings.context, 'app', 'assets', settings.jsType);
                 const createStore = require(path.join(assets, 'state', 'store'));
                 const store = createStore({});
                 global.redis.set(req.session.id, store);
