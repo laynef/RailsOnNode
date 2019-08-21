@@ -24,17 +24,17 @@ const command = (versionNumber, options) => {
     const docPath = path.join(templatePath, 'docs');
 
     const root = process.cwd();
-    const settings = require(path.join(root, 'webpack', 'settings.js'));
+    const settings = require(path.join(root, 'config', 'webpack', 'settings.js'));
 
-    if (!fs.existsSync(path.join(root, 'controllers', `v${versionNumber}`))) {
-        shell.cp('-R', controllerPath, path.join(root, 'controllers', `v${versionNumber}`));
-        shell.cp('-R', routePath, path.join(root, 'routes', `v${versionNumber}`));
-        shell.mkdir(path.join(root, 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`));
-        shell.mkdir(path.join(root, 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`));
+    if (!fs.existsSync(path.join(root, 'app', 'controllers', `v${versionNumber}`))) {
+        shell.cp('-R', controllerPath, path.join(root, 'app', 'controllers', `v${versionNumber}`));
+        shell.cp('-R', routePath, path.join(root, 'app', 'routes', `v${versionNumber}`));
+        shell.mkdir(path.join(root, 'app', 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`));
+        shell.mkdir(path.join(root, 'app', 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`));
 
         const cssString = fs.readFileSync(path.join(docPath, 'page.css'), { encoding: 'utf8' });
-        fs.writeFileSync(path.join(root, 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.styleType}`), cssString);
-        shell.cp(path.join(docPath, 'page.js'), path.join(root, 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.jsType}`));
+        fs.writeFileSync(path.join(root, 'app', 'assets', settings.styleType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.styleType}`), cssString);
+        shell.cp(path.join(docPath, 'page.js'), path.join(root, 'app', 'assets', settings.jsType, 'pages', 'docs', `v${versionNumber}`, `v${versionNumber}.${settings.jsType}`));
 
         console.green('Your new api version has been created.');
     } else {

@@ -92,7 +92,7 @@ const command = (type, options) => {
     }
 
     const root = process.cwd();
-    const pathn = path.join(root, 'webpack', 'settings.js');
+    const pathn = path.join(root, 'config', 'webpack', 'settings.js');
     let settings = require(pathn);
 
     if (type === 'bootstrap') {
@@ -138,7 +138,7 @@ const command = (type, options) => {
         return acc;
     }, {});
 
-    const trail = fs.readdirSync(path.join(root, 'assets')).reduce((acc, item) => {
+    const trail = fs.readdirSync(path.join(root, 'app', 'assets')).reduce((acc, item) => {
         if (reverseCss[item] && TYPING.stylesheets[type]) {
             acc.push(item);
             acc.push(TYPING.stylesheets[type]);
@@ -171,7 +171,7 @@ const command = (type, options) => {
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const root = process.cwd();
-            const settings = require(path.join(root, 'webpack', 'settings.js'));
+            const settings = require(path.join(root, 'config', 'webpack', 'settings.js'));
 
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
@@ -219,7 +219,7 @@ const command = (type, options) => {
             });
             const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
-            const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
+            const pugFile = path.join(root, 'app', 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serversideString');
 
             const regexReduxString = reduxRecursive.join('/');
@@ -233,13 +233,13 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                const componentPath = path.join(root, 'assets', beforeType, 'pages', 'errors', error, 'component.jsx');
+                const componentPath = path.join(root, 'app', 'assets', beforeType, 'pages', 'errors', error, 'component.jsx');
                 const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'react', `${error}.jsx`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentPath, templateString);
 
-                const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
+                const componentViewPath = path.join(root, 'app', 'views', 'errors', `${error}.pug`);
                 const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'react', `${error}.pug`);
                 const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
 
@@ -251,7 +251,7 @@ const command = (type, options) => {
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const root = process.cwd();
-            const settings = require(path.join(root, 'webpack', 'settings.js'));
+            const settings = require(path.join(root, 'config', 'webpack', 'settings.js'));
 
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
@@ -298,7 +298,7 @@ const command = (type, options) => {
             });
             const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
-            const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
+            const pugFile = path.join(root, 'app', 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serversideString');
 
             const regexReduxString = reduxRecursive.join('/');
@@ -310,7 +310,7 @@ const command = (type, options) => {
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const root = process.cwd();
-            const settings = require(path.join(root, 'webpack', 'settings.js'));
+            const settings = require(path.join(root, 'config', 'webpack', 'settings.js'));
 
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
@@ -357,7 +357,7 @@ const command = (type, options) => {
             });
             const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
-            const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
+            const pugFile = path.join(root, 'app', 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, '#app!=serversideString');
 
             const regexReduxString = reduxRecursive.join('/');
@@ -371,13 +371,13 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                const componentPath = path.join(root, 'assets', beforeType, 'pages', 'errors', error, 'component.vue');
+                const componentPath = path.join(root, 'app', 'assets', beforeType, 'pages', 'errors', error, 'component.vue');
                 const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'vue', `${error}.vue`);
                 const templateString = fs.readFileSync(templatePath, { encoding: 'utf8' });
 
                 fs.writeFileSync(componentPath, templateString);
 
-                const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
+                const componentViewPath = path.join(root, 'app', 'views', 'errors', `${error}.pug`);
                 const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'vue', `${error}.pug`);
                 const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
 
@@ -389,7 +389,7 @@ const command = (type, options) => {
             const str = fs.readFileSync(pathn, { encoding: 'utf8' });
 
             const root = process.cwd();
-            const settings = require(path.join(root, 'webpack', 'settings.js'));
+            const settings = require(path.join(root, 'config', 'webpack', 'settings.js'));
 
             // replacements
             const regexStyles = /\/\/ Route Path/ig; // for styles
@@ -436,7 +436,7 @@ const command = (type, options) => {
             });
             const regexStylesString = recursiveStrings.slice(1).concat(rescurveNames).join('/');
 
-            const pugFile = path.join(root, 'views', 'utils', 'new-page.pug');
+            const pugFile = path.join(root, 'app', 'views', 'utils', 'new-page.pug');
             fs.writeFileSync(pugFile, 'h1(style="text-align: center;") Hello World');
 
             const regexReduxString = reduxRecursive.join('/');
@@ -450,7 +450,7 @@ const command = (type, options) => {
             ];
 
             errorDirectories.forEach((error) => {
-                const componentViewPath = path.join(root, 'views', 'errors', `${error}.pug`);
+                const componentViewPath = path.join(root, 'app', 'views', 'errors', `${error}.pug`);
                 const templateViewPath = path.join(__dirname, '..', '..', '..', 'templates', 'errors', 'js', `${error}.pug`);
                 const templateViewString = fs.readFileSync(templateViewPath, { encoding: 'utf8' });
 
@@ -665,7 +665,7 @@ const command = (type, options) => {
         return data;
     };
 
-    const beforeTypes = arrayOfPaths([], path.join(root, 'assets', before, 'pages'));
+    const beforeTypes = arrayOfPaths([], path.join(root, 'app', 'assets', before, 'pages'));
 
     beforeTypes.forEach(dir => {
         const fileArray = dir.split('/');
@@ -705,15 +705,15 @@ const command = (type, options) => {
     }
 
     if (TYPING.javascripts[type]) {
-        shell.rm('-rf', path.join(root, 'assets', before, storageTypes[before]));
+        shell.rm('-rf', path.join(root, 'app', 'assets', before, storageTypes[before]));
     }
-    shell.mv(path.join(root, 'assets', before), path.join(root, 'assets', after));
+    shell.mv(path.join(root, 'app', 'assets', before), path.join(root, 'app', 'assets', after));
 
     if (TYPING.javascripts[type]) {
-        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type, storageTypes[after]), path.join(root, 'assets', after, storageTypes[after]));
-        fs.readdirSync(path.join(root, 'assets', after, 'pages', 'docs')).forEach((item) => {
-            fs.readdirSync(path.join(root, 'assets', after, 'pages', 'docs', item)).forEach((file) => {
-                fs.writeFileSync(path.join(root, 'assets', after, 'pages', 'docs', item, file), '');
+        shell.cp('-R', path.join(__dirname, '..', '..', '..', 'templates', 'redux', type, storageTypes[after]), path.join(root, 'app', 'assets', after, storageTypes[after]));
+        fs.readdirSync(path.join(root, 'app', 'assets', after, 'pages', 'docs')).forEach((item) => {
+            fs.readdirSync(path.join(root, 'app', 'assets', after, 'pages', 'docs', item)).forEach((file) => {
+                fs.writeFileSync(path.join(root, 'app', 'assets', after, 'pages', 'docs', item, file), '');
             });
         });
     }

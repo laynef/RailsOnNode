@@ -2,17 +2,17 @@ CURR_DIR=$(PWD)
 DATE=`date '+%Y-%m-%d-%H:%M:%S'`
 
 
-rm -rf node_modules deploy-src build
+rm -rf node_modules temp/deploy-src build
 cd ..
-cp -R $CURR_DIR ./deploy-src
-mv ./deploy-src $CURR_DIR/deploy-src
+cp -R $CURR_DIR ./temp/deploy-src
+mv ./temp/deploy-src $CURR_DIR/temp/deploy-src
 cd $CURR_DIR
 npm install
 npm run clean:assets
 npm run build:prod
 cp -R ./assets/dist ./tempDist
 npm run babel:build
-rm -rf ./deploy-src
+rm -rf ./temp/deploy-src
 cp -R ./package.json ./build/package.json
 cp -R ./app.json ./build/app.json
 cp -R ./views ./build/views

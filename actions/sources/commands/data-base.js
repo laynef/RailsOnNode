@@ -39,7 +39,10 @@ const command = (type) => {
     const str = strs.slice(1).join(' ');
 
     if (dbTypes[type]) {
+        const root = process.cwd();
+        shell.cd(path.join(root, 'db'));
         shell.exec(`${dbTypes[type]} ${str}`);
+        shell.cd(root);
         console.green('Wrapper for database type used.');
     } else {
         documentation();

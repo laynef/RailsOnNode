@@ -19,7 +19,7 @@ const command = (routePath, options) => {
     }
 
     const root = process.cwd();
-    const settings = require(path.join(root, 'webpack', 'settings.js'));
+    const settings = require(path.join(root, 'config', 'webpack', 'settings.js'));
     const pathRoute = routePath.slice().split('/');
     const pageName = reduceRight(pathRoute, (acc, item) => {
         if (!acc && !item.match(/\:/g)) {
@@ -28,7 +28,7 @@ const command = (routePath, options) => {
         return acc;
     }, false);
 
-    if (fs.existsSync(path.join(root, 'views', 'pages', routePath, `${pageName}.pug`))) {
+    if (fs.existsSync(path.join(root, 'app', 'views', 'pages', routePath, `${pageName}.pug`))) {
         console.red('Page already exists.');
         return;
     }
@@ -50,16 +50,16 @@ const command = (routePath, options) => {
     const scriptsPage = pugTitle.replace(/include \.\/utils\/scripts\.pug/g, `include ${routePathDepth}utils/scripts.pug`);
     const newTemplate = scriptsPage.replace(/include \.\/utils\/meta\.pug/g, `include ${routePathDepth}utils/meta.pug`);
 
-    const application = fs.readFileSync(path.join(root, 'app.js'), { encoding: 'utf8' });
-    shell.exec(`mkdir -p ${path.join(root, 'views', 'pages', routePath)} ${path.join(root, 'assets', settings.styleType, 'pages', routePath)} ${path.join(root, 'assets', settings.jsType, 'pages', routePath)}`);
-    fs.writeFileSync(path.join(root, 'views', 'pages', routePath, `${pageName}.pug`), newTemplate);
-    shell.cp(path.join(templatePath, 'assets', `page.${settings.styleType}`), path.join(root, 'assets', settings.styleType, 'pages', routePath, `${pageName}.${settings.styleType}`));
-    shell.cp(path.join(templatePath, 'assets', `${settings.jsType === 'vue' ? 'vue' : 'page'}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`));
-    if (fs.existsSync(path.join(templatePath, 'assets', `component.${settings.jsType}`))) shell.cp(path.join(templatePath, 'assets', `component.${settings.jsType}`), path.join(root, 'assets', settings.jsType, 'pages', routePath, `component.${settings.jsType}`));
-    const reduxPath = path.join(root, 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`);
+    const application = fs.readFileSync(path.join(root, 'app', 'index.js'), { encoding: 'utf8' });
+    shell.exec(`mkdir -p ${path.join(root, 'app', 'views', 'pages', routePath)} ${path.join(root, 'app', 'assets', settings.styleType, 'pages', routePath)} ${path.join(root, 'app', 'assets', settings.jsType, 'pages', routePath)}`);
+    fs.writeFileSync(path.join(root, 'app', 'views', 'pages', routePath, `${pageName}.pug`), newTemplate);
+    shell.cp(path.join(templatePath, 'assets', `page.${settings.styleType}`), path.join(root, 'app', 'assets', settings.styleType, 'pages', routePath, `${pageName}.${settings.styleType}`));
+    shell.cp(path.join(templatePath, 'assets', `${settings.jsType === 'vue' ? 'vue' : 'page'}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`), path.join(root, 'app', 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`));
+    if (fs.existsSync(path.join(templatePath, 'assets', `component.${settings.jsType}`))) shell.cp(path.join(templatePath, 'assets', `component.${settings.jsType}`), path.join(root, 'app', 'assets', settings.jsType, 'pages', routePath, `component.${settings.jsType}`));
+    const reduxPath = path.join(root, 'app', 'assets', settings.jsType, 'pages', routePath, `${pageName}.${settings.jsType === 'vue' ? 'js' : settings.jsType}`);
     const reduxFs = fs.readFileSync(reduxPath, { encoding: 'utf8' });
     fs.writeFileSync(reduxPath, reduxFs.replace(reduxRegex, `${routePathDepth}${storageTypes[settings.jsType]}/store`).replace(styleRegex, `${routePathDepth}../${settings.styleType}/pages${routePath}/${pageName}`));
-    if (routePath) fs.writeFileSync(path.join(root, 'app.js'), application.replace(/\/\/ Leave Here For Static Routes/g, `// Leave Here For Static Routes\napp.getAsync('${routePath}', render('pages${routePath}/${pageName}', { hashId: global.hashId }));`));
+    if (routePath) fs.writeFileSync(path.join(root, 'app', 'index.js'), application.replace(/\/\/ Leave Here For Static Routes/g, `// Leave Here For Static Routes\napp.getAsync('${routePath}', render('pages${routePath}/${pageName}', { hashId: global.hashId }));`));
     console.green('Your new page assets have be created.');
 };
 

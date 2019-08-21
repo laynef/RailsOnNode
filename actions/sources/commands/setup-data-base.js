@@ -58,9 +58,12 @@ const command = (databaseType, options) => {
         sql: 'init',
     };
 
+    const root = process.cwd();
     shell.exec(`npm i --save-dev ${packageJsonDev[databaseType].join(' ')}`);
     shell.exec(`npm i --save ${packageJson[databaseType].join(' ')}`);
+    shell.cd(path.join(root, 'db'));
     shell.exec(`${dbTypes[databaseType]} ${initializeCommand[databaseType]}`);
+    shell.cd(root)
 
     console.green('Your database has been setup');
 };

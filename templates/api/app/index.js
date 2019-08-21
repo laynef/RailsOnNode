@@ -21,7 +21,7 @@ const {
 } = require('rails-on-node-conductor');
 const routeVersions = require('./routes');
 const { each } = require('lodash');
-const meta = require('./app.json');
+const meta = require('../config/metatags.json');
 
 const protection = csrf();
 const app = decorateApp(new Express());
@@ -34,7 +34,7 @@ app.use(helmet());
 app.use(morgan('dev'));
 app.use(compression({ level: 7 }));
 app.use(session({
-    secret: fs.readFileSync(path.join(__dirname, 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
+    secret: fs.readFileSync(path.join(__dirname, '..', 'config', 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
     store: new RedisStore({ client: client, disableTTL: true }),
     saveUninitialized: true,
     resave: false,

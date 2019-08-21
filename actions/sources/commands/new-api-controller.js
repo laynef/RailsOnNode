@@ -16,7 +16,7 @@ const command = (controllerName, options) => {
 
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'newApiController');
     const root = process.cwd();
-    const apiVersionPath = path.join(root, 'controllers', `v${options.version || 1}`, controllerName);
+    const apiVersionPath = path.join(root, 'app', 'controllers', `v${options.version || 1}`, controllerName);
 
     if (fs.existsSync(apiVersionPath)) {
         console.red('This api controller already exists.');
