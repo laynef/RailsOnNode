@@ -2,7 +2,7 @@ const path = require('path');
 const shell = require('shelljs');
 const { root_directory } = require('../utils');
 
-const description = 'Use wrapper for the CLIs used for databases';
+const description = 'Use wrapper for Sequelize CLI for Rails on Node Structure';
 
 const documentation = () => {
     console.cyan(`
