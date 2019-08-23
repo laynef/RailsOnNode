@@ -14,12 +14,15 @@ console.gray = (str) => { console.log(colors.gray(str)); };
 console.grey = (str) => { console.log(colors.grey(str)); };
 
 const user = process.argv.slice(2);
+const command = user[0];
 
 const args = [];
 const flags = [];
 
 for (var i = 1; i < user.length; i++) {
-    if (user[i].indexOf('--') === 0) {
+    if (command === 'db') {
+        args.push(user[i].toString());
+    } else if (user[i].indexOf('--') === 0) {
         const array = user[i].slice(2).split('=');
         if (array.length === 1) {
             const object = {};
@@ -35,6 +38,6 @@ for (var i = 1; i < user.length; i++) {
     }
 }
 
-const start = new Commander(user[0], args, flags);
+const start = new Commander(command, args, flags);
 
 start.execute();

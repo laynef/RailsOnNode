@@ -12,21 +12,18 @@ node-rails data-base (sequelize cli commands)
     `);
 };
 
-const command = (type) => {
-    if (!type) {
-        console.red('Enter a database type');
-        return;
-    } else if (!root_directory()) {
+const command = (...args) => {
+    if (!root_directory()) {
         console.red('Must run this command in the root directory of your project.');
         return;
     }
 
     const root = process.cwd();
-    const strs = [...arguments];
-    const str = strs.slice(1).join(' ');
-
-    shell.exec(`${path.join(root, 'bin', 'sequelize')} ${str}`);
-    console.green('Wrapper for database type used.');
+    const strs = [...args];
+    strs.pop();
+    const str = strs.join(' ');
+    const bin = path.join(root, 'bin', 'sequelize');
+    shell.exec(`${bin} ${str}`);
 };
 
 module.exports = {
