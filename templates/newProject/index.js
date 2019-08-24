@@ -6,6 +6,7 @@ const path = require('path');
 const settings = require('./config/webpack/settings');
 const meta = require('./config/metatags.json');
 const { createServiceWorker, makeHash } = require('rails-on-node-conductor');
+const environment = process.env.NODE_ENV || 'development';
 const isProduction = process.env.NODE_ENV === 'production';
 const numCPUs = isProduction ? 8 : 1;
 global.hashId = makeHash(40);
@@ -18,7 +19,7 @@ if (isProduction) createServiceWorker(global.settings);
 // This follows the master to slave model because the master is distribute the work hitting your server
 if (cluster.isMaster) {
     console.log(`Master ${process.pid} is in control running with ${numCPUs} threads`);
-
+    fs.writeFileSync(path.join(__dirname, 'log', environment + '.log'), '');
     // Fork workers.
     for (let i = 0; i < numCPUs; i++) {
         // Child processes have event listeners

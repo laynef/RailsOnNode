@@ -34,12 +34,12 @@
         "dotenv": "^6.0.0",
         "express": "^4.16.3",
         "express-session": "^1.15.6",
+        "express-winston": "^3.3.0",
         "font-awesome": "^4.7.0",
         "helmet": "^3.13.0",
         "intersection-observer": "0.5.0",
         "jquery": "^3.3.1",
         "jsonwebtoken": "^8.3.0",
-        "morgan": "^1.9.0",
         "mysql": "^2.17.1",
         "pg": "^7.12.1",
         "pg-hstore": "^2.3.3",
@@ -61,7 +61,8 @@
         "sql-injection": "0.0.6",
         "tedious": "^6.3.0",
         "vue": "^2.6.10",
-        "vue-server-renderer": "^2.6.10"
+        "vue-server-renderer": "^2.6.10",
+        "winston": "^3.2.1"
     },
     "devDependencies": {
         "autoprefixer": "^9.1.0",

@@ -5,7 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const helmet = require('helmet');
 const cors = require('cors');
-const morgan = require('morgan');
+const winston = require('winston');
+const expressWinston = require('express-winston');
 const compression = require('compression');
 const favicon = require('serve-favicon');
 const sqlinjection = require('sql-injection');
@@ -29,6 +30,9 @@ const bluebird = require('bluebird');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
+
+const environment = process.env.NODE_ENV || 'development';
+const logFile = path.join(__dirname, '..', 'log', environment + '.log');
 const protection = csrf();
 const app = decorateApp(new Express());
 
@@ -36,6 +40,21 @@ global.redis = client;
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+app.use(expressWinston.logger({
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({ filename: logFile })
+    ],
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.simple()
+    ),
+    meta: false,
+    msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}} -- {{res.responseTime}}ms",
+    expressFormat: true,
+    colorize: true,
+    ignoreRoute: function (req, res) { return false; }
+}));
 app.use(cors());
 app.use(helmet());
 app.use(sqlinjection);
