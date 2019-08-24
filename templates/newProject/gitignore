@@ -4,7 +4,6 @@ app/assets/dist
 CONTRIBUTORS.md
 *.pem
 *.log
-package-lock.json
 .env
 app/assets/js/pages/docs/**.js
 app/assets/jsx/pages/docs/**.js
@@ -12,5 +11,3 @@ app/assets/vue/pages/docs/**.js
 app/assets/css/pages/docs/**.css
 app/assets/scss/pages/docs/**.css
 app/assets/less/pages/docs/**.css
-deploy-src
-build
