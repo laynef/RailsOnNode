@@ -7,13 +7,14 @@ module.exports = {
         let now = Date();
         now = now.replace(/\s/g, '');
         const root = settings.context;
+        const appPath = path.join(root, 'app');
         const distDir = (pathname, data = []) => {
             return fs.readdirSync(pathname).reduce((acc, item) => {
                 const pathn = path.join(pathname, item);
                 if (fs.lstatSync(pathn).isDirectory()) {
                     distDir(pathn, data);
                 } else {
-                    data.push(`'${pathn.replace(RegExp(root, 'g'), '')}?id=${global.hashId}'`);
+                    data.push(`'${pathn.replace(RegExp(appPath, 'g'), '')}?id=${global.hashId}'`);
                 }
                 return acc;
             }, data);
