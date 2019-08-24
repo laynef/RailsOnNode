@@ -12,6 +12,7 @@ const numCPUs = isProduction ? 8 : 1;
 global.hashId = makeHash(40);
 global.settings = settings;
 global.meta = meta;
+global.settings.context = path.join(__dirname);
 if (isProduction) createServiceWorker(global.settings);
 global.gc ? global.gc() : console.warn('No GC hook! Start your program as `node --expose-gc file.js`.');
 

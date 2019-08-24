@@ -58,7 +58,6 @@ app.use(expressWinston.logger({
 app.use(cors());
 app.use(helmet());
 app.use(sqlinjection);
-app.use(morgan('dev'));
 app.use(compression({ level: 7 }));
 app.use(session({
     secret: fs.readFileSync(path.join(__dirname, '..', 'config', 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
