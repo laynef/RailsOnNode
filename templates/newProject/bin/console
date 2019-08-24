@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+const repl = require('repl');
+const models = require('../app/models');
+
+repl.start('> ').context.models = models;
