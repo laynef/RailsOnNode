@@ -8,6 +8,7 @@ const args =  process.argv.slice(2).join(' ');
 
 const model_path = path.join(__dirname, '..', 'app', 'models');
 const migration_path = path.join(__dirname, '..', 'db', 'migrations');
+const seeder_path = path.join(__dirname, '..', 'db', 'seeders');
 const environment = process.env.NODE_ENV || 'development';
 const config_path = path.join(__dirname, '..', 'config', 'environments', environment + '.json');
 
