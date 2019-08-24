@@ -23,6 +23,7 @@ const command = (type, options) => {
         'sass': 'scss',
         'css': 'css',
         'bootstrap': 'bootstrap',
+        'bs': 'bootstrap',
         'fa': 'font-awesome',
         'font-awesome': 'font-awesome',
     };
@@ -95,7 +96,7 @@ const command = (type, options) => {
     const pathn = path.join(root, 'config', 'webpack', 'settings.js');
     let settings = require(pathn);
 
-    if (type === 'bootstrap') {
+    if (allTypes[type] === 'bootstrap') {
         if (options.switch == 'true') {
             settings.useBootstrapToggle = true;
         } else if (options.switch == 'false') {
