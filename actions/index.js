@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --experimental-repl-await
 
 const Commander = require('./commander');
 const colors = require('colors/safe');

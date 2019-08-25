@@ -1,5 +1,5 @@
+const repl = require('repl');
 const path = require('path');
-const shell = require('shelljs');
 const { root_directory } = require('../utils');
 
 const description = 'Access all of your Sequelize models with Node console';
@@ -19,8 +19,15 @@ const command = (...args) => {
     }
 
     const root = process.cwd();
-    const bin = path.join(root, 'bin', 'console');
-    shell.exec(`${bin}`);
+    const models = require(path.join(root, 'app', 'models', 'index.js'));
+
+    const r = repl.start('> ');
+    Object.defineProperty(r.context, 'models', {
+      configurable: true,
+      enumerable: true,
+      value: models
+    });
+
 };
 
 module.exports = {
