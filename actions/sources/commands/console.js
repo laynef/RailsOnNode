@@ -19,11 +19,8 @@ const command = (...args) => {
     }
 
     const root = process.cwd();
-    const strs = [...args];
-    strs.pop();
-    const str = strs.join(' ');
     const bin = path.join(root, 'bin', 'console');
-    shell.exec(`${bin} ${str}`);
+    shell.exec(`${bin}`);
 };
 
 module.exports = {
