@@ -1,4 +1,5 @@
 const repl = require('repl');
+const fs = require('fs');
 const path = require('path');
 const { root_directory } = require('../utils');
 
@@ -19,7 +20,8 @@ const command = (...args) => {
     }
 
     const root = process.cwd();
-    const models = require(path.join(root, 'app', 'models', 'index.js'));
+    const modelsPath = path.join(root, 'app', 'models', 'index.js');
+    const models = fs.existsSync(modelsPath) ? require(modelsPath) : {};
 
     const r = repl.start('> ');
     Object.defineProperty(r.context, 'models', {
