@@ -1,6 +1,6 @@
 {
     "ignore": [
-        "assets/**",
+        "app/assets/**",
         "node_modules/**"
     ]
 }

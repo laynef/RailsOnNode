@@ -26,12 +26,11 @@ const command = (directoryName, options) => {
 
         shell.rm(path.join(root, directoryName, 'app', 'index.js'));
         shell.rm(path.join(root, directoryName, 'package.json'));
-        shell.rm(path.join(root, directoryName, 'index.js'));
+        shell.rm(path.join(root, directoryName, 'server.js'));
 
         shell.cp(path.join(api_template_path, 'app', 'index.js'), path.join(root, directoryName, 'app', 'index.js'));
-        shell.cp(path.join(api_template_path, 'index.js'), path.join(root, directoryName, 'index.js'));
+        shell.cp(path.join(api_template_path, 'server.js'), path.join(root, directoryName, 'server.js'));
         shell.cp(path.join(api_template_path, 'package.json'), path.join(root, directoryName, 'package.json'));
-        shell.cp(path.join(api_template_path, 'nodemon.json'), path.join(root, directoryName, 'nodemon.json'));
     }
 
     shell.cd(path.join(root, directoryName));

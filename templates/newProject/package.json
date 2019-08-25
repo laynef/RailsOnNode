@@ -6,7 +6,7 @@
     "scripts": {
         "test": "TESTING='true' mocha ./test/index.js",
         "start": "NODE_ENV='production' node --expose-gc server.js",
-        "dev": "NODE_ENV='development' node --expose-gc server.js",
+        "dev": "NODE_ENV='development' nodemon --expose-gc server.js",
         "prod": "NODE_ENV='production' node --expose-gc server.js",
         "build:dev": "npm run clean:assets && NODE_ENV='development' webpack --config ./config/webpack/client.config.js",
         "build:prod": "npm run clean:assets && NODE_ENV='production' webpack --config ./config/webpack/client.config.js -p",
