@@ -1,6 +1,12 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --experimental-repl-await
 
+const path = require('path');
 const repl = require('repl');
-const models = require('../app/models');
+const models = require(path.join(__dirname, '..', 'app', 'models', 'index.js'));
 
-repl.start('> ').context.models = models;
+const r = repl.start('> ');
+Object.defineProperty(r.context, 'models', {
+  configurable: true,
+  enumerable: true,
+  value: models
+});
