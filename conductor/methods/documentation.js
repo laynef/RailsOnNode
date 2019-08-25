@@ -118,14 +118,16 @@ module.exports = {
 
     axios[allData.method.toLowerCase()](...args)
         .then((resp) => {
+            var data = resp && resp.data ? resp.data : resp;
             if (resp.status <= 300) {
-                resultElement.innerText = JSON.stringify(resp.data, null, 4);
+                resultElement.innerText = JSON.stringify(data, null, 4);
             } else {
-                resultElement.innerText = JSON.stringify(resp.data, null, 4);
+                resultElement.innerText = JSON.stringify(data, null, 4);
             }
         })
         .catch((err) => {
-            resultElement.innerText = JSON.stringify(err.response.data, null, 4);
+            var error = err && err.response && err.response.data ? err.response.data : err;
+            resultElement.innerText = JSON.stringify(error, null, 4);
         });
 };
     `;
