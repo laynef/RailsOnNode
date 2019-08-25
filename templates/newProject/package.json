@@ -51,7 +51,7 @@
         "redux-logger": "^3.0.6",
         "redux-promise": "^0.6.0",
         "redux-thunk": "^2.3.0",
-        "sequelize": "^5.15.2",
+        "sequelize": "^5.16.0",
         "serve-favicon": "^2.5.0",
         "spdy": "^4.0.1",
         "sql-injection": "0.0.6",
