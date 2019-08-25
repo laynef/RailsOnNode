@@ -13,8 +13,9 @@ module.exports = {
     var formData = new FormData();
     var paramList = document.getElementById('${camelCased}ParamsForm') && document.getElementById('${camelCased}ParamsForm').elements ? document.getElementById('${camelCased}ParamsForm').elements : [];
     var headerList = document.getElementById('${camelCased}HeadersForm') && document.getElementById('${camelCased}HeadersForm').elements ? document.getElementById('${camelCased}HeadersForm').elements : [];
+    var csrf = document.querySelector('meta[name="csrf-token"]').content;
 
-    var headerObject = {};
+    var headerObject = { 'X-CSRF-Token': csrf };
     var tempHeaderKey = null;
     for (var i = 0; i < headerList.length; i++) {
         var eleHeader = headerList[i].value;
