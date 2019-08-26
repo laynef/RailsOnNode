@@ -1,6 +1,7 @@
 require('dotenv').config();
 const cluster = require('cluster');
 const spdy = require('spdy');
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const settings = require('./config/webpack/settings');
