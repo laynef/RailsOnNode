@@ -9,7 +9,6 @@ const winston = require('winston');
 const expressWinston = require('express-winston');
 const compression = require('compression');
 const favicon = require('serve-favicon');
-const sqlinjection = require('sql-injection');
 const csrf = require('csurf');
 const parser = require('body-parser');
 const session = require('express-session');
@@ -57,7 +56,6 @@ app.use(expressWinston.logger({
 }));
 app.use(cors());
 app.use(helmet());
-app.use(sqlinjection);
 app.use(compression({ level: 7 }));
 app.use(session({
     secret: fs.readFileSync(path.join(__dirname, '..', 'config', 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
