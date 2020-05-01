@@ -55,7 +55,10 @@ app.use(expressWinston.logger({
     ignoreRoute: function (req, res) { return false; }
 }));
 app.use(cors());
-app.use(helmet());
+app.use(helmet({ 
+    frameguard: { action: 'deny' },
+    permittedCrossDomainPolicies: { permittedPolicies: 'master-only' },
+}));
 app.use(compression({ level: 7 }));
 app.use(session({
     secret: fs.readFileSync(path.join(__dirname, '..', 'config', 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
@@ -65,6 +68,8 @@ app.use(session({
     name: meta.title,
     cookie: {
         token: null,
+        secure: true,
+        sameSite: true,
     },
 }));
 app.use('/assets', Express.static(path.join(__dirname, 'assets')));
