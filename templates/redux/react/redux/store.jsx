@@ -8,7 +8,11 @@ export default function (data) {
     // Sync dispatched route actions to the history
     const middleware = [thunk, ReduxPromise, createLogger()];
 
-    let finalCreateStore = compose(applyMiddleware(...middleware))(_createStore);
+    const composeEnhancers = typeof window === 'object' &&
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(data) : compose;
+
+    let finalCreateStore = composeEnhancers(applyMiddleware(...middleware))(_createStore);
 
     const store = finalCreateStore(reducer, data);
 
