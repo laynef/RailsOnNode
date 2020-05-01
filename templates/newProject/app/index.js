@@ -121,15 +121,16 @@ each(routeVersions, (versionDetails, apiVersion) => {
 app.getAsync('/', render('pages/index', { hashId: global.hashId }));
 // Leave Here For Static Routes
 
-app.use('*', (req, res) => {
-    renderError(req, res, 'errors/404', { hashId: global.hashId, statusCode: 404, environment: process.env.NODE_ENV, title: '404: Page Not Found' });
+app.useAsync('*', (req, res) => {
+    return renderError(req, res, 'errors/404', { hashId: global.hashId, statusCode: 404, environment: process.env.NODE_ENV, title: '404: Page Not Found' });
 });
 
-app.use((error, req, res, next) => {
+app.useAsync((error, req, res, next) => {
     if (error) {
         renderError(req, res, 'errors/500', { hashId: global.hashId, statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
+        return;
     }
-    next();
+    return next();
 });
 
 module.exports = app;
