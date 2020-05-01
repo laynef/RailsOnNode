@@ -14,8 +14,7 @@ global.hashId = makeHash(40);
 global.settings = settings;
 global.meta = meta;
 global.settings.context = path.join(__dirname);
-if (isProduction) createServiceWorker(global.settings);
-global.gc ? global.gc() : console.warn('No GC hook! Start your program as `node --expose-gc file.js`.');
+createServiceWorker(global.settings);
 
 // Master process
 // This is the node that runs and controls where to distribute traffic it is slave processors
