@@ -12,7 +12,7 @@ export default function (data) {
         window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
             window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(data) : compose;
 
-    let finalCreateStore = composeEnhancers(applyMiddleware(...middleware))(_createStore);
+    const finalCreateStore = composeEnhancers(applyMiddleware(...middleware))(_createStore);
 
     const store = finalCreateStore(reducer, data);
 
