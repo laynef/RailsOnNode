@@ -54,11 +54,13 @@ app.use(expressWinston.logger({
     colorize: true,
     ignoreRoute: function (req, res) { return false; }
 }));
-app.use(cors());
+app.use(cors({ origin: ['https://localhost:8080'] }));
 app.use(helmet({ 
     frameguard: { action: 'deny' },
     permittedCrossDomainPolicies: { permittedPolicies: 'master-only' },
+    noCache: true,
 }));
+app.use(parser.urlencoded({ extended: false }));
 app.use(compression({ level: 7 }));
 app.use(session({
     secret: fs.readFileSync(path.join(__dirname, '..', 'config', 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
@@ -67,13 +69,13 @@ app.use(session({
     resave: false,
     name: meta.title,
     cookie: {
-        token: null,
         secure: true,
         sameSite: true,
+        signed: true,
+        domain: 'localhost',
+        token: null
     },
 }));
-app.use('/assets', Express.static(path.join(__dirname, 'assets')));
-app.use('/', Express.static(path.join(__dirname, 'assets', 'dist')));
 
 if (!process.env.TESTING) {
     app.use(protection);
@@ -84,7 +86,9 @@ if (!process.env.TESTING) {
     });
 }
 
-app.use(parser.urlencoded({ extended: false }));
+app.use('/assets', Express.static(path.join(__dirname, 'assets')));
+app.use('/', Express.static(path.join(__dirname, 'assets', 'dist')));
+
 app.use(parser.json());
 app.use(parser.raw());
 app.use(favicon(path.join(__dirname, 'assets', 'img', 'nodejs.png')));
