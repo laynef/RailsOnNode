@@ -36,6 +36,8 @@ const logFile = path.join(__dirname, '..', 'log', environment + '.log');
 const protection = csrf();
 const app = decorateApp(new Express());
 
+const domain = 'https://localhost:8080';
+
 global.redis = client;
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
@@ -55,7 +57,7 @@ app.use(expressWinston.logger({
     colorize: true,
     ignoreRoute: function (req, res) { return false; }
 }));
-app.use(cors({ origin: ['https://localhost:8080'] }));
+app.use(cors({ origin: [domain] }));
 app.use(helmet({ 
     frameguard: { action: 'deny' },
     permittedCrossDomainPolicies: { permittedPolicies: 'master-only' },
@@ -73,8 +75,8 @@ app.use(session({
         secure: true,
         sameSite: true,
         signed: true,
-        domain: 'localhost',
-        token: null
+        domain: domain,
+        token: null,
     },
 }));
 
