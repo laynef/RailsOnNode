@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const TimeFixPlugin = require('time-fix-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { reduce, camelCase } = require('lodash');
 
@@ -160,8 +160,13 @@ module.exports = {
             optimization: {
                 minimize: true,
                 minimizer: [
-                    new TerserPlugin({
+                    new UglifyJsPlugin({
                         extractComments: true,
+                        uglifyOptions: {
+                            output: {
+                              comments: false
+                            }
+                        }
                     }),
                 ],
             },
