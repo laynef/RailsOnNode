@@ -4,6 +4,7 @@ const { decorateApp } = require('@awaitjs/express');
 const fs = require('fs');
 const path = require('path');
 const helmet = require('helmet');
+const noCache = require('nocache');
 const cors = require('cors');
 const winston = require('winston');
 const expressWinston = require('express-winston');
@@ -58,8 +59,8 @@ app.use(cors({ origin: ['https://localhost:8080'] }));
 app.use(helmet({ 
     frameguard: { action: 'deny' },
     permittedCrossDomainPolicies: { permittedPolicies: 'master-only' },
-    noCache: true,
 }));
+app.use(noCache());
 app.use(parser.urlencoded({ extended: false }));
 app.use(compression({ level: 7 }));
 app.use(session({
