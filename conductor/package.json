@@ -1,7 +1,7 @@
 {
   "name": "rails-on-node-conductor",
   "title": "Rails On Node Conductor",
-  "version": "1.0.0-22",
+  "version": "1.0.0-23",
   "description": "",
   "main": "index.js",
   "scripts": {
