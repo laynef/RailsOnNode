@@ -203,6 +203,10 @@ module.exports = {
             plugins: plugins,
         };
 
+        if (!noProduction) {
+            delete configuration.optimization;
+        }
+
         return Object.assign({}, configuration, settings.webpackOverrides || {});
     }
 
