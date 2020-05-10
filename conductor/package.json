@@ -1,7 +1,7 @@
 {
   "name": "rails-on-node-conductor",
   "title": "Rails On Node Conductor",
-  "version": "1.0.0-53",
+  "version": "1.0.0-54",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -44,7 +44,7 @@
     "lodash": "^4.17.15",
     "mini-css-extract-plugin": "^0.4.1",
     "mocha": "^7.1.2",
-    "node-sass": "^4.14.0",
+    "node-sass": "^4.14.1",
     "nodemon": "^2.0.3",
     "postcss-import": "^12.0.0",
     "postcss-load-config": "^2.0.0",
@@ -65,6 +65,7 @@
     "supertest": "^3.1.0",
     "terser-webpack-plugin": "^3.0.0",
     "time-fix-plugin": "^2.0.3",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^1.0.1",
     "vue": "^2.6.10",
     "vue-loader": "^15.4.1",
