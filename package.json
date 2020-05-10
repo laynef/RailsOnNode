@@ -1,7 +1,7 @@
 {
     "name": "rails-on-node",
     "title": "Rails On Node",
-    "version": "3.0.0-27",
+    "version": "3.0.0-28",
     "description": "",
     "scripts": {
         "new-command": "bash ./new-command.sh",
