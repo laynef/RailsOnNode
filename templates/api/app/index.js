@@ -79,8 +79,9 @@ app.use('*', (req, res) => {
 app.use((error, req, res, next) => {
     if (error) {
         res.status(500).json({ error });
+        return;
     }
-    next();
+    return next();
 });
 
 module.exports = app;
