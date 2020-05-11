@@ -140,9 +140,9 @@ app.useAsync('*', (req, res) => {
 app.useAsync((error, req, res, next) => {
     if (error) {
         renderError(req, res, 'errors/500', { hashId: global.hashId, statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
-        return;
+    } else {
+        next();
     }
-    return next();
 });
 
 module.exports = app;
