@@ -1,7 +1,7 @@
 {
   "name": "rails-on-node-conductor",
   "title": "Rails On Node Conductor",
-  "version": "1.0.0-55",
+  "version": "1.0.0-56",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -38,7 +38,6 @@
     "font-awesome-loader": "^1.0.2",
     "html-loader": "^0.5.5",
     "imports-loader": "^0.8.0",
-    "json-loader": "^0.5.7",
     "less": "^3.10.1",
     "less-loader": "^4.1.0",
     "lodash": "^4.17.15",
