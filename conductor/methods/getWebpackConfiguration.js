@@ -199,7 +199,7 @@ module.exports = {
             plugins: plugins,
         };
 
-        if (!noProduction) {
+        if (noProduction) {
             delete configuration.optimization;
         }
 
