@@ -1,7 +1,7 @@
 {
   "name": "rails-on-node-conductor",
   "title": "Rails On Node Conductor",
-  "version": "1.0.0-58",
+  "version": "1.0.0-59",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -62,7 +62,7 @@
     "style-loader": "^0.19.1",
     "sugarss": "^2.0.0",
     "supertest": "^3.1.0",
-    "terser-webpack-plugin": "^3.0.0",
+    "terser-webpack-plugin": "^3.0.1",
     "time-fix-plugin": "^2.0.3",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^1.0.1",
