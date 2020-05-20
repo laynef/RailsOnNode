@@ -41,7 +41,7 @@
         "pg-hstore": "^2.3.3",
         "popper.js": "^1.14.4",
         "pug": "^2.0.3",
-        "rails-on-node-conductor": "^1.0.0-60",
+        "rails-on-node-conductor": "^1.0.0-61",
         "react": "^16.4.2",
         "react-dom": "^16.4.2",
         "react-redux": "^5.0.7",
