@@ -4,7 +4,6 @@ const { decorateApp } = require('@awaitjs/express');
 const fs = require('fs');
 const path = require('path');
 const helmet = require('helmet');
-const noCache = require('nocache');
 const cors = require('cors');
 const winston = require('winston');
 const expressWinston = require('express-winston');
@@ -36,8 +35,6 @@ const logFile = path.join(__dirname, '..', 'log', environment + '.log');
 const protection = csrf();
 const app = decorateApp(new Express());
 
-const domain = 'https://localhost:8080';
-
 global.redis = client;
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
@@ -57,13 +54,8 @@ app.use(expressWinston.logger({
     colorize: true,
     ignoreRoute: function (req, res) { return false; }
 }));
-app.use(cors({ origin: [domain] }));
-app.use(helmet({ 
-    frameguard: { action: 'deny' },
-    permittedCrossDomainPolicies: { permittedPolicies: 'master-only' },
-}));
-app.use(noCache());
-app.use(parser.urlencoded({ extended: false }));
+app.use(cors());
+app.use(helmet());
 app.use(compression({ level: 7 }));
 app.use(session({
     secret: fs.readFileSync(path.join(__dirname, '..', 'config', 'openssl', 'web-secret.pem'), { encoding: 'utf8' }),
@@ -72,10 +64,6 @@ app.use(session({
     resave: false,
     name: meta.title,
     cookie: {
-        secure: true,
-        sameSite: true,
-        signed: true,
-        domain: domain,
         token: null,
     },
 }));
@@ -92,6 +80,7 @@ if (!process.env.TESTING) {
 app.use('/assets', Express.static(path.join(__dirname, 'assets')));
 app.use('/', Express.static(path.join(__dirname, 'assets', 'dist')));
 
+app.use(parser.urlencoded({ extended: false }));
 app.use(parser.json());
 app.use(parser.raw());
 app.use(favicon(path.join(__dirname, 'assets', 'img', 'nodejs.png')));
@@ -139,9 +128,9 @@ app.useAsync('*', (req, res) => {
 
 app.useAsync((error, req, res, next) => {
     if (error) {
-        renderError(req, res, 'errors/500', { hashId: global.hashId, statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
+        return renderError(req, res, 'errors/500', { hashId: global.hashId, statusCode: 500, environment: process.env.NODE_ENV, title: '500: Internal Server Error' });
     } else {
-        next();
+        return next();
     }
 });
 
