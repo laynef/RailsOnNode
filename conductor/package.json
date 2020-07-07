@@ -1,7 +1,7 @@
 {
   "name": "rails-on-node-conductor",
   "title": "Rails On Node Conductor",
-  "version": "1.0.0-61",
+  "version": "1.0.0-62",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "css-loader": "^3.1.0",
     "cssnano": "^4.1.10",
     "exports-loader": "^0.7.0",
+    "express-async-handler": "^1.1.4",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
     "font-awesome-loader": "^1.0.2",
