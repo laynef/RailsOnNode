@@ -45,7 +45,7 @@ const setAsyncRoutes = (_router, config = { gets, posts, patchs, puts, deletes }
     return _router;
 };
 
-const setDocumentationRoute = (apiVersion, config = { gets, posts, patchs, puts, deletes }) => []
+const getDocumentationForRouter = (apiVersion, config = { gets, posts, patchs, puts, deletes }) => []
     .concat((config.gets || []).map(e => ({...e, method: 'GET'})))
     .concat((config.posts || []).map(e => ({...e, method: 'POST'})))
     .concat((config.patchs || []).map(e => ({...e, method: 'PATCH'})))
@@ -56,14 +56,14 @@ const setDocumentationRoute = (apiVersion, config = { gets, posts, patchs, puts,
 
 const getApiVersion = (directoryPath) => `${directoryPath}`.split('/').pop();
 
-const returnRouter = ({ apiVersion, docs, router }) => ({
-    [apiVersion]: docs,
+const returnRouter = ({ apiVersion, documentation, router }) => ({
+    [apiVersion]: documentation,
     [`${apiVersion}Router`]: router,
 });
 
 module.exports = {
     getApiVersion,
+    getDocumentationForRouter,
     setAsyncRoutes,
-    setDocumentationRoute,
     returnRouter,
 };
