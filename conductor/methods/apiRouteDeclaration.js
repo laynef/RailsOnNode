@@ -56,9 +56,14 @@ const setDocumentationRoute = (apiVersion, config = { gets, posts, patchs, puts,
 
 const getApiVersion = (directoryPath) => `${directoryPath}`.split('/').pop();
 
+const returnRouter = ({ apiVersion, docs, router }) => ({
+    [apiVersion]: docs,
+    [`${apiVersion}Router`]: router,
+});
 
 module.exports = {
     getApiVersion,
     setAsyncRoutes,
     setDocumentationRoute,
+    returnRouter,
 };
