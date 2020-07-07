@@ -11,4 +11,4 @@ const router = conductor.setAsyncRoutes(express.Router(), { gets, deletes, posts
 const apiVersion = conductor.getApiVersion(__dirname);
 const documentation = conductor.getDocumentationForRouter(apiVersion, { gets, deletes, posts, patchs, puts });
 
-module.exports = returnRouter({ apiVersion, documentation, router });
+module.exports = conductor.returnRouter({ apiVersion, documentation, router });
