@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
 
-class Application extends Component {
-    render() {
-        return (
-            <h1 style={{ textAlign: 'center' }}>Hello World</h1>
-        );
-    }
+function Application() {
+    return (
+        <h1 style={{ textAlign: 'center' }}>Hello World</h1>
+    );
 };
 
-export default connect(() => ({}))(Application)
+export default connect(() => ({}))(Application);
