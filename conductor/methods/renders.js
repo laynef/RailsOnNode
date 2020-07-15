@@ -58,17 +58,29 @@ const makeHash = (hashLength) => {
     return temp;
 };
 
+const getServerSideRendering = async (req, res, pageName) => {
+    let storage = {};
+    try {
+        const { serverSide } = renderServerSide(global.settings);
+        const storage = await serverSide(pageName, req);
+        return globalRenders(pageName, req, res, storage);
+    } catch (error) {
+        return globalRenders(pageName, req, res, storage);
+    }
+};
+
+
 module.exports = {
 
     globalRenders,
     makeHash,
+    getServerSideRendering,
 
     render: (pageName, customObject = {}) => async (req, res) => {
         try {
             const statusCode = customObject && customObject.statusCode ? customObject.statusCode : 200;
-            const { serverSide } = renderServerSide(global.settings);
-            const storage = await serverSide(pageName, req);
-            res.status(statusCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, storage)));
+            const htmlObject = await getServerSideRendering(req, res, pageName);
+            res.status(statusCode).render(pageName, Object.assign({}, customObject, htmlObject));
         } catch (error) {
             return error;
         }
@@ -77,9 +89,8 @@ module.exports = {
     renderError: async (req, res, pageName, customObject = {}) => {
         try {
             const errorCode = customObject && customObject.statusCode ? customObject.statusCode : 400;
-            const { serverSide } = renderServerSide(global.settings);
-            const storage = await serverSide(`pages/${pageName}/${errorCode}`, req);
-            res.status(errorCode).render(pageName, globalRenders(pageName, req, res, Object.assign({}, customObject, storage)));
+            const htmlObject = await getServerSideRendering(req, res, pageName);
+            res.status(errorCode).render(pageName, Object.assign({}, customObject, htmlObject));
         } catch (error) {
             return error;
         }
