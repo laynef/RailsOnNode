@@ -58,8 +58,8 @@ const makeHash = (hashLength) => {
     return temp;
 };
 
-const getServerSideRendering = async (req, res, pageName) => {
-    let storage = {};
+const getServerSideRendering = async (req, res, pageName, customObject = {}) => {
+    let storage = customObject;
     try {
         const { serverSide } = renderServerSide(global.settings);
         const storage = await serverSide(pageName, req);
