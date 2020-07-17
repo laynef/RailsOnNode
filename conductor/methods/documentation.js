@@ -129,27 +129,24 @@ module.exports = {
             var error = err && err.response && err.response.data ? err.response.data : err;
             resultElement.innerText = JSON.stringify(error, null, 4);
         });
-};
+    };
     `;
 
         javascriptString += `window.${camelCased}NewHeader = function() {
         var ele = document.getElementById('${camelCased}HeadersForm');
         ele.innerHTML += '<div class="d-flex f-row"><input class="w-100 m-1 form-control" type="text" placeholder="Enter key"><input class="w-100 m-1 form-control" type="text" placeholder="Enter value"></div>';
     };
-
     `;
 
             javascriptString += `window.${camelCased}NewBody = function() {
         var ele = document.getElementById('${camelCased}BodyForm');
         ele.innerHTML += '<div class="d-flex f-row"><input class="w-100 m-1 form-control" type="text" placeholder="Enter key"><input class="w-100 m-1 form-control" type="text" placeholder="Enter value"></div>';
     };
-
     `;
             javascriptString += `window.${camelCased}NewBodyFile = function() {
         var ele = document.getElementById('${camelCased}BodyForm');
         ele.innerHTML += '<div class="d-flex f-row"><input class="w-100 m-1 form-control" type="text" placeholder="Enter key"><input class="w-100 m-1 form-control" type="file" placeholder="Enter value"></div>';
     };
-
     `;
 
             javascriptString += `window.${camelCased}NewQS = function() {
