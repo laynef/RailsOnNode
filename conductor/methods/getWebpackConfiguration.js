@@ -3,7 +3,6 @@ const path = require('path');
 const webpack = require('webpack');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const TimeFixPlugin = require('time-fix-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { reduce, camelCase } = require('lodash');
@@ -131,7 +130,7 @@ module.exports = {
         }
 
         let plugins = [
-            vueJs ? new VueLoaderPlugin() : null,
+            vueJs ? new require('vue-loader/lib/plugin')() : null,
             new webpack.LoaderOptionsPlugin({
                 options: {
                     devtools: 'eval-source-map',
@@ -188,7 +187,7 @@ module.exports = {
                 ],
             },
             resolve: Object.assign({}, vueJs ? { alias: { 'vue$': 'vue/dist/vue.esm.js' } } : {}, {
-                extensions: ['*', '.js', '.jsx', '.ts', '.vue', '.json', '.scss', '.sass', '.css', '.less'],
+                extensions: ['*', '.js', '.jsx', '.vue', '.json', '.scss', '.sass', '.css', '.less'],
                 moduleExtensions: ['-loader'],
             }),
             plugins: plugins,
